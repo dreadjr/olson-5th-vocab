@@ -2,17 +2,17 @@
   "title": "Module 1, Week 2",
   "date": "2026-09-25",
   "words": [
-    { "word": "irrigate",     "definition": "To supply water to land or crops." },
-    { "word": "inspector",    "definition": "Someone who officially examines something." },
-    { "word": "photographed", "definition": "To have taken an image with a camera." },
-    { "word": "elite",        "definition": "The best or most skilled in a group." },
-    { "word": "auditorium",   "definition": "A large room for performances or speeches." },
-    { "word": "objective",    "definition": "A goal or target." },
-    { "word": "maneuver",     "definition": "To move skillfully." },
-    { "word": "visible",      "definition": "Able to be seen." },
-    { "word": "specialized",  "definition": "Having specific training or purpose." },
-    { "word": "prestigious",  "definition": "Highly respected and admired." },
-    { "word": "traditional",  "definition": "Following long-established customs." },
-    { "word": "impoverished", "definition": "Very poor." }
+    { "word": "irrigate",      "syllables": "ir-ri-gate",        "definition": "To supply water to land or crops." },
+    { "word": "inspector",     "syllables": "in-spec-tor",       "definition": "Someone who officially examines something." },
+    { "word": "photographed",  "syllables": "pho-to-graphed",    "definition": "To have taken an image with a camera." },
+    { "word": "elite",         "syllables": "e-lite",            "definition": "The best or most skilled in a group." },
+    { "word": "auditorium",    "syllables": "au-di-to-ri-um",    "definition": "A large room for performances or speeches." },
+    { "word": "objective",     "syllables": "ob-jec-tive",       "definition": "A goal or target." },
+    { "word": "maneuver",      "syllables": "ma-neu-ver",        "definition": "To move skillfully." },
+    { "word": "visible",       "syllables": "vis-i-ble",         "definition": "Able to be seen." },
+    { "word": "specialized",   "syllables": "spe-cial-ized",     "definition": "Having specific training or purpose." },
+    { "word": "prestigious",   "syllables": "pres-ti-gious",     "definition": "Highly respected and admired." },
+    { "word": "traditional",   "syllables": "tra-di-tion-al",    "definition": "Following long-established customs." },
+    { "word": "impoverished",  "syllables": "im-pov-er-ished",   "definition": "Very poor." }
   ]
 }

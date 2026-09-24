@@ -29,6 +29,11 @@ export function validateSet(set, slug) {
     const where = `word #${i + 1}`;
     if (!w || typeof w.word !== 'string' || !w.word.trim()) { errs.push(`${where}: "word" is missing`); return; }
     if (typeof w.definition !== 'string' || !w.definition.trim()) errs.push(`${where} (${w.word}): "definition" is missing`);
+    if (w.syllables != null) {
+      if (typeof w.syllables !== 'string' || w.syllables.replace(/-/g, '').trim() !== w.word.trim()) {
+        errs.push(`${where} (${w.word}): "syllables" should be the word with dashes between parts, like "ir-ri-gate"`);
+      }
+    }
     const key = w.word.trim().toLowerCase();
     if (seen.has(key)) errs.push(`${where}: "${w.word}" appears twice`);
     seen.add(key);
@@ -57,7 +62,11 @@ export function loadSets() {
       title: data.title.trim(),
       subtitle: (data.subtitle || '').trim(),
       date: data.date || null,
-      words: data.words.map(w => ({ word: w.word.trim(), definition: w.definition.trim() })),
+      words: data.words.map(w => ({
+        word: w.word.trim(),
+        definition: w.definition.trim(),
+        ...(w.syllables ? { syllables: w.syllables.trim() } : {}),
+      })),
     });
   }
   if (problems.length) {

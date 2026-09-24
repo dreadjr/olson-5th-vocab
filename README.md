@@ -1,11 +1,14 @@
 # Word Works: Olson 5th grade vocab
 
-Vocabulary practice games built from simple word lists. Each list becomes its own page with four activities:
+Vocabulary practice games built from simple word lists. Each list becomes its own page with five activities:
 
 - **Meaning quiz**: multiple choice, word to meaning and meaning to word. It keeps a best score.
 - **Flash cards**: tap to flip. It can show the word first or the meaning first.
 - **Guess the word**: read the meaning, say the word, flip, then mark whether you got it.
-- **Spelling practice**: hear the word, then type it. Wrong letters are marked.
+- **Spelling practice**: hear the word, then type it. Wrong letters are marked. **Easy** mode fills in part of the word. The blanks go on the tricky spots, vowels and double letters, and the first letter is always shown.
+- **Look, cover, write**: see the word split into syllables and say each part, then it's covered and you write it from memory. A miss gets fixed right away while you look at the correct spelling, and the word comes back a few turns later. The round ends when every word has been written correctly from memory.
+
+Look, cover, write is based on retrieval-practice versions of Look-Say-Cover-Write-Check. Saying the word in parts connects sounds to letters, recalling it from memory strengthens it more than copying, instant correction stops mistakes from sticking, and missed words return after a short gap (spaced repetition).
 
 Every page is a single self-contained HTML file. It works offline and can be opened straight from disk.
 
@@ -49,10 +52,12 @@ Edit the file in `sets/` and push. Each word needs a `word` and a `definition`. 
   "subtitle": "12 words",
   "date": "2026-09-25",
   "words": [
-    { "word": "irrigate", "definition": "To supply water to land or crops." }
+    { "word": "irrigate", "syllables": "ir-ri-gate", "definition": "To supply water to land or crops." }
   ]
 }
 ```
+
+`syllables` is optional. It controls how Look, cover, write splits the word: the word with dashes between its parts. Without it, the game guesses the split automatically. The guess is right most of the time but not always (it gives `pho-nog-raph`, not `pho-no-graph`), so add it for any word where the split matters.
 
 `npm run check` finds mistakes (missing definitions, duplicate words, broken JSON) without building. The deploy runs the same check, so a broken file won't go live.
 

@@ -42,6 +42,12 @@
   .mast{text-align:center;margin:6px 0 18px;}
   .back{display:inline-block;color:#9FB4C8;font-size:.88rem;font-weight:600;text-decoration:none;margin:0 0 6px;}
   .back:hover{color:var(--brass);}
+  .setnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 6px;}
+  .setnav .back{margin:0;}
+  .picker select{font-family:inherit;font-size:.9rem;font-weight:600;color:var(--paper);background:#10304D;
+    border:1.5px solid #3C5A78;border-radius:4px;padding:6px 8px;max-width:58vw;cursor:pointer;}
+  .picker select:focus-visible{outline:3px solid var(--brass);outline-offset:2px;}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
   .mast h1{
     font-family:"Alfa Slab One","Archivo",serif;
     font-size:clamp(2.1rem,10vw,3.2rem);
@@ -161,6 +167,26 @@
   .letters span{font-family:"Alfa Slab One",serif;font-size:1.3rem;padding:4px 7px;border-radius:3px;
     background:#E7F3EA;color:#1C5334;}
   .letters span.bad{background:#FBE9E5;color:#8E2E1C;}
+  .slots{display:flex;justify-content:center;gap:4px;margin:4px 0 0;}
+  .slot{flex:0 1 2.2rem;min-width:0;height:2.8rem;display:grid;place-items:center;border-radius:4px;
+    font-family:"Alfa Slab One",serif;font-size:clamp(1rem,5vw,1.4rem);color:var(--ink);text-align:center;padding:0;}
+  .slot.given{background:#EFE7D3;border:2px solid transparent;}
+  input.slot{background:#fff;border:2px solid #C9BFA8;border-bottom-width:4px;caret-color:var(--brass-deep);}
+  input.slot:focus{border-color:var(--ink);outline:none;background:#FFF8E8;}
+  input.slot.bad{border-color:var(--rust);background:#FBE9E5;}
+  input.slot.ok{border-color:var(--leaf);background:#E7F3EA;}
+  .chunks{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;margin:6px 0 4px;}
+  .chunk{font-family:"Alfa Slab One",serif;font-size:clamp(1.6rem,7.5vw,2.3rem);color:var(--ink);
+    background:#fff;border:2px solid var(--ink);border-radius:4px;padding:4px 10px;}
+  .chunk-dot{color:var(--brass-deep);font-weight:700;font-size:1.3rem;}
+  .covered{height:3.4rem;border-radius:4px;margin:6px 0 4px;
+    background:repeating-linear-gradient(135deg,#E3D9C2 0 10px,#EFE7D3 10px 20px);border:2px dashed #C9BFA8;
+    display:grid;place-items:center;color:var(--text-dim);font-weight:600;font-size:.95rem;}
+  .steps{display:flex;gap:6px;margin:12px 0 2px;font-size:.8rem;font-weight:700;color:#9AA6B2;}
+  .steps span{padding:3px 8px;border-radius:3px;border:1.5px solid #D3D9DF;}
+  .steps span.on{color:var(--ink);border-color:var(--ink);background:#fff;}
+  .steps span.done{color:var(--leaf);border-color:#A9CFB6;}
+  .center{text-align:center;}
   .say{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--ink);background:transparent;
     color:var(--ink);font-family:inherit;font-weight:700;font-size:.95rem;border-radius:4px;
     padding:9px 14px;cursor:pointer;margin-top:4px;}
@@ -223,7 +249,58 @@
 
 <script>
 const SET = /*{{SET_JSON}}*/null;
-const WORDS = SET.words.map(x => ({w: x.word, d: x.definition}));
+
+/* Rough syllable split used when a set doesn't list syllables for a word.
+   Keeps digraphs and endings like -tion together, splits V-CV and VC-CV,
+   and handles silent e, -le, -ing and -ed. Put exact splits in the set file. */
+function autoSyllables(word){
+  const w = word.toLowerCase();
+  if(!/^[a-z]+$/.test(w) || w.length < 4) return [word];
+  const SPECIAL = ['tious','cious','gious','tion','sion','cial','tial'];
+  const DIG = ['ch','sh','th','ph','wh','ck','ng','qu','gh'];
+  const u = [];
+  for(let k = 0; k < w.length;){
+    const sp = SPECIAL.find(x => w.startsWith(x, k) && k > 0);
+    if(sp){ u.push({t:sp, at:k, sp:true}); k += sp.length; continue; }
+    const two = w.slice(k, k+2);
+    if(DIG.includes(two)){ u.push({t:two, at:k}); k += 2; } else { u.push({t:w[k], at:k}); k++; }
+  }
+  const last = u.length - 1;
+  const vow = u.map((x,k) => x.sp || 'aeiou'.includes(x.t) || (x.t === 'y' && k > 0));
+  const cons = k => k >= 0 && !vow[k];
+  const le = u[last].t === 'e' && u[last-1] && u[last-1].t === 'l' && cons(last-2);
+  if(u[last].t === 'e' && !le && vow.slice(0, last).some(Boolean) && cons(last-1)) vow[last] = false;
+  if(/ed$/.test(w) && !/[td]ed$/.test(w)) vow[last-1] = false;
+  if(/es$/.test(w) && !/(s|x|z|ch|sh|ge|ce)es$/.test(w) && u.length > 2) vow[last-1] = false;
+  const ingAt = /[^aeiou]ing$/.test(w) && w.length > 5 ? w.length - 3 : -1;
+  const edAt = /[td]ed$/.test(w) && w.length > 4 ? w.length - 2 : -1;
+
+  // vowel groups: runs of vowel units; special endings stand alone; i before a/o/u starts a new group
+  const groups = [];
+  for(let k = 0; k < u.length; k++){
+    if(!vow[k]) continue;
+    const prev = groups[groups.length - 1];
+    const joins = prev && prev.end === k - 1 && !u[k].sp && !u[k-1].sp && !(u[k-1].t === 'i' && 'aou'.includes(u[k].t));
+    if(joins) prev.end = k; else groups.push({start:k, end:k});
+  }
+  const cuts = [];
+  for(let g = 1; g < groups.length; g++){
+    const a = groups[g-1].end, b = groups[g].start;
+    const nc = b - a - 1;                                  // consonant units between the groups
+    const vAt = u[b].at;
+    if(vAt === ingAt || vAt === edAt) cuts.push(vAt);      // jump-ing, want-ed
+    else if(nc === 0) cuts.push(vAt);                       // tion-al, ri-um
+    else if(le && b === last) cuts.push(u[b-2].at);         // ta-ble
+    else if(nc === 1) cuts.push(u[a+1].at);                 // V-CV
+    else cuts.push(u[a+2].at);                              // VC-CV
+  }
+  const parts = [];
+  let prev = 0;
+  cuts.sort((x,y) => x-y).forEach(c => { if(c > prev){ parts.push(word.slice(prev, c)); prev = c; } });
+  parts.push(word.slice(prev));
+  return parts;
+}
+const WORDS = SET.words.map(x => ({w: x.word, d: x.definition, s: (x.syllables ? x.syllables.split('-') : autoSyllables(x.word))}));
 const N = WORDS.length;
 const STORE_KEY = 'wordworks.' + SET.slug + '.best';
 
@@ -274,7 +351,11 @@ function showHome(){
         </button>
         <button class="menu-item" id="mSpell">
           <span class="t">Spelling practice</span>
-          <span class="s">Hear the word, read the meaning, then type it letter by letter.</span>
+          <span class="s">Hear the word and type it. Easy mode fills in part of the word for you.</span>
+        </button>
+        <button class="menu-item" id="mLcw">
+          <span class="t">Look, cover, write</span>
+          <span class="s">See the word in parts, then write it from memory. Missed words come back until you get them.</span>
         </button>
         <button class="menu-item" id="mList">
           <span class="t">Word list</span>
@@ -286,7 +367,8 @@ function showHome(){
   document.getElementById('mQuiz').onclick = () => startQuiz(WORDS);
   document.getElementById('mCards').onclick = () => startCards();
   document.getElementById('mGuess').onclick = () => startGuess(WORDS);
-  document.getElementById('mSpell').onclick = () => startSpelling(WORDS);
+  document.getElementById('mSpell').onclick = () => showSpellPick(WORDS);
+  document.getElementById('mLcw').onclick = () => startLcw(WORDS);
   document.getElementById('mList').onclick = showStudy;
   window.scrollTo({top:0});
 }
@@ -429,9 +511,53 @@ function say(word){
   }catch(e){}
 }
 
-function startSpelling(pool){
+let spellLevel = 'full';
+
+function showSpellPick(pool){
+  mode = 'spellpick';
+  chrome(false, false, true);
+  stage.innerHTML = `
+    <div class="card">
+      <span class="stamp">Spelling practice</span>
+      <p class="prompt-kind">Pick how hard it should be.</p>
+      <div style="margin-top:12px">
+        <button class="menu-item" id="lvEasy">
+          <span class="t">Easy: fill in the blanks</span>
+          <span class="s">Some letters are already there. Type only the missing ones.</span>
+        </button>
+        <button class="menu-item" id="lvFull">
+          <span class="t">Full word</span>
+          <span class="s">Type the whole word from memory.</span>
+        </button>
+      </div>
+    </div>`;
+  document.getElementById('lvEasy').onclick = () => startSpelling(pool, 'easy');
+  document.getElementById('lvFull').onclick = () => startSpelling(pool, 'full');
+  window.scrollTo({top:0});
+}
+
+/* Pick which letters to hide in easy mode: the tricky spots first
+   (vowels and the second letter of a double), never the first letter. */
+function blankIndexes(word){
+  const w = word.toLowerCase();
+  const n = w.length;
+  const target = Math.min(n - 1, Math.max(2, Math.round(n * 0.4)));
+  const tricky = [], other = [];
+  for(let k = 1; k < n; k++){
+    if(!/[a-z]/.test(w[k])) continue;
+    const isVowel = 'aeiou'.includes(w[k]) || (w[k] === 'y' && k > 0);
+    const isDouble = w[k] === w[k-1];
+    (isVowel || isDouble ? tricky : other).push(k);
+  }
+  const pick = shuffle(tricky).slice(0, target);
+  if(pick.length < target) pick.push(...shuffle(other).slice(0, target - pick.length));
+  return new Set(pick);
+}
+
+function startSpelling(pool, level){
   mode = 'spell';
-  deck = shuffle(pool);
+  spellLevel = level || spellLevel;
+  deck = shuffle(pool).map(q => ({...q, blanks: spellLevel === 'easy' ? blankIndexes(q.w) : null}));
   i = 0; score = 0; streak = 0; missed = [];
   chrome(false, true, true);
   renderSpell();
@@ -440,38 +566,82 @@ function startSpelling(pool){
 function renderSpell(){
   answered = false;
   const q = deck[i];
+  const easy = spellLevel === 'easy';
   progressTxt.textContent = `Word ${i+1} of ${deck.length}`;
   streakTxt.textContent = streak >= 2 ? `${streak} in a row` : '';
   scoreTxt.textContent = `${score} spelled right`;
 
+  const field = easy
+    ? `<div class="slots" id="slots">${q.w.split('').map((ch,k) => q.blanks.has(k)
+        ? `<input class="slot" data-k="${k}" maxlength="1" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Letter ${k+1}">`
+        : `<span class="slot given">${esc(ch)}</span>`).join('')}</div>`
+    : `<input class="spell-in" id="entry" type="text" autocomplete="off" autocapitalize="off"
+             autocorrect="off" spellcheck="false" inputmode="text" aria-label="Type the word">`;
+
   stage.innerHTML = `
     <div class="card">
-      <span class="stamp">Spell it</span>
+      <span class="stamp">${easy ? 'Fill in the blanks' : 'Spell it'}</span>
       <p class="prompt-kind">This word means:</p>
       <p class="prompt">${esc(q.d)}</p>
       ${canSpeak() ? `<button class="say" id="hear">&#9654; Hear the word</button>` : ``}
-      <p class="prompt-kind" style="margin-top:16px">Type the word:</p>
-      <input class="spell-in" id="entry" type="text" autocomplete="off" autocapitalize="off"
-             autocorrect="off" spellcheck="false" inputmode="text" aria-label="Type the word">
+      <p class="prompt-kind" style="margin-top:16px">${easy ? 'Type the missing letters:' : 'Type the word:'}</p>
+      ${field}
       <div id="after"><div class="next-wrap"><button class="btn" id="check">Check my spelling</button></div></div>
     </div>`;
 
   const hear = document.getElementById('hear');
   if(hear) hear.onclick = () => say(q.w);
-  const entry = document.getElementById('entry');
-  entry.focus({preventScroll:true});
-  entry.addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); checkSpell(q); } });
+  if(easy) wireSlots(document.getElementById('slots'), () => checkSpell(q));
+  else {
+    const entry = document.getElementById('entry');
+    entry.focus({preventScroll:true});
+    entry.addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); checkSpell(q); } });
+  }
   document.getElementById('check').onclick = () => checkSpell(q);
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
+/* Letter boxes: typing moves forward, backspace moves back, Enter submits. */
+function wireSlots(box, onEnter){
+  const ins = [...box.querySelectorAll('input.slot')];
+  ins.forEach((el, n) => {
+    el.addEventListener('input', () => {
+      el.value = (el.value.slice(-1) || '').toLowerCase().replace(/[^a-z'-]/, '');
+      if(el.value && ins[n+1]) ins[n+1].focus();
+    });
+    el.addEventListener('keydown', e => {
+      if(e.key === 'Enter'){ e.preventDefault(); onEnter(); }
+      else if(e.key === 'Backspace' && !el.value && ins[n-1]){ e.preventDefault(); ins[n-1].focus(); ins[n-1].value = ''; }
+      else if(e.key === 'ArrowLeft' && ins[n-1]){ e.preventDefault(); ins[n-1].focus(); }
+      else if(e.key === 'ArrowRight' && ins[n+1]){ e.preventDefault(); ins[n+1].focus(); }
+    });
+    el.addEventListener('focus', () => el.select());
+  });
+  if(ins[0]) ins[0].focus({preventScroll:true});
+}
+
+function readSpelling(q){
+  if(spellLevel !== 'easy') return document.getElementById('entry').value.trim().toLowerCase();
+  const box = document.getElementById('slots');
+  const typed = {};
+  box.querySelectorAll('input.slot').forEach(el => typed[el.dataset.k] = el.value.toLowerCase());
+  return q.w.split('').map((ch,k) => k in typed ? (typed[k] || ' ') : ch.toLowerCase()).join('');
+}
+
+function letterMarks(word, typed){
+  return word.split('').map((ch,n) =>
+    `<span class="${typed[n] === ch.toLowerCase() ? '' : 'bad'}">${esc(ch)}</span>`).join('');
+}
+
 function checkSpell(q){
   if(answered) return;
-  const entry = document.getElementById('entry');
-  const typed = entry.value.trim().toLowerCase();
-  if(!typed) { entry.focus(); return; }
+  const easy = spellLevel === 'easy';
+  const typed = readSpelling(q);
+  if(easy){
+    const empty = [...document.querySelectorAll('#slots input.slot')].find(el => !el.value);
+    if(empty){ empty.focus(); return; }
+  } else if(!typed){ document.getElementById('entry').focus(); return; }
   answered = true;
-  entry.disabled = true;
 
   const correct = typed === q.w.toLowerCase();
   if(correct){ score++; streak++; }
@@ -479,13 +649,17 @@ function checkSpell(q){
   scoreTxt.textContent = `${score} spelled right`;
   streakTxt.textContent = streak >= 2 ? `${streak} in a row` : '';
 
-  const letters = q.w.split('').map((ch,n) =>
-    `<span class="${typed[n] === ch.toLowerCase() ? '' : 'bad'}">${esc(ch)}</span>`).join('');
+  if(easy){
+    document.querySelectorAll('#slots input.slot').forEach(el => {
+      el.disabled = true;
+      el.classList.add(el.value === q.w[el.dataset.k].toLowerCase() ? 'ok' : 'bad');
+    });
+  } else document.getElementById('entry').disabled = true;
 
   document.getElementById('after').innerHTML = `
     <p class="verdict ${correct ? 'right' : 'wrong'}">
-      ${correct ? 'Spelled it perfectly.' : `You wrote <b>${esc(typed)}</b>. The word is spelled:`}
-      <span class="letters">${letters}</span>
+      ${correct ? 'Spelled it perfectly.' : easy ? 'Not quite. The word is spelled:' : `You wrote <b>${esc(typed)}</b>. The word is spelled:`}
+      <span class="letters">${letterMarks(q.w, typed)}</span>
     </p>
     <div class="next-wrap">
       <button class="btn" id="next">${i+1 < deck.length ? 'Next word' : 'See your score'}</button>
@@ -493,6 +667,143 @@ function checkSpell(q){
   const nx = document.getElementById('next');
   nx.onclick = () => { i++; (i < deck.length) ? renderSpell() : showResults('spell'); };
   nx.focus({preventScroll:true});
+}
+
+/* ================= look, cover, write ================= */
+/* Look at the word in syllable chunks and say it, cover it, write it from memory,
+   check it. A miss gets fixed on the spot and the word comes back a few turns later. */
+let lcw = null;
+
+function startLcw(pool){
+  mode = 'lcw';
+  const words = shuffle(pool);
+  lcw = { queue: words.slice(), total: words.length, learned: 0, firstTry: 0, tries: new Map(), phase: 'look', cur: null };
+  missed = [];
+  chrome(false, true, true);
+  nextLcw();
+}
+
+function nextLcw(){
+  if(!lcw.queue.length){
+    score = lcw.firstTry; deck = new Array(lcw.total);
+    return showResults('lcw');
+  }
+  lcw.cur = lcw.queue.shift();
+  renderLcwLook();
+}
+
+function lcwStatus(){
+  progressTxt.textContent = `${lcw.learned} of ${lcw.total} learned`;
+  streakTxt.textContent = '';
+  const again = (lcw.tries.get(lcw.cur.w) || 0) > 0;
+  scoreTxt.textContent = again ? 'Try again' : 'New word';
+}
+
+function lcwSteps(active){
+  const names = ['Look', 'Cover', 'Write', 'Check'];
+  const at = names.indexOf(active);
+  return `<div class="steps" aria-hidden="true">${names.map((n,k) =>
+    `<span class="${k === at ? 'on' : k < at ? 'done' : ''}">${n}</span>`).join('')}</div>`;
+}
+
+function chunksHtml(q){
+  return `<div class="chunks">${q.s.map((c,k) =>
+    (k ? '<span class="chunk-dot">&middot;</span>' : '') + `<span class="chunk">${esc(c)}</span>`).join('')}</div>`;
+}
+
+function renderLcwLook(){
+  lcw.phase = 'look';
+  const q = lcw.cur;
+  lcwStatus();
+  stage.innerHTML = `
+    <div class="card">
+      ${lcwSteps('Look')}
+      <p class="prompt-kind">Look at the word. Say each part out loud.</p>
+      ${chunksHtml(q)}
+      <p class="prompt-kind center" style="margin-top:14px">${esc(q.d)}</p>
+      <div class="center">${canSpeak() ? `<button class="say" id="hear">&#9654; Hear the word</button>` : ``}</div>
+      <div class="next-wrap"><button class="btn" id="cover">Cover it</button></div>
+    </div>`;
+  const hear = document.getElementById('hear');
+  if(hear) hear.onclick = () => say(q.w);
+  const cv = document.getElementById('cover');
+  cv.onclick = renderLcwWrite;
+  cv.focus({preventScroll:true});
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function renderLcwWrite(){
+  lcw.phase = 'write';
+  const q = lcw.cur;
+  stage.innerHTML = `
+    <div class="card">
+      ${lcwSteps('Write')}
+      <div class="covered">The word is covered</div>
+      <p class="prompt-kind">It means: ${esc(q.d)}</p>
+      ${canSpeak() ? `<button class="say" id="hear">&#9654; Hear it again</button>` : ``}
+      <p class="prompt-kind" style="margin-top:16px">Write it from memory:</p>
+      <input class="spell-in" id="entry" type="text" autocomplete="off" autocapitalize="off"
+             autocorrect="off" spellcheck="false" aria-label="Write the word">
+      <div id="after"><div class="next-wrap"><button class="btn" id="check">Check it</button></div></div>
+    </div>`;
+  const hear = document.getElementById('hear');
+  if(hear) hear.onclick = () => say(q.w);
+  const entry = document.getElementById('entry');
+  entry.focus({preventScroll:true});
+  entry.addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); checkLcw(); } });
+  document.getElementById('check').onclick = checkLcw;
+}
+
+function checkLcw(){
+  if(lcw.phase !== 'write') return;
+  const q = lcw.cur;
+  const entry = document.getElementById('entry');
+  const typed = entry.value.trim().toLowerCase();
+  if(!typed){ entry.focus(); return; }
+  lcw.phase = 'check';
+  entry.disabled = true;
+  const tries = lcw.tries.get(q.w) || 0;
+  const correct = typed === q.w.toLowerCase();
+  document.querySelector('.steps').outerHTML = lcwSteps('Check');
+
+  if(correct){
+    lcw.learned++;
+    if(tries === 0) lcw.firstTry++;
+    progressTxt.textContent = `${lcw.learned} of ${lcw.total} learned`;
+    document.getElementById('after').innerHTML = `
+      <p class="verdict right">${tries === 0 ? 'Written from memory. Nice.' : 'Got it this time.'}
+        <span class="letters">${letterMarks(q.w, typed)}</span></p>
+      <div class="next-wrap"><button class="btn" id="next">${lcw.queue.length ? 'Next word' : 'See how you did'}</button></div>`;
+    const nx = document.getElementById('next');
+    nx.onclick = nextLcw;
+    nx.focus({preventScroll:true});
+    return;
+  }
+
+  // Miss: show where it went wrong, have them copy it correctly, then bring it back later.
+  lcw.tries.set(q.w, tries + 1);
+  if(tries === 0) missed.push(q);
+  lcw.queue.splice(Math.min(3, lcw.queue.length), 0, q);
+  document.getElementById('after').innerHTML = `
+    <p class="verdict wrong">Almost. Here's where it went wrong:
+      <span class="letters">${letterMarks(q.w, typed)}</span></p>
+    ${chunksHtml(q)}
+    <p class="prompt-kind">Fix it: type it correctly while you look.</p>
+    <input class="spell-in" id="fix" type="text" autocomplete="off" autocapitalize="off"
+           autocorrect="off" spellcheck="false" aria-label="Type the word correctly">
+    <div class="next-wrap"><button class="btn" id="next" disabled style="opacity:.5">Keep going</button></div>
+    <p class="prompt-kind center" style="margin-top:10px">This word will come back in a few turns.</p>`;
+  const fix = document.getElementById('fix');
+  const nx = document.getElementById('next');
+  fix.focus();
+  fix.scrollIntoView({block:'center', behavior:'smooth'});
+  fix.addEventListener('input', () => {
+    const ok = fix.value.trim().toLowerCase() === q.w.toLowerCase();
+    fix.style.borderColor = ok ? 'var(--leaf)' : '';
+    nx.disabled = !ok; nx.style.opacity = ok ? '' : '.5';
+  });
+  fix.addEventListener('keydown', e => { if(e.key === 'Enter' && !nx.disabled){ e.preventDefault(); nextLcw(); } });
+  nx.onclick = nextLcw;
 }
 
 /* ================= meaning quiz ================= */
@@ -587,12 +898,13 @@ function showResults(kind){
 
   stage.innerHTML = `
     <div class="card final">
-      <span class="stamp">${kind === 'spell' ? 'Spelling results' : kind === 'guess' ? 'Flash card results' : 'Quiz results'}</span>
+      <span class="stamp">${{spell:'Spelling results', guess:'Flash card results', lcw:'Look, cover, write', quiz:'Quiz results'}[kind]}</span>
+      ${kind === 'lcw' ? `<p class="prompt-kind" style="margin-bottom:0">Words written right on the first try</p>` : ``}
       <p class="num">${score}<small> / ${full}</small></p>
       <p class="msg">${msg}</p>
       ${missed.length ? `
         <div class="review">
-          <h3>Words to review</h3>
+          <h3>${kind === 'lcw' ? 'Took more than one try' : 'Words to review'}</h3>
           <ul class="list">
             ${missed.map(x=>`<li><div class="term">${esc(x.w)}</div><p class="def">${esc(x.d)}</p></li>`).join('')}
           </ul>
@@ -603,7 +915,7 @@ function showResults(kind){
 
   const r = document.getElementById('retry');
   const missedCopy = missed.slice();
-  const restart = pool => kind === 'spell' ? startSpelling(pool) : kind === 'guess' ? startGuess(pool) : startQuiz(pool);
+  const restart = pool => ({spell: () => startSpelling(pool), guess: () => startGuess(pool), lcw: () => startLcw(pool), quiz: () => startQuiz(pool)})[kind]();
   if(r) r.onclick = () => restart(missedCopy);
   document.getElementById('again').onclick = () => restart(WORDS);
   window.scrollTo({top:0, behavior:'smooth'});

@@ -20,6 +20,14 @@ function fmtDate(d) {
   return new Date(Date.UTC(y, m - 1, day)).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 }
 
+// Top bar on each game page: link home plus a dropdown to jump to another word list.
+function setNav(current) {
+  const opts = sets.map(s => `<option value="${esc(s.slug)}"${s.slug === current.slug ? ' selected' : ''}>${esc(s.title)}</option>`).join('');
+  return `<nav class="setnav"><a class="back" href="../">&larr; All word sets</a>`
+    + `<label class="picker"><span class="sr">Word list</span>`
+    + `<select onchange="location.href='../'+encodeURIComponent(this.value)+'/'">${opts}</select></label></nav>`;
+}
+
 function fill(tpl, vars) {
   let out = tpl;
   for (const [k, v] of Object.entries(vars)) {
@@ -48,7 +56,7 @@ for (const set of sets) {
   const html = fill(TEMPLATE, {
     '{{PAGE_TITLE}}': esc(`Word Works — ${set.title}`),
     '{{SUBTITLE}}': esc(`${set.title} · ${set.subtitle || `${set.words.length} words`}`),
-    '{{BACK_LINK}}': sets.length > 1 ? '<a class="back" href="../">&larr; All word sets</a>' : '',
+    '{{BACK_LINK}}': sets.length > 1 ? setNav(set) : '',
     '/*{{SET_JSON}}*/null': scriptJson({ slug: set.slug, title: set.title, words: set.words }),
   });
   mkdirSync(join(DIST, set.slug), { recursive: true });

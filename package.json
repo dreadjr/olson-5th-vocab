@@ -2,7 +2,7 @@
   "name": "olson-5th-vocab",
   "version": "1.0.0",
   "private": true,
-  "description": "Vocabulary practice games (quiz, flash cards, guess the word, spelling) generated from simple word-list files.",
+  "description": "Vocabulary practice games (quiz, flash cards, guess the word, spelling, look-cover-write) generated from simple word-list files.",
   "type": "module",
   "engines": { "node": ">=18" },
   "scripts": {
