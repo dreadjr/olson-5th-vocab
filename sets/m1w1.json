@@ -1,0 +1,19 @@
+{
+  "title": "Module 1, Week 1",
+  "subtitle": "12 words about inventions",
+  "date": "2026-09-18",
+  "words": [
+    { "word": "locomotives",  "definition": "The powerful engines that make a train go forward." },
+    { "word": "chugged",      "definition": "Moved along slowly and noisily." },
+    { "word": "gadgets",      "definition": "Small, specialized machines or electronic devices." },
+    { "word": "phonograph",   "definition": "A machine that plays recorded music or sound." },
+    { "word": "sputtered",    "definition": "Worked or moved in a rough, uneven way while making popping sounds." },
+    { "word": "flop",         "definition": "A complete failure." },
+    { "word": "excel",        "definition": "To be very good at something." },
+    { "word": "revere",       "definition": "To think highly of someone." },
+    { "word": "transcend",    "definition": "To go above or beyond something." },
+    { "word": "incandescent", "definition": "Something that gives off a lot of light." },
+    { "word": "cylinder",     "definition": "A chamber or part in an engine that takes in gas to help make other parts move." },
+    { "word": "patents",      "definition": "Legal documents protecting an invention so no other person or company is allowed to make or sell it." }
+  ]
+}

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{PAGE_TITLE}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B2239;
+    --ink-deep:#061424;
+    --paper:#FAF6EC;
+    --paper-edge:#E3D9C2;
+    --brass:#E8A33D;
+    --brass-deep:#B87914;
+    --rust:#C4472F;
+    --leaf:#2E7D4F;
+    --line:rgba(232,163,61,.22);
+    --text:#0B2239;
+    --text-dim:#4A5A6C;
+    --shadow:0 10px 0 rgba(6,20,36,.35);
+  }
+  :root:not([data-theme="light"]){ color-scheme:dark; }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background-color:var(--ink-deep);
+    background-image:
+      repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px 44px),
+      repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px 44px),
+      radial-gradient(120% 90% at 50% 0%, #14395C 0%, transparent 60%);
+    color:var(--paper);
+    font-family:"Archivo","Segoe UI",system-ui,-apple-system,sans-serif;
+    min-height:100vh;
+    padding:18px 14px 44px;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:640px;margin:0 auto;}
+
+  .mast{text-align:center;margin:6px 0 18px;}
+  .back{display:inline-block;color:#9FB4C8;font-size:.88rem;font-weight:600;text-decoration:none;margin:0 0 6px;}
+  .back:hover{color:var(--brass);}
+  .mast h1{
+    font-family:"Alfa Slab One","Archivo",serif;
+    font-size:clamp(2.1rem,10vw,3.2rem);
+    line-height:.95;margin:0;color:var(--brass);letter-spacing:.01em;
+    text-shadow:3px 3px 0 var(--ink-deep), 6px 6px 0 rgba(232,163,61,.18);
+  }
+  .mast p{margin:10px 0 0;color:#B9C9DA;font-size:.95rem;}
+
+  .track{position:relative;height:46px;margin:0 0 16px;}
+  .rail{position:absolute;left:0;right:0;bottom:6px;height:10px;
+    background:
+      repeating-linear-gradient(to right,#31465c 0 4px,transparent 4px 14px),
+      linear-gradient(to bottom,#4c637c 0 3px,#22354a 3px 10px);
+    border-radius:2px;}
+  .loco{position:absolute;bottom:12px;left:0;width:46px;height:34px;
+    transition:left .45s cubic-bezier(.34,1.3,.64,1);will-change:left;}
+  .loco svg{display:block;width:100%;height:100%;}
+  .puff{position:absolute;bottom:34px;left:10px;width:9px;height:9px;border-radius:50%;background:#dfe9f2;opacity:0;}
+  .loco.go .puff{animation:puff .7s ease-out 1;}
+  @keyframes puff{0%{opacity:.85;transform:translate(0,0) scale(.5);}100%{opacity:0;transform:translate(-26px,-22px) scale(2.2);}}
+
+  .card{
+    background:var(--paper);color:var(--text);
+    border:2px solid var(--ink-deep);border-radius:4px;
+    box-shadow:var(--shadow);padding:20px 18px 22px;
+  }
+  .stamp{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.08em;
+    color:var(--brass-deep);border:1.5px solid var(--brass-deep);
+    padding:3px 8px;border-radius:3px;transform:rotate(-1.5deg);}
+  .prompt-kind{margin:16px 0 6px;font-size:.98rem;color:var(--text-dim);font-weight:600;}
+  .prompt{margin:0 0 20px;font-size:clamp(1.3rem,5.4vw,1.75rem);line-height:1.28;font-weight:700;max-width:34ch;}
+  .prompt.word{font-family:"Alfa Slab One",serif;font-weight:400;color:var(--ink);}
+
+  .opts{display:grid;gap:10px;}
+  .opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;
+    font-family:inherit;font-size:1.02rem;line-height:1.35;font-weight:500;
+    color:var(--text);background:#fff;border:2px solid #C9BFA8;border-radius:4px;
+    padding:13px 14px;cursor:pointer;
+    transition:transform .08s ease, border-color .12s ease, background .12s ease;}
+  .opt:hover:not(:disabled){border-color:var(--ink);}
+  .opt:active:not(:disabled){transform:translateY(2px);}
+  .opt:disabled{cursor:default;}
+  .opt .key{flex:0 0 26px;height:26px;border-radius:3px;background:var(--ink);color:var(--paper);
+    display:grid;place-items:center;font-size:.85rem;font-weight:700;margin-top:1px;}
+  .opt.right{background:#E7F3EA;border-color:var(--leaf);}
+  .opt.right .key{background:var(--leaf);}
+  .opt.wrong{background:#FBE9E5;border-color:var(--rust);}
+  .opt.wrong .key{background:var(--rust);}
+  .opt.dim{opacity:.55;}
+
+  .verdict{margin:16px 0 0;padding:13px 14px;border-radius:4px;font-size:1rem;line-height:1.4;
+    font-weight:600;border:2px dashed transparent;}
+  .verdict.right{background:#E7F3EA;border-color:var(--leaf);color:#1C5334;}
+  .verdict.wrong{background:#FBE9E5;border-color:var(--rust);color:#8E2E1C;}
+  .verdict b{font-family:"Alfa Slab One",serif;font-weight:400;}
+
+  .btn{font-family:"Archivo",sans-serif;font-size:1.05rem;font-weight:700;
+    background:var(--brass);color:#2A1802;border:2px solid var(--ink-deep);border-radius:4px;
+    padding:14px 20px;cursor:pointer;width:100%;box-shadow:0 5px 0 var(--brass-deep);
+    transition:transform .08s ease, box-shadow .08s ease;}
+  .btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--brass-deep);}
+  .btn.quiet{background:transparent;color:var(--ink);box-shadow:0 5px 0 #C9BFA8;border-color:var(--ink);}
+  .btn.quiet:active{box-shadow:0 1px 0 #C9BFA8;}
+  .btn + .btn{margin-top:10px;}
+  .btn.small{font-size:.95rem;padding:11px 14px;}
+  .btn.good{background:#2E7D4F;color:#F2FAF4;box-shadow:0 5px 0 #1C5334;}
+  .btn.good:active{box-shadow:0 1px 0 #1C5334;}
+  .next-wrap{margin-top:16px;}
+  .row{display:flex;gap:10px;margin-top:14px;}
+  .row .btn{margin-top:0;}
+
+  .menu-item{width:100%;text-align:left;background:#fff;border:2px solid #C9BFA8;border-radius:4px;
+    padding:15px 16px;margin-bottom:10px;cursor:pointer;font-family:inherit;color:var(--text);
+    box-shadow:0 5px 0 #DCD2BC;transition:transform .08s ease, box-shadow .08s ease, border-color .12s ease;}
+  .menu-item:hover{border-color:var(--ink);}
+  .menu-item:active{transform:translateY(4px);box-shadow:0 1px 0 #DCD2BC;}
+  .menu-item .t{font-family:"Alfa Slab One",serif;font-size:1.15rem;color:var(--ink);display:block;}
+  .menu-item .s{display:block;margin-top:4px;font-size:.95rem;line-height:1.35;color:var(--text-dim);}
+
+  .scoreline{display:flex;justify-content:space-between;align-items:center;gap:10px;
+    font-size:.86rem;font-weight:600;color:#9FB4C8;margin:0 2px 8px;}
+  .scoreline span{white-space:nowrap;}
+  .streak{color:var(--brass);}
+
+  .list{margin:0;padding:0;list-style:none;}
+  .list li{padding:12px 0;border-bottom:1.5px solid var(--paper-edge);}
+  .list li:last-child{border-bottom:0;}
+  .list .term{font-family:"Alfa Slab One",serif;font-size:1.1rem;color:var(--ink);}
+  .list .def{margin:4px 0 0;color:var(--text-dim);font-size:.98rem;line-height:1.4;}
+
+  /* ---------- flash cards ---------- */
+  .flip-scene{perspective:1200px;margin-bottom:2px;}
+  .flip{position:relative;width:100%;min-height:270px;
+    transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,.2,.2,1);cursor:pointer;
+    border:0;padding:0;background:none;font-family:inherit;display:block;}
+  .flip.turned{transform:rotateY(180deg);}
+  .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    border:2px solid var(--ink-deep);border-radius:4px;box-shadow:var(--shadow);
+    display:flex;flex-direction:column;justify-content:center;align-items:center;
+    text-align:center;padding:26px 20px;gap:10px;}
+  .face.front{background:var(--paper);}
+  .face.back{background:#EEF3F8;transform:rotateY(180deg);}
+  .face .tiny{font-size:.74rem;font-weight:700;letter-spacing:.08em;color:var(--brass-deep);}
+  .face .big{font-family:"Alfa Slab One",serif;font-size:clamp(1.7rem,8vw,2.4rem);line-height:1.1;color:var(--ink);}
+  .face .txt{font-size:clamp(1.05rem,4.4vw,1.25rem);line-height:1.4;font-weight:500;color:var(--text);max-width:30ch;}
+  .face .hint{font-size:.85rem;color:var(--text-dim);margin-top:4px;}
+  .deck-nav{display:flex;align-items:center;gap:10px;margin-top:16px;}
+  .deck-nav .btn{margin-top:0;}
+  .deck-nav .btn.arrow{flex:0 0 68px;}
+
+  /* ---------- spelling ---------- */
+  .spell-in{width:100%;font-family:"Alfa Slab One",serif;font-size:clamp(1.4rem,6vw,1.9rem);
+    text-align:center;padding:14px 12px;border:2px solid #C9BFA8;border-radius:4px;
+    background:#fff;color:var(--ink);letter-spacing:.04em;}
+  .spell-in:focus{border-color:var(--ink);outline:none;}
+  .letters{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;margin:12px 0 0;}
+  .letters span{font-family:"Alfa Slab One",serif;font-size:1.3rem;padding:4px 7px;border-radius:3px;
+    background:#E7F3EA;color:#1C5334;}
+  .letters span.bad{background:#FBE9E5;color:#8E2E1C;}
+  .say{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--ink);background:transparent;
+    color:var(--ink);font-family:inherit;font-weight:700;font-size:.95rem;border-radius:4px;
+    padding:9px 14px;cursor:pointer;margin-top:4px;}
+  .say:active{transform:translateY(2px);}
+
+  .final{text-align:center;}
+  .final .num{font-family:"Alfa Slab One",serif;font-size:clamp(3rem,18vw,4.6rem);line-height:1;
+    color:var(--ink);margin:6px 0 2px;}
+  .final .num small{font-size:.4em;color:var(--text-dim);}
+  .final .msg{font-size:1.05rem;font-weight:600;margin:6px 0 18px;color:var(--text-dim);}
+  .review{text-align:left;margin:0 0 18px;}
+  .review h3{font-size:.95rem;margin:0 0 8px;color:var(--text-dim);font-weight:600;}
+
+  .home-link{display:block;width:100%;margin-top:14px;background:none;border:0;color:#9FB4C8;
+    font-family:inherit;font-size:.9rem;font-weight:600;cursor:pointer;padding:8px;}
+  .home-link:hover{color:var(--brass);}
+
+  :focus-visible{outline:3px solid var(--brass);outline-offset:2px;}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+  @media (min-width:560px){
+    body{padding:28px 20px 60px;}
+    .card{padding:26px 26px 28px;}
+    .flip{min-height:300px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  {{BACK_LINK}}
+
+  <div class="mast">
+    <h1>Word Works</h1>
+    <p>{{SUBTITLE}}</p>
+  </div>
+
+  <div class="track" id="track" hidden>
+    <div class="rail"></div>
+    <div class="loco" id="loco">
+      <div class="puff"></div>
+      <svg viewBox="0 0 46 34" aria-hidden="true">
+        <rect x="2" y="16" width="38" height="11" rx="2" fill="#E8A33D" stroke="#061424" stroke-width="2"/>
+        <rect x="26" y="5" width="13" height="13" rx="2" fill="#E8A33D" stroke="#061424" stroke-width="2"/>
+        <rect x="29" y="8" width="7" height="6" rx="1" fill="#0B2239"/>
+        <rect x="7" y="7" width="7" height="10" rx="1" fill="#E8A33D" stroke="#061424" stroke-width="2"/>
+        <circle cx="12" cy="28" r="5" fill="#0B2239" stroke="#E8A33D" stroke-width="2"/>
+        <circle cx="31" cy="28" r="5" fill="#0B2239" stroke="#E8A33D" stroke-width="2"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="scoreline" id="scoreline" hidden>
+    <span id="progressTxt"></span>
+    <span id="streakTxt" class="streak"></span>
+    <span id="scoreTxt"></span>
+  </div>
+
+  <main id="stage" aria-live="polite"></main>
+  <button class="home-link" id="homeLink" hidden>&larr; Back to the menu</button>
+</div>
+
+<script>
+const SET = /*{{SET_JSON}}*/null;
+const WORDS = SET.words.map(x => ({w: x.word, d: x.definition}));
+const N = WORDS.length;
+const STORE_KEY = 'wordworks.' + SET.slug + '.best';
+
+const stage = document.getElementById('stage');
+const track = document.getElementById('track');
+const loco = document.getElementById('loco');
+const scoreline = document.getElementById('scoreline');
+const progressTxt = document.getElementById('progressTxt');
+const streakTxt = document.getElementById('streakTxt');
+const scoreTxt = document.getElementById('scoreTxt');
+const homeLink = document.getElementById('homeLink');
+
+let mode = 'home';
+let deck = [], i = 0, score = 0, streak = 0, best = 0, missed = [], answered = false;
+let cardTurned = false, cardSide = 'word';
+
+function shuffle(a){a=a.slice();for(let j=a.length-1;j>0;j--){const k=Math.floor(Math.random()*(j+1));[a[j],a[k]]=[a[k],a[j]];}return a;}
+function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+try{ best = parseInt(localStorage.getItem(STORE_KEY),10) || 0; }catch(e){}
+
+function chrome(showTrack, showScore, showHome){
+  track.hidden = !showTrack;
+  scoreline.hidden = !showScore;
+  homeLink.hidden = !showHome;
+}
+homeLink.onclick = showHome;
+
+/* ================= home ================= */
+function showHome(){
+  mode = 'home';
+  chrome(false, false, false);
+  stage.innerHTML = `
+    <div class="card">
+      <span class="stamp">Pick an activity</span>
+      <div style="margin-top:16px">
+        <button class="menu-item" id="mQuiz">
+          <span class="t">Meaning quiz</span>
+          <span class="s">${N} questions. Match each word to what it means.</span>
+        </button>
+        <button class="menu-item" id="mCards">
+          <span class="t">Flash cards</span>
+          <span class="s">Tap a card to flip it. Word on one side, meaning on the other.</span>
+        </button>
+        <button class="menu-item" id="mGuess">
+          <span class="t">Guess the word</span>
+          <span class="s">Read a meaning, say the word out loud, then flip to see if you were right.</span>
+        </button>
+        <button class="menu-item" id="mSpell">
+          <span class="t">Spelling practice</span>
+          <span class="s">Hear the word, read the meaning, then type it letter by letter.</span>
+        </button>
+        <button class="menu-item" id="mList">
+          <span class="t">Word list</span>
+          <span class="s">All ${N} words and meanings in one place to study.</span>
+        </button>
+      </div>
+      ${best ? `<p class="prompt-kind" style="margin:14px 0 0;text-align:center">Best quiz score: ${best} out of ${N}</p>` : ``}
+    </div>`;
+  document.getElementById('mQuiz').onclick = () => startQuiz(WORDS);
+  document.getElementById('mCards').onclick = () => startCards();
+  document.getElementById('mGuess').onclick = () => startGuess(WORDS);
+  document.getElementById('mSpell').onclick = () => startSpelling(WORDS);
+  document.getElementById('mList').onclick = showStudy;
+  window.scrollTo({top:0});
+}
+
+function showStudy(){
+  mode = 'list';
+  chrome(false, false, true);
+  stage.innerHTML = `
+    <div class="card">
+      <span class="stamp">Word list</span>
+      <ul class="list" style="margin-top:14px">
+        ${WORDS.map(x=>`<li><div class="term">${esc(x.w)}</div><p class="def">${esc(x.d)}</p></li>`).join('')}
+      </ul>
+    </div>`;
+  window.scrollTo({top:0});
+}
+
+/* ================= flash cards ================= */
+function startCards(){
+  mode = 'cards';
+  deck = shuffle(WORDS);
+  i = 0; cardTurned = false;
+  chrome(false, true, true);
+  renderCard();
+}
+
+function renderCard(){
+  const c = deck[i];
+  progressTxt.textContent = `Card ${i+1} of ${deck.length}`;
+  streakTxt.textContent = '';
+  scoreTxt.textContent = cardSide === 'word' ? 'Word first' : 'Meaning first';
+
+  const frontIsWord = cardSide === 'word';
+  stage.innerHTML = `
+    <div class="flip-scene">
+      <button class="flip${cardTurned ? ' turned' : ''}" id="flip" aria-label="Flip the card">
+        <div class="face front">
+          <span class="tiny">${frontIsWord ? 'WORD' : 'MEANING'}</span>
+          ${frontIsWord
+            ? `<span class="big">${esc(c.w)}</span>`
+            : `<span class="txt">${esc(c.d)}</span>`}
+          <span class="hint">Tap to flip</span>
+        </div>
+        <div class="face back">
+          <span class="tiny">${frontIsWord ? 'MEANING' : 'WORD'}</span>
+          ${frontIsWord
+            ? `<span class="txt">${esc(c.d)}</span>`
+            : `<span class="big">${esc(c.w)}</span>`}
+          <span class="hint">Tap to flip back</span>
+        </div>
+      </button>
+    </div>
+    <div class="deck-nav">
+      <button class="btn quiet arrow" id="prev" aria-label="Previous card">&larr;</button>
+      <button class="btn" id="next">Next card</button>
+    </div>
+    <div class="row">
+      <button class="btn quiet small" id="side">Show ${frontIsWord ? 'meaning' : 'word'} first</button>
+      <button class="btn quiet small" id="shuf">Shuffle deck</button>
+    </div>`;
+
+  document.getElementById('flip').onclick = () => {
+    cardTurned = !cardTurned;
+    document.getElementById('flip').classList.toggle('turned', cardTurned);
+  };
+  document.getElementById('next').onclick = () => { i = (i+1) % deck.length; cardTurned = false; renderCard(); };
+  document.getElementById('prev').onclick = () => { i = (i-1+deck.length) % deck.length; cardTurned = false; renderCard(); };
+  document.getElementById('side').onclick = () => { cardSide = frontIsWord ? 'def' : 'word'; cardTurned = false; renderCard(); };
+  document.getElementById('shuf').onclick = () => { deck = shuffle(deck); i = 0; cardTurned = false; renderCard(); };
+}
+
+/* ================= guess the word ================= */
+function startGuess(pool){
+  mode = 'guess';
+  deck = shuffle(pool);
+  i = 0; score = 0; streak = 0; missed = []; cardTurned = false;
+  chrome(false, true, true);
+  renderGuess();
+}
+
+function renderGuess(){
+  const c = deck[i];
+  cardTurned = false;
+  progressTxt.textContent = `Card ${i+1} of ${deck.length}`;
+  streakTxt.textContent = streak >= 2 ? `${streak} in a row` : '';
+  scoreTxt.textContent = `${score} got`;
+
+  stage.innerHTML = `
+    <div class="flip-scene">
+      <button class="flip" id="flip" aria-label="Flip the card to see the word">
+        <div class="face front">
+          <span class="tiny">MEANING</span>
+          <span class="txt">${esc(c.d)}</span>
+          <span class="hint">Say the word out loud, then flip</span>
+        </div>
+        <div class="face back">
+          <span class="tiny">THE WORD IS</span>
+          <span class="big">${esc(c.w)}</span>
+          <span class="hint">Were you right?</span>
+        </div>
+      </button>
+    </div>
+    <div id="gnav"><div class="next-wrap"><button class="btn" id="reveal">Flip to check</button></div></div>`;
+
+  const flip = document.getElementById('flip');
+  flip.onclick = revealGuess;
+  document.getElementById('reveal').onclick = revealGuess;
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function revealGuess(){
+  if(cardTurned) return;
+  cardTurned = true;
+  document.getElementById('flip').classList.add('turned');
+  document.getElementById('gnav').innerHTML = `
+    <div class="row">
+      <button class="btn good" id="got">I got it</button>
+      <button class="btn quiet" id="nope">Review this one</button>
+    </div>`;
+  document.getElementById('got').onclick = () => markGuess(true);
+  document.getElementById('nope').onclick = () => markGuess(false);
+}
+
+function markGuess(ok){
+  if(ok){ score++; streak++; }
+  else { streak = 0; missed.push(deck[i]); }
+  i++;
+  (i < deck.length) ? renderGuess() : showResults('guess');
+}
+
+/* ================= spelling ================= */
+function canSpeak(){ return 'speechSynthesis' in window; }
+function say(word){
+  if(!canSpeak()) return;
+  try{
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(word);
+    u.rate = .85; u.lang = 'en-US';
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+function startSpelling(pool){
+  mode = 'spell';
+  deck = shuffle(pool);
+  i = 0; score = 0; streak = 0; missed = [];
+  chrome(false, true, true);
+  renderSpell();
+}
+
+function renderSpell(){
+  answered = false;
+  const q = deck[i];
+  progressTxt.textContent = `Word ${i+1} of ${deck.length}`;
+  streakTxt.textContent = streak >= 2 ? `${streak} in a row` : '';
+  scoreTxt.textContent = `${score} spelled right`;
+
+  stage.innerHTML = `
+    <div class="card">
+      <span class="stamp">Spell it</span>
+      <p class="prompt-kind">This word means:</p>
+      <p class="prompt">${esc(q.d)}</p>
+      ${canSpeak() ? `<button class="say" id="hear">&#9654; Hear the word</button>` : ``}
+      <p class="prompt-kind" style="margin-top:16px">Type the word:</p>
+      <input class="spell-in" id="entry" type="text" autocomplete="off" autocapitalize="off"
+             autocorrect="off" spellcheck="false" inputmode="text" aria-label="Type the word">
+      <div id="after"><div class="next-wrap"><button class="btn" id="check">Check my spelling</button></div></div>
+    </div>`;
+
+  const hear = document.getElementById('hear');
+  if(hear) hear.onclick = () => say(q.w);
+  const entry = document.getElementById('entry');
+  entry.focus({preventScroll:true});
+  entry.addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); checkSpell(q); } });
+  document.getElementById('check').onclick = () => checkSpell(q);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function checkSpell(q){
+  if(answered) return;
+  const entry = document.getElementById('entry');
+  const typed = entry.value.trim().toLowerCase();
+  if(!typed) { entry.focus(); return; }
+  answered = true;
+  entry.disabled = true;
+
+  const correct = typed === q.w.toLowerCase();
+  if(correct){ score++; streak++; }
+  else { streak = 0; missed.push(q); }
+  scoreTxt.textContent = `${score} spelled right`;
+  streakTxt.textContent = streak >= 2 ? `${streak} in a row` : '';
+
+  const letters = q.w.split('').map((ch,n) =>
+    `<span class="${typed[n] === ch.toLowerCase() ? '' : 'bad'}">${esc(ch)}</span>`).join('');
+
+  document.getElementById('after').innerHTML = `
+    <p class="verdict ${correct ? 'right' : 'wrong'}">
+      ${correct ? 'Spelled it perfectly.' : `You wrote <b>${esc(typed)}</b>. The word is spelled:`}
+      <span class="letters">${letters}</span>
+    </p>
+    <div class="next-wrap">
+      <button class="btn" id="next">${i+1 < deck.length ? 'Next word' : 'See your score'}</button>
+    </div>`;
+  const nx = document.getElementById('next');
+  nx.onclick = () => { i++; (i < deck.length) ? renderSpell() : showResults('spell'); };
+  nx.focus({preventScroll:true});
+}
+
+/* ================= meaning quiz ================= */
+function startQuiz(pool){
+  mode = 'quiz';
+  deck = shuffle(pool).map((item,n) => ({...item, ask: n % 2 === 0 ? 'def' : 'word'}));
+  i = 0; score = 0; streak = 0; missed = [];
+  chrome(true, true, true);
+  renderQuestion();
+}
+
+function renderQuestion(){
+  answered = false;
+  const q = deck[i];
+  const others = shuffle(WORDS.filter(x => x.w !== q.w)).slice(0,3);
+  const choices = shuffle([q, ...others]);
+
+  progressTxt.textContent = `Word ${i+1} of ${deck.length}`;
+  scoreTxt.textContent = `${score} right`;
+  streakTxt.textContent = streak >= 2 ? `${streak} in a row` : '';
+  moveLoco(i / deck.length);
+
+  const askWord = q.ask === 'word';
+  stage.innerHTML = `
+    <div class="card">
+      <span class="stamp">Question ${i+1}</span>
+      <p class="prompt-kind">${askWord ? 'Which word means this?' : 'What does this word mean?'}</p>
+      <p class="prompt ${askWord ? '' : 'word'}">${esc(askWord ? q.d : q.w)}</p>
+      <div class="opts" id="opts">
+        ${choices.map((c,n)=>`
+          <button class="opt" data-w="${esc(c.w)}">
+            <span class="key">${n+1}</span>
+            <span>${esc(askWord ? c.w : c.d)}</span>
+          </button>`).join('')}
+      </div>
+      <div id="after"></div>
+    </div>`;
+
+  document.querySelectorAll('.opt').forEach(b => b.onclick = () => choose(b, q));
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function choose(btn, q){
+  if(answered) return;
+  answered = true;
+  const correct = btn.dataset.w === q.w;
+
+  document.querySelectorAll('.opt').forEach(b => {
+    b.disabled = true;
+    if(b.dataset.w === q.w) b.classList.add('right');
+    else if(b === btn) b.classList.add('wrong');
+    else b.classList.add('dim');
+  });
+
+  if(correct){
+    score++; streak++;
+    loco.classList.remove('go'); void loco.offsetWidth; loco.classList.add('go');
+  } else { streak = 0; missed.push(q); }
+  scoreTxt.textContent = `${score} right`;
+  streakTxt.textContent = streak >= 2 ? `${streak} in a row` : '';
+
+  document.getElementById('after').innerHTML = `
+    <p class="verdict ${correct ? 'right' : 'wrong'}">
+      ${correct ? 'Yes.' : 'Not quite.'} <b>${esc(q.w)}</b> means: ${esc(q.d)}
+    </p>
+    <div class="next-wrap">
+      <button class="btn" id="next">${i+1 < deck.length ? 'Next word' : 'See your score'}</button>
+    </div>`;
+  const nx = document.getElementById('next');
+  nx.onclick = () => { i++; (i < deck.length) ? renderQuestion() : showResults('quiz'); };
+  nx.focus({preventScroll:true});
+}
+
+function moveLoco(frac){
+  const w = track.clientWidth - 46;
+  loco.style.left = Math.max(0, Math.min(w, w * frac)) + 'px';
+}
+
+/* ================= results ================= */
+function showResults(kind){
+  if(kind === 'quiz') moveLoco(1);
+  scoreline.hidden = true;
+  const full = deck.length;
+  if(kind === 'quiz' && full === N && score > best){
+    best = score;
+    try{ localStorage.setItem(STORE_KEY, String(best)); }catch(e){}
+  }
+  const msg = score === full ? "Every word, correct. That's a clean run."
+            : score >= full - 2 ? "Close to perfect. Just a couple to tighten up."
+            : score >= full/2 ? "Solid start. The list below is what to review."
+            : "Good effort. Study the words below, then run it again.";
+
+  stage.innerHTML = `
+    <div class="card final">
+      <span class="stamp">${kind === 'spell' ? 'Spelling results' : kind === 'guess' ? 'Flash card results' : 'Quiz results'}</span>
+      <p class="num">${score}<small> / ${full}</small></p>
+      <p class="msg">${msg}</p>
+      ${missed.length ? `
+        <div class="review">
+          <h3>Words to review</h3>
+          <ul class="list">
+            ${missed.map(x=>`<li><div class="term">${esc(x.w)}</div><p class="def">${esc(x.d)}</p></li>`).join('')}
+          </ul>
+        </div>` : ``}
+      ${missed.length ? `<button class="btn" id="retry">Practice the ${missed.length} missed word${missed.length>1?'s':''}</button>` : ``}
+      <button class="btn ${missed.length ? 'quiet' : ''}" id="again">Try all ${N} again</button>
+    </div>`;
+
+  const r = document.getElementById('retry');
+  const missedCopy = missed.slice();
+  const restart = pool => kind === 'spell' ? startSpelling(pool) : kind === 'guess' ? startGuess(pool) : startQuiz(pool);
+  if(r) r.onclick = () => restart(missedCopy);
+  document.getElementById('again').onclick = () => restart(WORDS);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ================= keyboard ================= */
+document.addEventListener('keydown', e => {
+  if(mode === 'quiz' && ['1','2','3','4'].includes(e.key)){
+    const b = document.querySelectorAll('.opt')[parseInt(e.key,10)-1];
+    if(b && !b.disabled) b.click();
+  } else if(mode === 'guess'){
+    if(e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); if(!cardTurned) revealGuess(); }
+    if(cardTurned && (e.key === 'y' || e.key === 'Y')) markGuess(true);
+    if(cardTurned && (e.key === 'n' || e.key === 'N')) markGuess(false);
+  } else if(mode === 'cards'){
+    if(e.key === ' '){ e.preventDefault(); document.getElementById('flip')?.click(); }
+    if(e.key === 'ArrowRight') document.getElementById('next')?.click();
+    if(e.key === 'ArrowLeft') document.getElementById('prev')?.click();
+  } else if(e.key === 'Enter' && mode === 'quiz'){
+    document.getElementById('next')?.click();
+  }
+});
+window.addEventListener('resize', () => { if(mode === 'quiz') moveLoco(i / (deck.length || N)); });
+
+showHome();
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Word Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B2239; --ink-deep:#061424; --paper:#FAF6EC; --brass:#E8A33D;
+    --line:rgba(232,163,61,.22); --text-dim:#4A5A6C; --shadow:0 10px 0 rgba(6,20,36,.35);
+  }
+  :root:not([data-theme="light"]){ color-scheme:dark; }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background-color:var(--ink-deep);
+    background-image:
+      repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px 44px),
+      repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px 44px),
+      radial-gradient(120% 90% at 50% 0%, #14395C 0%, transparent 60%);
+    color:var(--paper);
+    font-family:"Archivo","Segoe UI",system-ui,-apple-system,sans-serif;
+    min-height:100vh; padding:18px 14px 44px;
+  }
+  .wrap{max-width:640px;margin:0 auto;}
+  .mast{text-align:center;margin:6px 0 20px;}
+  .mast h1{
+    font-family:"Alfa Slab One","Archivo",serif; font-size:clamp(2.1rem,10vw,3.2rem);
+    line-height:.95; margin:0; color:var(--brass);
+    text-shadow:3px 3px 0 var(--ink-deep), 6px 6px 0 rgba(232,163,61,.18);
+  }
+  .mast p{margin:10px 0 0;color:#B9C9DA;font-size:.95rem;}
+  .card{background:var(--paper);color:var(--ink);border:2px solid var(--ink-deep);border-radius:4px;box-shadow:var(--shadow);padding:18px;}
+  ul{list-style:none;margin:0;padding:0;display:grid;gap:10px;}
+  .set{
+    display:block;text-decoration:none;color:var(--ink);background:#fff;
+    border:2px solid #C9BFA8;border-radius:4px;padding:15px 16px;
+    box-shadow:0 5px 0 #DCD2BC;transition:transform .08s ease, box-shadow .08s ease, border-color .12s ease;
+  }
+  .set:hover{border-color:var(--ink);}
+  .set:active{transform:translateY(4px);box-shadow:0 1px 0 #DCD2BC;}
+  .set .t{display:block;font-family:"Alfa Slab One",serif;font-size:1.15rem;}
+  .set .s{display:block;margin-top:4px;font-size:.98rem;color:var(--text-dim);}
+  .set .m{display:block;margin-top:6px;font-size:.85rem;font-weight:600;color:#8A6A2E;}
+  :focus-visible{outline:3px solid var(--brass);outline-offset:2px;}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+  @media (min-width:560px){ body{padding:28px 20px 60px;} .card{padding:24px;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="mast">
+    <h1>Word Works</h1>
+    <p>Pick a word set to practice</p>
+  </div>
+  <div class="card">
+    <ul>{{SET_ITEMS}}
+    </ul>
+  </div>
+</div>
+</body>
+</html>
