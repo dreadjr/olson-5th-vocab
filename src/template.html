@@ -6,7 +6,7 @@
 <title>{{PAGE_TITLE}}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Lexend:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#0B2239;
@@ -32,7 +32,7 @@
       repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px 44px),
       radial-gradient(120% 90% at 50% 0%, #14395C 0%, transparent 60%);
     color:var(--paper);
-    font-family:"Archivo","Segoe UI",system-ui,-apple-system,sans-serif;
+    font-family:"Lexend","Segoe UI",system-ui,-apple-system,sans-serif;
     min-height:100vh;
     padding:18px 14px 44px;
     -webkit-text-size-adjust:100%;
@@ -42,14 +42,16 @@
   .mast{text-align:center;margin:6px 0 18px;}
   .back{display:inline-block;color:#9FB4C8;font-size:.88rem;font-weight:600;text-decoration:none;margin:0 0 6px;}
   .back:hover{color:var(--brass);}
-  .setnav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 6px;}
+  [hidden]{display:none!important;}
+  .topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-height:36px;margin:0 0 6px;}
+  .setnav{display:flex;align-items:center;gap:10px;margin-left:auto;}
   .setnav .back{margin:0;}
   .picker select{font-family:inherit;font-size:.9rem;font-weight:600;color:var(--paper);background:#10304D;
     border:1.5px solid #3C5A78;border-radius:4px;padding:6px 8px;max-width:58vw;cursor:pointer;}
   .picker select:focus-visible{outline:3px solid var(--brass);outline-offset:2px;}
   .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
   .mast h1{
-    font-family:"Alfa Slab One","Archivo",serif;
+    font-family:"Alfa Slab One",serif;
     font-size:clamp(2.1rem,10vw,3.2rem);
     line-height:.95;margin:0;color:var(--brass);letter-spacing:.01em;
     text-shadow:3px 3px 0 var(--ink-deep), 6px 6px 0 rgba(232,163,61,.18);
@@ -79,7 +81,7 @@
     padding:3px 8px;border-radius:3px;transform:rotate(-1.5deg);}
   .prompt-kind{margin:16px 0 6px;font-size:.98rem;color:var(--text-dim);font-weight:600;}
   .prompt{margin:0 0 20px;font-size:clamp(1.3rem,5.4vw,1.75rem);line-height:1.28;font-weight:700;max-width:34ch;}
-  .prompt.word{font-family:"Alfa Slab One",serif;font-weight:400;color:var(--ink);}
+  .prompt.word{font-family:inherit;font-weight:800;color:var(--ink);}
 
   .opts{display:grid;gap:10px;}
   .opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;
@@ -102,15 +104,18 @@
     font-weight:600;border:2px dashed transparent;}
   .verdict.right{background:#E7F3EA;border-color:var(--leaf);color:#1C5334;}
   .verdict.wrong{background:#FBE9E5;border-color:var(--rust);color:#8E2E1C;}
-  .verdict b{font-family:"Alfa Slab One",serif;font-weight:400;}
+  .verdict b{font-family:inherit;font-weight:800;}
 
-  .btn{font-family:"Archivo",sans-serif;font-size:1.05rem;font-weight:700;
+  .btn{font-family:inherit;font-size:1.05rem;font-weight:700;
     background:var(--brass);color:#2A1802;border:2px solid var(--ink-deep);border-radius:4px;
     padding:14px 20px;cursor:pointer;width:100%;box-shadow:0 5px 0 var(--brass-deep);
     transition:transform .08s ease, box-shadow .08s ease;}
   .btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--brass-deep);}
-  .btn.quiet{background:transparent;color:var(--ink);box-shadow:0 5px 0 #C9BFA8;border-color:var(--ink);}
-  .btn.quiet:active{box-shadow:0 1px 0 #C9BFA8;}
+  /* quiet buttons sit on the dark page by default, and on paper inside a .card */
+  .btn.quiet{background:#10304D;color:var(--paper);box-shadow:0 5px 0 #3C5A78;border-color:#3C5A78;}
+  .btn.quiet:active{box-shadow:0 1px 0 #3C5A78;}
+  .card .btn.quiet{background:transparent;color:var(--ink);box-shadow:0 5px 0 #C9BFA8;border-color:var(--ink);}
+  .card .btn.quiet:active{box-shadow:0 1px 0 #C9BFA8;}
   .btn + .btn{margin-top:10px;}
   .btn.small{font-size:.95rem;padding:11px 14px;}
   .btn.good{background:#2E7D4F;color:#F2FAF4;box-shadow:0 5px 0 #1C5334;}
@@ -124,7 +129,7 @@
     box-shadow:0 5px 0 #DCD2BC;transition:transform .08s ease, box-shadow .08s ease, border-color .12s ease;}
   .menu-item:hover{border-color:var(--ink);}
   .menu-item:active{transform:translateY(4px);box-shadow:0 1px 0 #DCD2BC;}
-  .menu-item .t{font-family:"Alfa Slab One",serif;font-size:1.15rem;color:var(--ink);display:block;}
+  .menu-item .t{font-family:inherit;font-weight:800;font-size:1.15rem;color:var(--ink);display:block;}
   .menu-item .s{display:block;margin-top:4px;font-size:.95rem;line-height:1.35;color:var(--text-dim);}
 
   .scoreline{display:flex;justify-content:space-between;align-items:center;gap:10px;
@@ -135,7 +140,7 @@
   .list{margin:0;padding:0;list-style:none;}
   .list li{padding:12px 0;border-bottom:1.5px solid var(--paper-edge);}
   .list li:last-child{border-bottom:0;}
-  .list .term{font-family:"Alfa Slab One",serif;font-size:1.1rem;color:var(--ink);}
+  .list .term{font-family:inherit;font-weight:800;font-size:1.1rem;color:var(--ink);}
   .list .def{margin:4px 0 0;color:var(--text-dim);font-size:.98rem;line-height:1.4;}
 
   /* ---------- flash cards ---------- */
@@ -151,7 +156,7 @@
   .face.front{background:var(--paper);}
   .face.back{background:#EEF3F8;transform:rotateY(180deg);}
   .face .tiny{font-size:.74rem;font-weight:700;letter-spacing:.08em;color:var(--brass-deep);}
-  .face .big{font-family:"Alfa Slab One",serif;font-size:clamp(1.7rem,8vw,2.4rem);line-height:1.1;color:var(--ink);}
+  .face .big{font-family:inherit;font-weight:800;font-size:clamp(1.7rem,8vw,2.4rem);line-height:1.1;color:var(--ink);}
   .face .txt{font-size:clamp(1.05rem,4.4vw,1.25rem);line-height:1.4;font-weight:500;color:var(--text);max-width:30ch;}
   .face .hint{font-size:.85rem;color:var(--text-dim);margin-top:4px;}
   .deck-nav{display:flex;align-items:center;gap:10px;margin-top:16px;}
@@ -159,24 +164,24 @@
   .deck-nav .btn.arrow{flex:0 0 68px;}
 
   /* ---------- spelling ---------- */
-  .spell-in{width:100%;font-family:"Alfa Slab One",serif;font-size:clamp(1.4rem,6vw,1.9rem);
+  .spell-in{width:100%;font-family:inherit;font-weight:800;font-size:clamp(1.4rem,6vw,1.9rem);
     text-align:center;padding:14px 12px;border:2px solid #C9BFA8;border-radius:4px;
     background:#fff;color:var(--ink);letter-spacing:.04em;}
   .spell-in:focus{border-color:var(--ink);outline:none;}
   .letters{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;margin:12px 0 0;}
-  .letters span{font-family:"Alfa Slab One",serif;font-size:1.3rem;padding:4px 7px;border-radius:3px;
+  .letters span{font-family:inherit;font-weight:800;font-size:1.3rem;padding:4px 7px;border-radius:3px;
     background:#E7F3EA;color:#1C5334;}
   .letters span.bad{background:#FBE9E5;color:#8E2E1C;}
   .slots{display:flex;justify-content:center;gap:4px;margin:4px 0 0;}
   .slot{flex:0 1 2.2rem;min-width:0;height:2.8rem;display:grid;place-items:center;border-radius:4px;
-    font-family:"Alfa Slab One",serif;font-size:clamp(1rem,5vw,1.4rem);color:var(--ink);text-align:center;padding:0;}
+    font-family:inherit;font-weight:800;font-size:clamp(1rem,5vw,1.4rem);color:var(--ink);text-align:center;padding:0;}
   .slot.given{background:#EFE7D3;border:2px solid transparent;}
   input.slot{background:#fff;border:2px solid #C9BFA8;border-bottom-width:4px;caret-color:var(--brass-deep);}
   input.slot:focus{border-color:var(--ink);outline:none;background:#FFF8E8;}
   input.slot.bad{border-color:var(--rust);background:#FBE9E5;}
   input.slot.ok{border-color:var(--leaf);background:#E7F3EA;}
   .chunks{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;margin:6px 0 4px;}
-  .chunk{font-family:"Alfa Slab One",serif;font-size:clamp(1.6rem,7.5vw,2.3rem);color:var(--ink);
+  .chunk{font-family:inherit;font-weight:800;font-size:clamp(1.6rem,7.5vw,2.3rem);color:var(--ink);
     background:#fff;border:2px solid var(--ink);border-radius:4px;padding:4px 10px;}
   .chunk-dot{color:var(--brass-deep);font-weight:700;font-size:1.3rem;}
   .covered{height:3.4rem;border-radius:4px;margin:6px 0 4px;
@@ -193,15 +198,15 @@
   .say:active{transform:translateY(2px);}
 
   .final{text-align:center;}
-  .final .num{font-family:"Alfa Slab One",serif;font-size:clamp(3rem,18vw,4.6rem);line-height:1;
+  .final .num{font-family:inherit;font-weight:800;font-size:clamp(3rem,18vw,4.6rem);line-height:1;
     color:var(--ink);margin:6px 0 2px;}
   .final .num small{font-size:.4em;color:var(--text-dim);}
   .final .msg{font-size:1.05rem;font-weight:600;margin:6px 0 18px;color:var(--text-dim);}
   .review{text-align:left;margin:0 0 18px;}
   .review h3{font-size:.95rem;margin:0 0 8px;color:var(--text-dim);font-weight:600;}
 
-  .home-link{display:block;width:100%;margin-top:14px;background:none;border:0;color:#9FB4C8;
-    font-family:inherit;font-size:.9rem;font-weight:600;cursor:pointer;padding:8px;}
+  .home-link{background:none;border:0;color:#9FB4C8;
+    font-family:inherit;font-size:.88rem;font-weight:600;cursor:pointer;padding:6px 0;}
   .home-link:hover{color:var(--brass);}
 
   :focus-visible{outline:3px solid var(--brass);outline-offset:2px;}
@@ -215,7 +220,10 @@
 </head>
 <body>
 <div class="wrap">
-  {{BACK_LINK}}
+  <div class="topbar">
+    <button class="home-link" id="homeLink" hidden>&larr; Menu</button>
+    {{BACK_LINK}}
+  </div>
 
   <div class="mast">
     <h1>Word Works</h1>
@@ -244,7 +252,6 @@
   </div>
 
   <main id="stage" aria-live="polite"></main>
-  <button class="home-link" id="homeLink" hidden>&larr; Back to the menu</button>
 </div>
 
 <script>
