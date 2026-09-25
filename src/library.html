@@ -6,60 +6,57 @@
 <title>Word Works</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Lexend:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#0B2239; --ink-deep:#061424; --paper:#FAF6EC; --brass:#E8A33D;
-    --line:rgba(232,163,61,.22); --text-dim:#4A5A6C; --shadow:0 10px 0 rgba(6,20,36,.35);
+    --bg:#FBF5EC; --ink:#2B2118; --text-dim:#6A5D4F; --orange:#F0661A; --orange-deep:#C24E0C;
+    color-scheme:light;
   }
-  :root:not([data-theme="light"]){ color-scheme:dark; }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
-    background-color:var(--ink-deep);
+    background-color:var(--bg);
     background-image:
-      repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px 44px),
-      repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px 44px),
-      radial-gradient(120% 90% at 50% 0%, #14395C 0%, transparent 60%);
-    color:var(--paper);
+      radial-gradient(60% 35% at 0% 0%, #FFE6D0 0%, transparent 70%),
+      radial-gradient(50% 30% at 100% 5%, #FFF1CC 0%, transparent 70%);
+    background-repeat:no-repeat;
+    color:var(--ink);
     font-family:"Lexend","Segoe UI",system-ui,-apple-system,sans-serif;
-    min-height:100vh; padding:18px 14px 44px;
+    min-height:100vh; padding:24px 16px 44px;
   }
   .wrap{max-width:640px;margin:0 auto;}
-  .mast{text-align:center;margin:6px 0 20px;}
-  .mast h1{
-    font-family:"Alfa Slab One",serif; font-size:clamp(2.1rem,10vw,3.2rem);
-    line-height:.95; margin:0; color:var(--brass);
-    text-shadow:3px 3px 0 var(--ink-deep), 6px 6px 0 rgba(232,163,61,.18);
-  }
-  .mast p{margin:10px 0 0;color:#B9C9DA;font-size:.95rem;}
-  .card{background:var(--paper);color:var(--ink);border:2px solid var(--ink-deep);border-radius:4px;box-shadow:var(--shadow);padding:18px;}
-  ul{list-style:none;margin:0;padding:0;display:grid;gap:10px;}
+  .mast{margin:6px 2px 20px;}
+  .mast h1{font-weight:800;font-size:clamp(2rem,9vw,2.7rem);line-height:1.05;margin:0;letter-spacing:-.02em;}
+  .mast h1 span{color:var(--orange);}
+  .mast p{margin:6px 0 0;color:var(--text-dim);font-size:.98rem;}
+  ul{list-style:none;margin:0;padding:0;display:grid;gap:12px;}
+  li:nth-child(6n+1) .set{--tint:#FFE7D6;} li:nth-child(6n+2) .set{--tint:#DDF2E5;} li:nth-child(6n+3) .set{--tint:#DDEBF8;}
+  li:nth-child(6n+4) .set{--tint:#FFF0C7;} li:nth-child(6n+5) .set{--tint:#ECE5FA;} li:nth-child(6n+6) .set{--tint:#FCE3E8;}
   .set{
-    display:block;text-decoration:none;color:var(--ink);background:#fff;
-    border:2px solid #C9BFA8;border-radius:4px;padding:15px 16px;
-    box-shadow:0 5px 0 #DCD2BC;transition:transform .08s ease, box-shadow .08s ease, border-color .12s ease;
+    position:relative;display:block;text-decoration:none;color:var(--ink);background:var(--tint);
+    border-radius:22px;padding:18px 70px 18px 18px;box-shadow:inset 0 -4px 0 rgba(43,33,24,.06);
+    transition:transform .08s ease;
   }
-  .set:hover{border-color:var(--ink);}
-  .set:active{transform:translateY(4px);box-shadow:0 1px 0 #DCD2BC;}
-  .set .t{display:block;font-family:inherit;font-weight:800;font-size:1.15rem;}
-  .set .s{display:block;margin-top:4px;font-size:.98rem;color:var(--text-dim);}
-  .set .m{display:block;margin-top:6px;font-size:.85rem;font-weight:600;color:#8A6A2E;}
-  :focus-visible{outline:3px solid var(--brass);outline-offset:2px;}
+  .set:active{transform:translateY(2px) scale(.99);}
+  .set::after{content:"";position:absolute;right:16px;top:50%;width:40px;height:40px;margin-top:-20px;border-radius:50%;
+    background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C24E0C' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center/20px no-repeat;
+    box-shadow:0 2px 6px rgba(43,33,24,.08);}
+  .set .t{display:block;font-weight:700;font-size:1.2rem;}
+  .set .s{display:block;margin-top:4px;font-size:.95rem;color:var(--text-dim);}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+  .chip{font-size:.8rem;font-weight:600;color:var(--ink);background:rgba(255,255,255,.75);border-radius:999px;padding:4px 10px;}
+  :focus-visible{outline:3px solid var(--orange);outline-offset:2px;}
   @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
-  @media (min-width:560px){ body{padding:28px 20px 60px;} .card{padding:24px;} }
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="mast">
-    <h1>Word Works</h1>
+    <h1>Word <span>Works</span></h1>
     <p>Pick a word set to practice</p>
   </div>
-  <div class="card">
-    <ul>{{SET_ITEMS}}
-    </ul>
-  </div>
+  <ul>{{SET_ITEMS}}
+  </ul>
 </div>
 </body>
 </html>
