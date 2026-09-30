@@ -1,0 +1,18 @@
+{
+  "title": "Module 1, Week 3",
+  "date": "2026-10-02",
+  "words": [
+    { "word": "passionate",    "syllables": "pas-sion-ate",       "definition": "Having or expressing very strong emotions about something." },
+    { "word": "impulse",       "syllables": "im-pulse",           "definition": "A sudden, strong desire or urge to do something." },
+    { "word": "contribution",  "syllables": "con-tri-bu-tion",    "definition": "An effort, idea, or object given to help make something successful." },
+    { "word": "eccentric",     "syllables": "ec-cen-tric",        "definition": "A person or behavior that is unusual, strange, or odd." },
+    { "word": "circumstances", "syllables": "cir-cum-stan-ces",   "definition": "The specific facts, conditions, or causes connected to how an event happened." },
+    { "word": "prototype",     "syllables": "pro-to-type",        "definition": "A rough model or early version created to test something before building the final product." },
+    { "word": "irregular",     "syllables": "ir-reg-u-lar",       "definition": "Not following the usual pattern, rule, or schedule." },
+    { "word": "autobiography", "syllables": "au-to-bi-og-ra-phy", "definition": "A written account of a person's life, written by that same person." },
+    { "word": "acceleration",  "syllables": "ac-cel-er-a-tion",   "definition": "The act of moving faster or increasing speed." },
+    { "word": "distinguished", "syllables": "dis-tin-guished",    "definition": "Known and highly respected for excellence." },
+    { "word": "evidently",     "syllables": "ev-i-dent-ly",       "definition": "Happening clearly or for an obvious, easily seen reason." },
+    { "word": "conceived",     "syllables": "con-ceived",         "definition": "Thought of or developed a new idea to create something." }
+  ]
+}
