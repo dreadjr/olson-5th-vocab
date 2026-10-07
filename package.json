@@ -9,6 +9,7 @@
     "build": "node scripts/build.mjs",
     "check": "node scripts/check.mjs",
     "new": "node scripts/new-set.mjs",
-    "preview": "node scripts/build.mjs && node scripts/serve.mjs"
+    "preview": "node scripts/build.mjs && node scripts/serve.mjs",
+    "deploy": "node scripts/build.mjs && firebase deploy --only hosting --project kok-5th"
   }
 }

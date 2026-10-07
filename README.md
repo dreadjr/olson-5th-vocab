@@ -72,6 +72,8 @@ npm run preview   # builds, then serves at http://localhost:4321
 
 ## Deployment
 
+**Firebase Hosting (the link to share with students):** https://kok-5th.web.app. School web filters block `github.io` but allow this one. It is not deployed automatically yet: after pushing a new set, run `npm run deploy` from your machine. That builds and deploys to the `kok-5th` project with whichever Firebase account `firebase login:use` picked for this folder.
+
 **GitHub Pages (set up already):** `.github/workflows/deploy.yml` builds and deploys on every push to `main`. Pull requests only run the check. You can find the site under the repo's *Settings → Pages*.
 
 **Cloudflare Pages (optional):** connect the repo in the Cloudflare dashboard (*Workers & Pages → Create → Pages → Connect to Git*) and set:
