@@ -1,0 +1,18 @@
+{
+  "title": "Module 1, Week 4",
+  "date": "2026-10-09",
+  "words": [
+    { "word": "panic",         "syllables": "pan-ic",             "definition": "A sudden, strong feeling of fear that makes it hard to think clearly." },
+    { "word": "deficiencies",  "syllables": "de-fi-cien-cies",    "definition": "Weaknesses, or things that are missing or not good enough." },
+    { "word": "favorable",     "syllables": "fa-vor-a-ble",       "definition": "Helpful; likely to lead to a good result." },
+    { "word": "projected",     "syllables": "pro-ject-ed",        "definition": "Shown or displayed by shining light onto a surface." },
+    { "word": "contents",      "syllables": "con-tents",          "definition": "The topics or items included inside something, like a book or a box." },
+    { "word": "porthole",      "syllables": "port-hole",          "definition": "A small, round window on a ship or aircraft." },
+    { "word": "densely",       "syllables": "dense-ly",           "definition": "Packed closely together; thickly." },
+    { "word": "reasonable",    "syllables": "rea-son-a-ble",      "definition": "Fair, sensible, and based on good judgment." },
+    { "word": "delirious",     "syllables": "de-lir-i-ous",       "definition": "Confused or not thinking clearly, often because of a fever or illness." },
+    { "word": "reasonably",    "syllables": "rea-son-a-bly",      "definition": "Acting in a rational or fair way." },
+    { "word": "prose",         "syllables": "prose",              "definition": "“Ordinary writing,” in the form of sentences and paragraphs." },
+    { "word": "dialogue",      "syllables": "di-a-logue",         "definition": "Conversation between characters in a story." }
+  ]
+}
