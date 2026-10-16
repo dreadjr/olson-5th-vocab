@@ -10,6 +10,6 @@
     "check": "node scripts/check.mjs",
     "new": "node scripts/new-set.mjs",
     "preview": "node scripts/build.mjs && node scripts/serve.mjs",
-    "deploy": "node scripts/build.mjs && firebase deploy --only hosting --project kok-5th"
+    "deploy": "node scripts/build.mjs && bunx firebase-tools deploy --only hosting --project kok-5th"
   }
 }
