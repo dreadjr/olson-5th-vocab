@@ -1,0 +1,18 @@
+{
+  "title": "Module 1, Week 5",
+  "date": "2026-10-16",
+  "words": [
+    { "word": "mysterious",  "syllables": "mys-te-ri-ous",   "definition": "Not fully understood or explainable." },
+    { "word": "matted",      "syllables": "mat-ted",         "definition": "Tangled into a thick mass." },
+    { "word": "tendrils",    "syllables": "ten-drils",       "definition": "Long, thin parts of a plant that twist around an object or another plant." },
+    { "word": "fastenings",  "syllables": "fas-ten-ings",    "definition": "Things that attach objects to other things." },
+    { "word": "awakening",   "syllables": "a-wak-en-ing",    "definition": "Waking up from sleep." },
+    { "word": "witness",     "syllables": "wit-ness",        "definition": "Someone who appears in court to say what they know about a crime." },
+    { "word": "presiding",   "syllables": "pre-sid-ing",     "definition": "Being in charge of an event." },
+    { "word": "attempted",   "syllables": "at-tempt-ed",     "definition": "Tried to do something." },
+    { "word": "restrain",    "syllables": "re-strain",       "definition": "To stop yourself (or someone else) from doing something." },
+    { "word": "contempt",    "syllables": "con-tempt",       "definition": "Little or no respect for someone or something." },
+    { "word": "remote",      "syllables": "re-mote",         "definition": "At a far distance in space or time." },
+    { "word": "reactivate",  "syllables": "re-ac-ti-vate",   "definition": "To restore to an active state or working condition." }
+  ]
+}
