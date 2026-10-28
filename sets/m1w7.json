@@ -1,0 +1,18 @@
+{
+  "title": "Module 1, Week 7",
+  "date": "2026-10-30",
+  "words": [
+    { "word": "seismographs",  "syllables": "seis-mo-graphs",   "definition": "Instruments that measure and record details about earthquakes, such as their strength and how long they last." },
+    { "word": "evacuation",    "syllables": "e-vac-u-a-tion",   "definition": "The act of moving from a dangerous area into a safer one." },
+    { "word": "reservoir",     "syllables": "res-er-voir",      "definition": "Where a supply of something is collected." },
+    { "word": "consequences",  "syllables": "con-se-quenc-es",  "definition": "Outcomes or effects of events." },
+    { "word": "conferring",    "syllables": "con-fer-ring",     "definition": "Discussing an idea or trying to make a decision." },
+    { "word": "widespread",    "syllables": "wide-spread",      "definition": "Happening over a large area or among many people." },
+    { "word": "alarming",      "syllables": "a-larm-ing",       "definition": "Making you worry that something bad may happen." },
+    { "word": "victim",        "syllables": "vic-tim",          "definition": "A person who suffers or dies because of something." },
+    { "word": "notable",       "syllables": "no-ta-ble",        "definition": "Worth noticing." },
+    { "word": "spontaneous",   "syllables": "spon-ta-ne-ous",   "definition": "Happening naturally and not planned." },
+    { "word": "tremor",        "syllables": "trem-or",          "definition": "A small earthquake, or shaking in a body part." },
+    { "word": "hazard",        "syllables": "haz-ard",          "definition": "Danger." }
+  ]
+}
