@@ -45,20 +45,26 @@
   .set .s{display:block;margin-top:4px;font-size:.95rem;color:var(--text-dim);}
   .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
   .chip{font-size:.8rem;font-weight:600;color:var(--ink);background:rgba(255,255,255,.75);border-radius:999px;padding:4px 10px;}
-  .set.math{--tint:#E3ECF7;margin-top:22px;}
+  .tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:16px;background:#fff;border-radius:999px;padding:4px;max-width:360px;box-shadow:0 1px 3px rgba(43,33,24,.10);}
+  .tabs a{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;font-weight:700;font-size:1.05rem;text-decoration:none;color:var(--text-dim);border-radius:999px;}
+  .tabs a[aria-current="page"]{background:var(--orange-deep);color:#fff;}
+  .tabs svg{width:20px;height:20px;}
   :focus-visible{outline:3px solid var(--orange);outline-offset:2px;}
   @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
 </style>
 </head>
 <body>
 <div class="wrap">
+  <nav class="tabs" aria-label="Subject">
+    <a href="./" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5z"/><path d="M8 7h7"/></svg>Words</a>
+    <a href="math/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>Math</a>
+  </nav>
   <div class="mast">
     <h1>Word <span>Works</span></h1>
     <p>Pick a word set to practice</p>
   </div>
   <ul>{{SET_ITEMS}}
   </ul>
-  <a class="set math" href="math/"><span class="t">Math block reviews</span><span class="s">Practice tests and printable PDFs for Core Focus on Proportions &amp; Probability</span></a>
 </div>
 </body>
 </html>

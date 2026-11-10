@@ -1,4 +1,4 @@
-// Generates math/b5-form-b and math/b5-form-c index.html. Graphs are computed, not hand-placed.
+// Generates math/b5-form-b, b5-form-c and b5-form-d index.html. Graphs are computed, not hand-placed.
 import { writeFileSync, mkdirSync } from 'node:fs';
 import assert from 'node:assert/strict';
 
@@ -161,7 +161,7 @@ ${partIII}${foot(form)}
 // ---------- shared pieces ----------
 const isDV = rows => { const nz = rows.filter(([x]) => x !== 0); const k = nz[0][1] / nz[0][0]; return rows.every(([x, y]) => Math.abs(y - k * x) < 1e-9) ? k : null; };
 const ioAns = (ruleTxt, xs, f, m) => {
-  const ys = xs.map(f); ys.forEach(y => assert(Number.isInteger(y)));
+  const ys = xs.map(f); ys.forEach(y => assert.equal(y, r2(y)));   // whole numbers or simple decimals only
   return `Outputs: ${ys.join(', ')} (${xs.map((x, i) => `${ruleTxt(x)} = ${ys[i]}`).join('; ')}). Graph: points ${xs.map((x, i) => `(${x}, ${ys[i]})`).join(', ')} on a straight line through the origin. Slope = ${m}.`;
 };
 const S = { // story graph paths, x 0..10, y 0..6
@@ -362,7 +362,110 @@ function formC() {
   return page('C', I, II, III);
 }
 
-for (const [slug, html] of [['b5-form-b', formB()], ['b5-form-c', formC()]]) {
+// ===================== FORM D =====================
+// Fills gaps B and C leave: story-for-a-graph, rate from a graph, tables without (0, 0) or
+// with x steps > 1, missing table value, quadrant/axis naming, missing vertex, speed graphs,
+// the x ÷ y mistake, y = x and y = −x, x/2 + 1, fractional negative graph, "varies directly".
+function formD() {
+  let I = '';
+  I += q(1, `Which ordered pair represents the point graphed?` + flex(ch([`(4, ${M(-1)})`, `(1, ${M(-4)})`, `(${M(-4)}, 1)`, `(${M(-1)}, 4)`]),
+    fig(P({ xmin: -5, xmax: 5, ymin: -5, ymax: 5, u: 13, pts: [{ x: -1, y: 4, l: 'W', dx: -13, dy: -3 }], label: 'Point W plotted at (−1, 4)' })))
+    + ans('D. (−1, 4): start at the origin, move 1 left, then 4 up. (A swaps x and y.)'));
+  const sp2 = [[0, 0], [2.5, 4.5], [6.5, 4.5], [9, 0], [10, 0]];
+  I += q(2, `Which story best matches the speed graph below?
+      <div style="margin:6px 0 2px">${story('Speed', sp2, 'Speed graph: rises, flat, falls to zero, then stays at zero')}</div>
+      <ul class="ch"><li>A. Ella walked to the park, sat on a bench, and then walked home.</li><li>B. A runner ran at the same speed the whole time.</li><li>C. A skateboarder slowed down, stopped, and then sped up again.</li><li>D. A bus sped up, drove at a steady speed, then slowed down and stopped at a bus stop.</li></ul>`
+    + ans('D. On a speed graph, rising means speeding up, flat means a steady speed, and falling to 0 means slowing to a stop. (A describes a distance graph: the flat part there would mean stopped.)'));
+  assert.equal(7 / 2, 3.5);
+  I += q(3, `If the graph below models direct variation, what is its rate?` + flex(ch([F(2, 7), '3.5', '7', 'The graph does not model direct variation.']),
+    fig(P({ xmin: 0, xmax: 6, ymin: 0, ymax: 12, u: 13, uy: 11, quad1: true, padL: 20, padB: 16, lines: [{ m: 3.5, from: 0 }], pts: [{ x: 2, y: 7, l: '(2, 7)', dx: 6, dy: 4, fs: 9 }], label: 'Straight line from the origin through (2, 7)' })))
+    + ans('B. 3.5. The line is straight and passes through (0, 0), so it is direct variation. Rate = y ÷ x = 7 ÷ 2 = 3.5. (2/7 is x ÷ y, the wrong way round.)'));
+  const t4 = [4, 8, 12, 16].map(x => [x, 3 * x / 4]); assert.equal(isDV(t4), 0.75);
+  assert(t4[0][1] === t4[0][0] - 1 && t4[1][1] !== t4[1][0] - 1);   // y = x − 1 fits only the first row
+  I += q(4, `Which equation is the direct variation equation for the values in the table below?` + htable(t4.map(r => r[0]), t4.map(r => r[1]))
+    + ch(['y = 3x', `y = ${F(4, 3)}x`, `y = ${F(3, 4)}x`, 'y = x − 1']) + ans('C. y = ¾x (m = y ÷ x = 3 ÷ 4 = ¾; check 6 ÷ 8 = ¾, 9 ÷ 12 = ¾, 12 ÷ 16 = ¾). D fits only the first column: 8 − 1 = 7, not 6.'));
+  const sk5 = [
+    sketch([[x => -0.8 * x - 1, -3, 1.25]], 'Line falling, crossing the y-axis below the origin'),
+    sketch([[x => Math.abs(x), -2, 2]], 'V-shape with its corner at the origin'),
+    sketch([[x => x, -2, 2]], 'Line rising through the origin'),
+    sketch([[x => 0.15 * x ** 3, -2.4, 2.4]], 'S-shaped curve through the origin'),
+    sketch([[x => 0.4 * 2 ** x, -3, 2.2]], 'Curve rising more and more steeply, above the x-axis'),
+    sketch([[x => -1.8 * x, -1.1, 1.1]], 'Steep line falling through the origin'),
+  ];
+  I += q(5, `Which graphs show direct variation? Circle all that apply.
+      <div style="display:grid;grid-template-columns:auto auto;gap:4px 12px;margin-top:6px">${sk5.map((s, i) => `<div style="display:flex;gap:6px;align-items:center">${'ABCDEF'[i]}.${s}</div>`).join('')}</div>`
+    + ans('C, F. Each is a straight line through the origin. A is a line that misses the origin; B and D pass through the origin but are not straight lines; E is a curve that misses the origin.'));
+  I += q(6, `Which equations are direct variation equations? Circle all that apply.
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;margin-top:6px">
+      <span>A. y = 8 + x</span><span>B. y = x</span><span>C. y = ${F(12, 'x')}</span><span>D. y = −2.5x</span><span>E. y = 4 − 3x</span><span>F. y = −${F('x', 2)}</span></div>`
+    + ans('B, D, F. Each has the form y = mx (m = 1, −2.5, −½). A and E add or subtract a number, C has x in the denominator.'));
+  const t7 = [[0, 0], [2, 5], [4, 10]]; assert.equal(isDV(t7), 2.5); assert.equal(2.5 * 9, 22.5);
+  I += q(7, `The table below models direct variation. What is the missing value?
+      <div class="scroll"><table><tr><th>x</th><td>0</td><td>2</td><td>4</td><td>…</td><td>9</td></tr><tr><th>y</th><td>0</td><td>5</td><td>10</td><td>…</td><td>?</td></tr></table></div>`
+    + ch(['18', '19', '22.5', '45']) + ans('C. 22.5. Rate = 5 ÷ 2 = 2.5, so y = 2.5x. When x = 9: y = 2.5 × 9 = 22.5.'));
+  const p8 = [-4, -2, 0, 2, 4].map(x => ({ x, y: -1.5 * x })); p8.forEach(p => assert(Math.abs(p.y) <= 6));
+  I += q(8, `What is the direct variation equation for the line graphed below?` + flex(ch([`y = −${F(3, 2)}x`, `y = −${F(2, 3)}x`, `y = ${F(3, 2)}x`, 'y = −3x']),
+    fig(P({ xmin: -6, xmax: 6, ymin: -6, ymax: 6, u: 12, lines: [{ m: -1.5 }], pts: p8, label: 'Line through the origin and (2, −3)' })))
+    + ans('A. y = −3/2 x (the line passes through (0, 0) and (2, −3): m = −3 ÷ 2 = −3/2; it falls from left to right, so the slope is negative)'));
+
+  // ---- Part II ----
+  const p14 = [{ x: -5, y: -2, l: 'A' }, { x: 0, y: -3, l: 'B' }, { x: 4, y: -5, l: 'C' }, { x: -2, y: 5, l: 'D' }];
+  let II = `  <div class="q" style="grid-template-columns:1fr auto;gap:12px"><div><p style="margin:0 0 10px">Write the ordered pair for each point on the coordinate plane to the right. Then name the quadrant the point is in, or the axis it is on.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:34px 10px">
+    <div><b>1.</b> A${ans('(−5, −2); Quadrant III')}</div><div><b>2.</b> B${ans('(0, −3); on the y-axis (in no quadrant)')}</div><div><b>3.</b> C${ans('(4, −5); Quadrant IV')}</div><div><b>4.</b> D${ans('(−2, 5); Quadrant II')}</div></div></div>
+    ${fig(P({ xmin: -6, xmax: 6, ymin: -6, ymax: 6, u: 13, pts: p14.map(p => ({ ...p, dx: 4, dy: -5 })), label: 'Points A, B, C and D' }))}</div>\n`;
+  II += q(5, `The points A(${M(-5)}, 4), B(1, 4) and C(1, ${M(-2)}) are three corners of square ABCD. Plot A, B and C. Then plot the fourth corner, D, and connect the points in order to make the square. What are the coordinates of D?`
+    + flex(fig(P({ xmin: -6, xmax: 6, ymin: -6, ymax: 6, u: 13, label: 'Blank coordinate plane' })), `<span style="margin-left:30px">D = <b style="display:inline-block;width:1.4in;border-bottom:1px solid var(--ink)">&nbsp;</b></span>`)
+    + ans('D(−5, −2). AB goes from x = −5 to x = 1, so it is 6 units long; BC goes from y = 4 to y = −2, also 6 units. D is 6 units straight down from A: (−5, 4 − 6) = (−5, −2).'));
+  const ride = [[0, 0], [2, 12], [10, 12], [12, 6], [18, 6], [20, 0]];
+  assert.equal(Math.max(...ride.map(p => p[1])), 12); assert.equal(ride[2][0] - ride[1][0], 8); assert.equal(ride[2][1] - ride[3][1], 6);
+  II += q(6, `Zoe rode her bike to a friend’s house. The graph below shows her <b>speed</b> (miles per hour) over time (minutes). For each part, explain how you know your answer is correct.
+    <div style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap"><ol class="sub" style="flex:1 1 3in;gap:42px;margin-top:10px">
+      <li>What was Zoe’s fastest speed?${ans('12 miles per hour. The highest part of the graph is at 12.')}</li>
+      <li>For how many minutes did Zoe ride at her fastest speed?${ans('8 minutes. The graph is flat at 12 from minute 2 to minute 10: 10 − 2 = 8.')}</li>
+      <li>What was happening to Zoe’s speed from minute 10 to minute 12?${ans('She slowed down from 12 mph to 6 mph (a drop of 12 − 6 = 6 mph). The graph goes down.')}</li>
+      <li>What was Zoe doing from minute 12 to minute 18? Was she stopped?${ans('She rode at a steady (constant) speed of 6 mph. She was not stopped: a flat part on a speed graph means constant speed. She stopped at minute 20, where the speed reaches 0.')}</li></ol>
+    ${fig(`<div style="text-align:center;font:600 12px var(--display)">Zoe’s Bike Ride</div>` + P({ xmin: 0, xmax: 22, ymin: 0, ymax: 14, u: 11, uy: 11, gx: 1, gy: 1, lx: 2, ly: 2, quad1: true, padL: 40, padB: 30, xt: 'Time (minutes)', yt: 'Speed (miles per hour)', path: ride,
+      pts: [{ x: 2, y: 12, l: '(2, 12)', dx: -10, dy: -6, fs: 9 }, { x: 10, y: 12, l: '(10, 12)', dx: -8, dy: -6, fs: 9 }, { x: 12, y: 6, l: '(12, 6)', dx: -14, dy: 13, fs: 9 }, { x: 18, y: 6, l: '(18, 6)', dx: -6, dy: -7, fs: 9 }, { x: 20, y: 0, l: '(20, 0)', dx: 3, dy: -9, fs: 9 }], label: "Zoe's speed graph" }))}</div>`);
+  II += `  <p class="dir" style="break-before:page">Complete each input-output table and graph each function in Quadrant I. What is the slope of each direct variation equation?</p>\n`;
+  II += q(7, flex(ioTable('y = 2.5x', [0, 1, 2, 3, 4]), `<div>${fig(q1grid('Blank Quadrant I grid'))}<div>slope: <b style="display:inline-block;width:.8in;border-bottom:1px solid var(--ink)">&nbsp;</b></div></div>`, 24)
+    + ans(ioAns(x => `2.5(${x})`, [0, 1, 2, 3, 4], x => 2.5 * x, '2.5')));
+  II += q(8, flex(ioTable(`y = ${F(3, 4)}x`, [0, 4, 8, 12]), `<div>${fig(q1grid('Blank Quadrant I grid'))}<div>slope: <b style="display:inline-block;width:.8in;border-bottom:1px solid var(--ink)">&nbsp;</b></div></div>`, 24)
+    + ans(ioAns(x => `¾(${x})`, [0, 4, 8, 12], x => 3 * x / 4, '¾ (or 0.75)')));
+  II += `  <p class="dir">Determine whether each table models direct variation. Circle YES or NO. If it does, give the rate. If not, explain why not.</p>\n`;
+  const t9 = [-4, -2, 2, 4, 6].map(x => [x, 2.5 * x]); assert.equal(isDV(t9), 2.5);
+  const t10 = [-3, -1, 0, 2, 4].map(x => [x, x * x]); assert.equal(isDV(t10), null);
+  II += q(9, flex(vtable(t9), `<div style="margin-left:40px">${yn}<p style="margin:14px 0 30px">rate/explanation:</p></div>`) + ans('YES; rate 2.5 (or 5/2). y ÷ x = 2.5 for every pair: −10 ÷ (−4), −5 ÷ (−2), 5 ÷ 2, 10 ÷ 4, 15 ÷ 6 all equal 2.5. The table does not list (0, 0), but the line still passes through it.'));
+  II += q(10, flex(vtable(t10), `<div style="margin-left:40px">${yn}<p style="margin:14px 0 30px">rate/explanation:</p></div>`) + ans('NO. The ratios y ÷ x are not equal: 9 ÷ (−3) = −3, 1 ÷ (−1) = −1, 4 ÷ 2 = 2, 16 ÷ 4 = 4. The graph passes through (0, 0) but is a curve, not a straight line.'));
+  II += `  <p class="dir">Determine whether each equation models direct variation. Circle YES or NO. If it does, give the rate. If not, explain why not.</p>\n`;
+  II += q(11, `<div style="display:grid;grid-template-columns:1in auto 1fr;gap:10px;align-items:center"><span>y = −x</span>${yn}<span>rate/explanation:</span></div><div style="height:.45in"></div>` + ans('YES; rate −1. y = −x is the same as y = −1x, which has the form y = mx with m = −1.'));
+  II += q(12, `<div style="display:grid;grid-template-columns:1in auto 1fr;gap:10px;align-items:center"><span>y = ${F('x', 2)} + 1</span>${yn}<span>rate/explanation:</span></div><div style="height:.45in"></div>` + ans('NO. The “+ 1” means the line crosses the y-axis at (0, 1), not at the origin. (y = x/2 alone would be direct variation.)'));
+  const gA = P({ xmin: 0, xmax: 10, ymin: 0, ymax: 10, u: 13, quad1: true, padL: 20, padB: 16, lines: [{ m: 0.25, from: 0 }], pts: [{ x: 4, y: 1, l: '(4, 1)', dx: -4, dy: -7, fs: 9 }, { x: 8, y: 2, l: '(8, 2)', dx: -4, dy: -7, fs: 9 }], label: 'Graph A: a straight line from the origin through (4, 1) and (8, 2)' });
+  const gB = P({ xmin: 0, xmax: 10, ymin: 0, ymax: 10, u: 13, quad1: true, padL: 20, padB: 16, lines: [{ m: 0.5, b: 3, from: 0 }], pts: [{ x: 0, y: 3, l: '(0, 3)', dx: 6, dy: 11, fs: 9 }, { x: 4, y: 5, l: '(4, 5)', dx: 2, dy: 13, fs: 9 }], label: 'Graph B: a straight line starting at (0, 3) through (4, 5)' });
+  assert.equal(2 / 8, 0.25); assert.equal((5 - 3) / 4, 0.5);
+  II += q(13, `Omar says Graph A models direct variation and has a rate of 4, because 8 ÷ 2 = 4. Priya says Graph B models direct variation because it is a straight line and has a rate of ${F(1, 2)}. Is either student correct? Explain each student’s mistake.
+    <div style="display:flex;gap:40px;justify-content:center;flex-wrap:wrap;margin-top:6px"><figure style="text-align:center">${gA}<figcaption>Graph A</figcaption></figure><figure style="text-align:center">${gB}<figcaption>Graph B</figcaption></figure></div><div class="work"></div>`
+    + ans('Neither student is fully correct. Omar is right that Graph A is direct variation (a straight line through (0, 0)), but he divided x ÷ y. The rate is y ÷ x = 2 ÷ 8 = 1 ÷ 4 = ¼. Priya is wrong: Graph B is a straight line, but it starts at (0, 3), so it does not pass through the origin and is not direct variation.'));
+  const t14 = [2, 5, 8, 10].map(x => [x, 15 * x]); assert.equal(isDV(t14), 15); assert.equal(15 * 25, 375);
+  II += q(14, `A machine fills juice bottles at a steady rate. The table below shows the number of bottles filled, y, after x minutes. Write a direct variation equation for the table. Then use it to find how many bottles the machine fills in 25 minutes.
+    ${vtable(t14)}<div class="work"></div>` + ans('y = 15x (m = y ÷ x = 30 ÷ 2 = 75 ÷ 5 = 15). In 25 minutes: y = 15 × 25 = 375 bottles.'));
+  const p15 = [-9, -6, -3, 0, 3, 6, 9].map(x => [x, -2 * x / 3]); p15.forEach(([, y]) => assert(Number.isInteger(y) || y === 0));
+  II += q(15, `Graph the direct variation equation y = −${F(2, 3)}x.` + fig(P({ xmin: -10, xmax: 10, ymin: -10, ymax: 10, u: 16, lx: 2, ly: 2, label: 'Blank coordinate plane from −10 to 10' }))
+    + ans(`A straight line through the origin that falls from left to right with slope −⅔ (down 2 for every 3 to the right): it passes through ${p15.map(([x, y]) => `(${M(x)}, ${M(y + 0)})`).join(', ')}, in Quadrants II and IV.`));
+
+  // ---- Part III ----
+  const rows = [0, 4, 8, 12, 16].map(n => [n, n * 6.75]); assert.equal(isDV(rows), 6.75); assert.equal(148.5 / 6.75, 22); assert.equal(22 * 6.75, 148.5);
+  const III = `  <div class="task">
+    <p>The total cost of bags of mulch varies directly with the number of bags. The table below shows what Theo paid for mulch for his garden.</p>
+    ${vtable(rows.map(([n, d]) => [n, d.toFixed(2)]), ['Bags of Mulch', 'Total Cost ($)']).replace('<table>', '<table style="margin:6px auto">')}
+    <p>How many bags of mulch can Theo buy for $148.50?</p>
+    <div class="work xl"></div>
+    <div class="ans">22 bags. Rate = 27.00 ÷ 4 = $6.75 per bag (54 ÷ 8 = 6.75 too), so y = 6.75x. 148.50 = 6.75x → x = 148.50 ÷ 6.75 = 22. Check: 22 × 6.75 = 148.50.</div>
+  </div>\n`;
+  return page('D', I, II, III);
+}
+
+for (const [slug, html] of [['b5-form-b', formB()], ['b5-form-c', formC()], ['b5-form-d', formD()]]) {
   mkdirSync(`${OUT}/${slug}`, { recursive: true });
   writeFileSync(`${OUT}/${slug}/index.html`, html);
   console.log('wrote', slug, html.length);

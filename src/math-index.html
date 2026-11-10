@@ -9,12 +9,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   /* Same look as the Word Works home page, with blue for math. */
-  :root{--bg:#F1F5FA; --ink:#1B2430; --text-dim:#56606C; --blue:#2F6DB5; --card:#fff; color-scheme:light;}
+  :root{--bg:#F1F5FA; --ink:#1B2430; --text-dim:#56606C; --blue:#245A97; --card:#fff; color-scheme:light;}
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{background:var(--bg);color:var(--ink);font-family:"Lexend","Segoe UI",system-ui,-apple-system,sans-serif;min-height:100vh;padding:24px 16px 44px;}
   .wrap{max-width:720px;margin:0 auto;}
-  .back{color:var(--blue);font-weight:600;text-decoration:none;}
+  .tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:#fff;border-radius:999px;padding:4px;max-width:360px;box-shadow:0 1px 3px rgba(27,36,48,.10);}
+  .tabs a{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;font-weight:700;font-size:1.05rem;text-decoration:none;color:var(--text-dim);border-radius:999px;}
+  .tabs a[aria-current="page"]{background:var(--blue);color:#fff;}
+  .tabs svg{width:20px;height:20px;}
   .mast{margin:14px 2px 20px;}
   .mast h1{font-weight:800;font-size:clamp(1.9rem,8vw,2.5rem);line-height:1.05;margin:0;letter-spacing:-.02em;}
   .mast h1 span{color:var(--blue);}
@@ -25,17 +28,20 @@
   li{background:var(--card);border-radius:16px;padding:14px 16px;box-shadow:0 1px 3px rgba(27,36,48,.08);display:grid;gap:8px;}
   li b{font-size:1.05rem;}
   .links{display:flex;flex-wrap:wrap;gap:6px;}
-  .links a{font-size:.85rem;font-weight:600;color:var(--blue);background:#E3ECF7;border-radius:999px;padding:5px 11px;text-decoration:none;}
+  .links a{display:inline-flex;align-items:center;min-height:44px;font-size:.95rem;font-weight:600;color:var(--blue);background:#E3ECF7;border-radius:999px;padding:0 16px;text-decoration:none;}
   .links a.primary{background:var(--blue);color:#fff;}
   :focus-visible{outline:3px solid var(--blue);outline-offset:2px;}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <a class="back" href="../">&larr; Word Works</a>
+  <nav class="tabs" aria-label="Subject">
+    <a href="../"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5z"/><path d="M8 7h7"/></svg>Words</a>
+    <a href="./" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>Math</a>
+  </nav>
   <div class="mast">
     <h1>Math <span>Reviews</span></h1>
-    <p>Core Focus on Proportions &amp; Probability. Practice forms for each block review: try one online, or print the test and its answer key.</p>
+    <p>Practice tests for each math block. Do one on screen, or print it out. Check your work with the answer key.</p>
   </div>
   {{REVIEW_GROUPS}}
 </div>

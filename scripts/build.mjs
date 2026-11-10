@@ -94,8 +94,8 @@ if (reviews.length) {
     const rs = reviews.filter(r => r.block === block);
     const lis = rs.map(r => {
       const pdf = existsSync(join(MATH, 'pdf', `${r.slug}.pdf`));
-      return `<li><b>Form ${esc(r.form)}</b><span class="links"><a class="primary" href="${esc(r.slug)}/">Practice online</a>`
-        + (pdf ? `<a href="pdf/${esc(r.slug)}.pdf" download>Test PDF</a><a href="pdf/${esc(r.slug)}-key.pdf" download>Answer key</a>` : '')
+      return `<li><b>Form ${esc(r.form)}</b><span class="links"><a class="primary" href="${esc(r.slug)}/">Practice</a>`
+        + (pdf ? `<a href="pdf/${esc(r.slug)}.pdf" download>Print test</a><a href="pdf/${esc(r.slug)}-key.pdf" download>Answer key</a>` : '')
         + `</span></li>`;
     }).join('');
     return `<h2>Block ${block}<small>${esc(rs[0].topic)}</small></h2><ul>${lis}</ul>`;
