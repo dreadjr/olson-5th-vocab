@@ -95,3 +95,22 @@ Edit `src/template.html`. The build fills in these placeholders:
 - `/*{{SET_JSON}}*/null` for the word data, as `{ slug, title, words: [{ word, definition }] }`
 
 Best quiz scores are saved in the browser, separately for each set.
+
+## Math block reviews
+
+Practice versions of the Core Focus on Proportions & Probability block review tests, published at `/math/`.
+
+```
+math/<slug>/index.html   one review form, e.g. math/b4-form-b/ (copy src/math-form-example.html to start)
+math/form.css, form.js   shared print layout and the "Show answers" toggle
+math/pdf/                rendered test and answer-key PDFs (committed)
+```
+
+Each page needs a `<meta name="review" content='{"block":4,"form":"B","topic":"..."}'>` tag; the build uses it to list the form on `/math/`. Opening a page with `#key` shows the answers.
+
+After adding or changing a form, render its PDFs with the local Chrome and commit them (CI cannot render them):
+
+```sh
+bun run math:pdf                 # every form
+bun run math:pdf b4-form-b       # just one
+```

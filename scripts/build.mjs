@@ -2,13 +2,14 @@
 //   dist/index.html          list of all sets
 //   dist/<slug>/index.html   the game for one set (works offline, no other files needed)
 //   dist/sets.json           machine-readable list of sets
-import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT, loadSets } from './lib.mjs';
 
 const DIST = join(ROOT, 'dist');
 const TEMPLATE = readFileSync(join(ROOT, 'src', 'template.html'), 'utf8');
 const LIBRARY = readFileSync(join(ROOT, 'src', 'library.html'), 'utf8');
+const MATH_INDEX = readFileSync(join(ROOT, 'src', 'math-index.html'), 'utf8');
 
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 // JSON that is safe to drop inside a <script> tag.
@@ -77,8 +78,34 @@ writeFileSync(join(DIST, 'sets.json'), JSON.stringify(
   sets.map(s => ({ slug: s.slug, title: s.title, subtitle: s.subtitle, date: s.date, count: s.words.length, path: `${s.slug}/` })),
   null, 2) + '\n');
 
+// Math block reviews: math/<slug>/index.html pages plus pre-rendered PDFs (npm run math:pdf), copied as-is.
+const MATH = join(ROOT, 'math');
+const reviews = existsSync(MATH) ? readdirSync(MATH)
+  .filter(d => existsSync(join(MATH, d, 'index.html')))
+  .map(slug => {
+    const m = readFileSync(join(MATH, slug, 'index.html'), 'utf8').match(/<meta name="review" content='([^']+)'>/);
+    if (!m) throw new Error(`math/${slug}/index.html is missing <meta name="review" content='{...}'>`);
+    return { slug, ...JSON.parse(m[1]) };
+  })
+  .sort((a, b) => a.block - b.block || a.form.localeCompare(b.form)) : [];
+if (reviews.length) {
+  cpSync(MATH, join(DIST, 'math'), { recursive: true });
+  const groups = [...new Set(reviews.map(r => r.block))].map(block => {
+    const rs = reviews.filter(r => r.block === block);
+    const lis = rs.map(r => {
+      const pdf = existsSync(join(MATH, 'pdf', `${r.slug}.pdf`));
+      return `<li><b>Form ${esc(r.form)}</b><span class="links"><a class="primary" href="${esc(r.slug)}/">Practice online</a>`
+        + (pdf ? `<a href="pdf/${esc(r.slug)}.pdf" download>Test PDF</a><a href="pdf/${esc(r.slug)}-key.pdf" download>Answer key</a>` : '')
+        + `</span></li>`;
+    }).join('');
+    return `<h2>Block ${block}<small>${esc(rs[0].topic)}</small></h2><ul>${lis}</ul>`;
+  }).join('\n  ');
+  writeFileSync(join(DIST, 'math', 'index.html'), fill(MATH_INDEX, { '{{REVIEW_GROUPS}}': groups }));
+}
+
 // Keep GitHub Pages from running Jekyll over the output.
 writeFileSync(join(DIST, '.nojekyll'), '');
 
+console.log(`Built ${reviews.length} math review page${reviews.length === 1 ? '' : 's'} into dist/math/`);
 console.log(`Built ${sets.length} word set${sets.length === 1 ? '' : 's'} into dist/:`);
 for (const s of sets) console.log(`  dist/${s.slug}/index.html  (${s.title}, ${s.words.length} words)`);
