@@ -183,7 +183,7 @@ a.lesson-chip:hover{color:var(--accent);border-color:var(--accent)}
 .toolbar .calc-btn{background:none;color:var(--accent);border:1.5px solid var(--accent)}
 .toolbar .calc-btn[aria-expanded="true"]{background:var(--accent);color:var(--paper)}
 .calc{position:fixed;z-index:7;display:flex;flex-direction:column;background:var(--paper);color:var(--ink);border:1px solid var(--rule);box-shadow:0 6px 24px rgba(0,0,0,.18);
-  right:16px;top:72px;bottom:16px;width:460px;border-radius:8px}
+  right:16px;top:72px;bottom:16px;width:var(--calc-w,460px);border-radius:8px}
 .calc-head{display:flex;align-items:center;gap:8px;padding:8px 8px 8px 14px;border-bottom:1px solid var(--rule);font:600 13px var(--display)}
 .calc-tip{flex:1;min-width:0;color:var(--muted);font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .calc-close{margin-left:auto}
@@ -212,10 +212,19 @@ a.lesson-chip:hover{color:var(--accent);border-color:var(--accent)}
 .calc-hint{color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis}
 .calc-foot{padding:8px 12px;border-top:1px solid var(--rule);font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted);white-space:pre-wrap}
 .calc-close:focus-visible,.calc-val:focus-visible{outline:3px solid var(--key);outline-offset:2px}
-@media screen and (min-width:1180px){body.calc-open .sheet{margin-left:max(20px,calc((100vw - 8.5in - 500px) / 2));margin-right:auto}}
+@media screen and (min-width:1180px){
+  body.calc-open .sheet{margin-left:max(20px,calc((100vw - 8.5in - var(--calc-w,460px) - 40px) / 2));margin-right:auto}
+  body[data-view="focus"] .calc{bottom:84px} /* stay above the Focus bar's Check and Next */
+  .calc-grip{position:absolute;left:-7px;top:0;bottom:0;width:14px;cursor:ew-resize;touch-action:none}
+  .calc-grip::after{content:"";position:absolute;left:5px;top:50%;width:4px;height:44px;margin-top:-22px;border-radius:2px;background:var(--rule);opacity:0;transition:opacity .15s}
+  .calc:hover .calc-grip::after,.calc-grip:focus-visible::after{opacity:1}
+}
+.calc-grip:focus-visible{outline:3px solid var(--key);outline-offset:-3px}
 @media (max-width:1179px){
-  .calc{left:0;right:0;top:auto;bottom:var(--kb,0px);width:auto;height:min(46vh,420px);border-radius:12px 12px 0 0;border-width:1px 0 0;padding-bottom:env(safe-area-inset-bottom,0px)}
-  body.calc-open{padding-bottom:min(46vh,420px)}
+  .calc{left:0;right:0;top:auto;bottom:var(--kb,0px);width:auto;height:var(--calc-h,min(46vh,420px));border-radius:12px 12px 0 0;border-width:1px 0 0;padding-bottom:env(safe-area-inset-bottom,0px)}
+  body.calc-open{padding-bottom:var(--calc-h,min(46vh,420px))}
+  .calc-grip{height:22px;flex:none;cursor:ns-resize;touch-action:none;display:flex;align-items:center;justify-content:center}
+  .calc-grip::after{content:"";width:44px;height:5px;border-radius:3px;background:var(--rule)}
   body[data-view="focus"] .calc{bottom:max(70px,var(--kb,0px))}
   .calc-tip{display:none}
 }

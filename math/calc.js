@@ -237,6 +237,45 @@
   const foot = el('div', 'calc-foot', 'mean  median  range  mad  q1  q3  iqr  min  max  sum  sqrt  round  ·  “of”  “as %”  ans  ·  18/45 = x/360');
   panel.append(head, body, foot);
 
+  // Resize: drag the left edge (wide screens) or the top handle (phone drawer); arrow keys work too. Kept per device.
+  const grip = el('div', 'calc-grip');
+  grip.tabIndex = 0;
+  grip.setAttribute('role', 'separator');
+  grip.setAttribute('aria-label', 'Resize the calculator (arrow keys)');
+  const wide = () => matchMedia('(min-width: 1180px)').matches;
+  let size = {};
+  try { size = JSON.parse(load('calc-size')) || {}; } catch { /* bad data */ }
+  const clampW = (w) => Math.round(Math.max(320, Math.min(w, innerWidth - 400)));
+  const clampH = (h) => Math.round(Math.max(160, Math.min(h, innerHeight - 140)));
+  const applySize = () => {
+    const r = document.documentElement.style;
+    size.w ? r.setProperty('--calc-w', `${size.w}px`) : r.removeProperty('--calc-w');
+    size.h ? r.setProperty('--calc-h', `${size.h}px`) : r.removeProperty('--calc-h');
+  };
+  applySize();
+  grip.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    grip.setPointerCapture(e.pointerId);
+    const bottom = panel.getBoundingClientRect().bottom;
+    const move = (ev) => {
+      if (wide()) size.w = clampW(innerWidth - ev.clientX - 16); else size.h = clampH(bottom - ev.clientY);
+      applySize();
+    };
+    const up = () => { grip.removeEventListener('pointermove', move); store('calc-size', JSON.stringify(size)); };
+    grip.addEventListener('pointermove', move);
+    grip.addEventListener('pointerup', up, { once: true });
+    grip.addEventListener('pointercancel', up, { once: true });
+  });
+  grip.addEventListener('keydown', (e) => {
+    const step = { ArrowLeft: 20, ArrowUp: 20, ArrowRight: -20, ArrowDown: -20 }[e.key];
+    if (!step) return;
+    e.preventDefault();
+    if (wide()) size.w = clampW((size.w || panel.offsetWidth) + step); else size.h = clampH((size.h || panel.offsetHeight) + step);
+    applySize();
+    store('calc-size', JSON.stringify(size));
+  });
+  panel.prepend(grip);
+
   // "35/2" shown as a stacked fraction, the way the forms print them (the copy stays "35/2").
   const stacked = (text) => text.split(/(\d+\/\d+)/).map((part) => {
     const m = part.match(/^(\d+)\/(\d+)$/);
