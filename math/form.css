@@ -116,7 +116,10 @@ body.show .work{min-height:0}
 .lessons legend{padding:0 4px;color:var(--muted)}
 .lessons label{display:inline-flex;align-items:center;gap:4px;min-height:32px;cursor:pointer}
 .lessons input{width:18px;height:18px;accent-color:var(--accent)}
-@media print{.helpbtn,.help,.answer,.progress,.mark,.lessons{display:none!important}}
+.lesson-chip{float:right;margin:0 0 4px 8px;padding:2px 7px;font:700 11px/1.4 var(--display);color:var(--muted);border:1px solid var(--rule);border-radius:10px;text-decoration:none;white-space:nowrap}
+a.lesson-chip:hover{color:var(--accent);border-color:var(--accent)}
+.lesson-chip:focus-visible{outline:3px solid var(--key);outline-offset:2px}
+@media print{.helpbtn,.help,.answer,.progress,.mark,.lessons,.lesson-chip{display:none!important}}
 .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;border-top:1px solid var(--rule);margin-top:18px;padding-top:6px;font-size:11px;color:var(--muted)}
 
 @page{size:letter;margin:.5in}

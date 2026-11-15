@@ -45,10 +45,21 @@
       marks[id] = el('span', 'mark');
       (n || q).prepend(marks[id]);
       const host = q.classList.contains('task') ? q : q.lastElementChild;
+      host.prepend(lessonChip(entry.lesson));
       host.append(answerBox(id, host, q.classList.contains('task')));
       attach(host, id, entry);
     });
   });
+
+  // Small "Lesson 4.5" chip on each question, linking to that lesson's student text.
+  function lessonChip(n) {
+    const info = lessons[n] || {};
+    const text = info.links?.find((l) => l.label === 'Student text');
+    const chip = el(text ? 'a' : 'span', 'lesson-chip', `Lesson ${n}`);
+    if (text) { chip.href = text.url; chip.target = '_blank'; chip.rel = 'noopener'; }
+    chip.title = info.title ? `Lesson ${n}: ${info.title}${info.page ? `, p. ${info.page}` : ''}` : '';
+    return chip;
+  }
 
   // Summary and history at the top of the page.
   const panel = el('details', 'progress');
