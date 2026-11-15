@@ -2,16 +2,16 @@
    two-column selected response, roomy constructed response, one problem-solving task. */
 :root{
   --paper:#ffffff; --desk:#eef1f4; --ink:#16191d; --muted:#5a636d; --rule:#9aa3ad;
-  --accent:#1f4e79; --key:#b3261e; --tint:#f3f6f9; --ok:#1e6b34;
+  --accent:#1f4e79; --key:#b3261e; --tint:#f3f6f9; --ok:#1e6b34; --warn:#8a4b00;
   --display:"Libre Franklin",ui-sans-serif,system-ui,sans-serif;
   --body:"Source Serif 4",Georgia,"Times New Roman",serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --paper:#1b1f24; --desk:#101317; --ink:#e7eaee; --muted:#a3acb6; --rule:#59626c;
-  --accent:#8db8e3; --key:#f19a8f; --tint:#232930; --ok:#7fd19b; color-scheme:dark}}
+  --accent:#8db8e3; --key:#f19a8f; --tint:#232930; --ok:#7fd19b; --warn:#f0b45a; color-scheme:dark}}
 :root[data-theme="dark"]{
   --paper:#1b1f24; --desk:#101317; --ink:#e7eaee; --muted:#a3acb6; --rule:#59626c;
-  --accent:#8db8e3; --key:#f19a8f; --tint:#232930; --ok:#7fd19b; color-scheme:dark}
+  --accent:#8db8e3; --key:#f19a8f; --tint:#232930; --ok:#7fd19b; --warn:#f0b45a; color-scheme:dark}
 
 *{box-sizing:border-box}
 body{margin:0;background:var(--desk);color:var(--ink);font:15px/1.45 var(--body)}
@@ -76,8 +76,9 @@ body.show .work{min-height:0}
 .helpbtn[aria-expanded="true"]{background:var(--accent);color:var(--paper)}
 .help{margin-top:8px;padding:10px 12px;background:var(--tint);border-left:3px solid var(--accent);border-radius:3px;font-size:14px}
 .help-src{font:600 13px var(--display);color:var(--muted)}
-.help-links{display:flex;flex-wrap:wrap;gap:4px 12px;margin:6px 0;font:600 13px var(--display)}
-.help-links a{color:var(--accent)}
+.help-links{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;font:600 12px var(--display)}
+.help-links a{color:var(--accent);border:1px solid var(--rule);border-radius:10px;padding:3px 9px;text-decoration:none;background:var(--paper)}
+.help-links a:hover{border-color:var(--accent)}
 .help-steps{margin:8px 0;padding-left:1.3em;display:grid;gap:8px}
 .help-next,.help-ask button{font:700 13px/1 var(--display);color:var(--paper);background:var(--accent);border:0;border-radius:4px;padding:9px 12px;cursor:pointer}
 .help-ask{display:grid;grid-template-columns:1fr auto;gap:6px;margin-top:10px}
@@ -90,35 +91,49 @@ body.show .work{min-height:0}
 .answer{display:grid;grid-template-columns:1fr auto;gap:6px;margin-top:8px;max-width:520px}
 .answer input,.answer textarea{font:inherit;padding:6px 8px;border:1.5px solid var(--rule);border-radius:3px;background:var(--paper);color:var(--ink);min-width:0;min-height:36px}
 .answer.right input,.answer.right textarea{border-color:var(--ok)}
-.answer.wrong input,.answer.wrong textarea{border-color:var(--key)}
+.answer.wrong input,.answer.wrong textarea{border-color:var(--warn)}
 .answer button{font:700 13px/1 var(--display);color:var(--paper);background:var(--accent);border:0;border-radius:4px;padding:9px 12px;cursor:pointer}
 .answer button:disabled{opacity:.5;cursor:wait}
 .answer-result{grid-column:1/-1;font-size:14px;white-space:pre-wrap}
 .answer-result:empty{display:none}
 .answer.right .answer-result b{color:var(--ok)}
-.answer.wrong .answer-result b{color:var(--key)}
+.answer.wrong .answer-result b{color:var(--warn)}
 .answer :focus-visible{outline:3px solid var(--key);outline-offset:2px}
 /* Progress summary and question marks (math/help.js) */
 .progress{margin:0 0 14px;padding:8px 12px;background:var(--tint);border-left:3px solid var(--accent);border-radius:3px;font:600 14px var(--display)}
 .progress summary{cursor:pointer;min-height:28px;display:list-item}
-.progress-list{margin:8px 0 2px;padding-left:1.3em;display:grid;gap:4px;font:400 14px var(--body);max-height:260px;overflow:auto}
+.progress .lessons{margin:10px 0 8px;background:var(--paper)}
+.progress-note{margin:0 0 8px;font:400 13px var(--display);color:var(--muted)}
+.progress-head{font:600 13px var(--display);color:var(--muted)}
+.progress-list .off{opacity:.65}
+.off-note{font-style:italic;color:var(--muted)}
+.progress-list{margin:4px 0 2px;padding-left:1.3em;display:grid;gap:4px;font:400 14px var(--body);max-height:260px;overflow:auto}
 .progress-list a{color:var(--accent);font-weight:700}
 .progress-list .right b,.mark[data-status="right"]{color:var(--ok)}
-.progress-list .wrong b,.mark[data-status="wrong"]{color:var(--key)}
+.progress-list .wrong b,.mark[data-status="wrong"]{color:var(--warn)}
 .progress-list .empty{list-style:none;margin-left:-1.3em;color:var(--muted)}
 [id^="q-"]{scroll-margin-top:70px}
-.mark{display:inline-block;min-width:1em;font-weight:700;color:var(--muted)}
+.q>.n,.task{position:relative}
+.mark{position:absolute;right:100%;top:0;margin-right:3px;font-weight:700;color:var(--muted)}
 .mark:empty{display:none}
-.task>.mark{font-size:20px}
+.task>.mark{right:auto;left:-1.1em;font-size:18px}
 /* Lesson filter (math/help.js) */
 [hidden]{display:none!important}
 .lessons{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin:0 0 10px;padding:8px 12px;border:1px solid var(--rule);border-radius:3px;font:600 14px var(--display)}
 .lessons legend{padding:0 4px;color:var(--muted)}
 .lessons label{display:inline-flex;align-items:center;gap:4px;min-height:32px;cursor:pointer}
 .lessons input{width:18px;height:18px;accent-color:var(--accent)}
-.lesson-chip{float:right;margin:0 0 4px 8px;padding:2px 7px;font:700 11px/1.4 var(--display);color:var(--muted);border:1px solid var(--rule);border-radius:10px;text-decoration:none;white-space:nowrap}
+.lesson-chip{position:relative;display:inline-block;vertical-align:middle;margin:6px 0 0 8px;padding:2px 8px;font:700 11px/1.4 var(--display);color:var(--muted);border:1px solid var(--rule);border-radius:10px;text-decoration:none;white-space:nowrap}
 a.lesson-chip:hover{color:var(--accent);border-color:var(--accent)}
 .lesson-chip:focus-visible{outline:3px solid var(--key);outline-offset:2px}
+@media (pointer:coarse){
+  .helpbtn,.help-next,.help-ask button,.answer button,.lessons label,.progress summary{min-height:44px}
+  .answer input{min-height:44px}
+  .progress summary{display:list-item;padding:10px 0}
+  .lesson-chip::before,.help-links a::before{content:"";position:absolute;inset:-12px -4px}
+  .help-links a{position:relative}
+  .help-links{gap:12px 8px}
+}
 @media print{.helpbtn,.help,.answer,.progress,.mark,.lessons,.lesson-chip{display:none!important}}
 .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;border-top:1px solid var(--rule);margin-top:18px;padding-top:6px;font-size:11px;color:var(--muted)}
 
