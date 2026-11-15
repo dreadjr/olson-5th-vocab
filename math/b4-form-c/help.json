@@ -1,1 +1,324 @@
-{ "entries": { "I-6": { "lesson": "4.5", "tag": "Lesson 4.5 · Ex. 3, p. 136", "skill": "TODO", "hints": ["TODO", "TODO", "TODO"] } } }
+{
+  "entries": {
+    "I-1": {
+      "lesson": "4.1",
+      "tag": "Lesson 4.1 · Ex. 2, p. 112",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "I-2": {
+      "lesson": "4.2",
+      "tag": "Lesson 4.2 · Ex. 2, p. 118",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "I-3": {
+      "lesson": "4.3",
+      "tag": "Lesson 4.3 · Ex. 2, p. 124",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "I-4": {
+      "lesson": "4.4",
+      "tag": "Lesson 4.4 · Ex. 1, p. 130",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "I-5": {
+      "lesson": "4.4",
+      "tag": "Lesson 4.4 · Ex. 3, p. 131",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "I-6": {
+      "lesson": "4.5",
+      "tag": "Lesson 4.5 · Ex. 3, p. 136",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "I-7": {
+      "lesson": "4.5",
+      "tag": "Lesson 4.5 · Ex. 2 & 5, pp. 136–137",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "I-8": {
+      "lesson": "4.6",
+      "tag": "Lesson 4.6 · Ex. 1, p. 144",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "I-9": {
+      "lesson": "4.7",
+      "tag": "Lesson 4.7 · Ex. 2, p. 149",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "I-10": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Ex. 3, p. 158",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "I-11": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Ex. 1, p. 154",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "II-1": {
+      "lesson": "4.1",
+      "tag": "Lesson 4.1 · Ex. 1, p. 111",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "II-2": {
+      "lesson": "4.1",
+      "tag": "Lesson 4.1 · Ex. 1, p. 111",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "II-3": {
+      "lesson": "4.1",
+      "tag": "Lesson 4.1 · Ex. 1, p. 111",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "II-4": {
+      "lesson": "4.1",
+      "tag": "Lesson 4.1 · Ex. 2, p. 112",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "II-5": {
+      "lesson": "4.1",
+      "tag": "Lesson 4.1 · Ex. 1, p. 111",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "II-6": {
+      "lesson": "4.2",
+      "tag": "Lesson 4.2 · Ex. 1, p. 117",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "II-7": {
+      "lesson": "4.2",
+      "tag": "Lesson 4.2 · Ex. 2, p. 118",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "II-8": {
+      "lesson": "4.3",
+      "tag": "Lesson 4.3 · Ex. 3, p. 125",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "II-9": {
+      "lesson": "4.4",
+      "tag": "Lesson 4.4 · Ex. 1, p. 130",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "II-10": {
+      "lesson": "4.5",
+      "tag": "Lesson 4.5 · Ex. 5, p. 137",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "II-11": {
+      "lesson": "4.5",
+      "tag": "Lesson 4.5 · Ex. 4, p. 137",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "II-12": {
+      "lesson": "4.6",
+      "tag": "Lesson 4.6 · Ex. 1, p. 144",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "II-13": {
+      "lesson": "4.7",
+      "tag": "Lesson 4.7 · Ex. 2, p. 149",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "II-14": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Ex. 1, p. 153",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "II-15": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Ex. 1, p. 154",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "II-16": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Ex. 1, p. 154",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "II-17": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Ex. 2, p. 155",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "II-18": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Explore! Comparing Tests, p. 156",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "II-19": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Ex. 3, p. 158",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "II-20": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · pp. 156–158",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    },
+    "III": {
+      "lesson": "4.5",
+      "tag": "Lessons 4.5 & 4.7 · Ex. 4, p. 137; Ex. 1, p. 148",
+      "skill": "TODO",
+      "hints": [
+        "TODO",
+        "TODO",
+        "TODO"
+      ]
+    }
+  }
+}

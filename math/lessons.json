@@ -1,0 +1,210 @@
+{
+  "4.1": {
+    "title": "Probability",
+    "page": 110,
+    "links": [
+      {
+        "label": "Video",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14535"
+      },
+      {
+        "label": "Slides",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=17247"
+      },
+      {
+        "label": "Student text",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14533"
+      },
+      {
+        "label": "Worksheet",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14536"
+      },
+      {
+        "label": "IXL: Experimental probability",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/url/view.php?id=18142"
+      }
+    ]
+  },
+  "4.2": {
+    "title": "Using Probability to Predict",
+    "page": 116,
+    "links": [
+      {
+        "label": "Video",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14547"
+      },
+      {
+        "label": "Slides",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=17249"
+      },
+      {
+        "label": "Student text",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14545"
+      },
+      {
+        "label": "Worksheet",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14548"
+      },
+      {
+        "label": "IXL: Estimate population size using proportions",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/url/view.php?id=18143"
+      }
+    ]
+  },
+  "4.3": {
+    "title": "Probabilities and Data Displays",
+    "page": 122,
+    "links": [
+      {
+        "label": "Video",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14559"
+      },
+      {
+        "label": "Slides",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=17251"
+      },
+      {
+        "label": "Student text",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14557"
+      },
+      {
+        "label": "Worksheet",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14560"
+      },
+      {
+        "label": "IXL: Create histograms",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/url/view.php?id=18144"
+      }
+    ]
+  },
+  "4.4": {
+    "title": "Compound Probabilities Using Lists, Tree Diagrams and Tables",
+    "page": 128,
+    "links": [
+      {
+        "label": "Video",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14571"
+      },
+      {
+        "label": "Slides",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=17253"
+      },
+      {
+        "label": "Student text",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14569"
+      },
+      {
+        "label": "Worksheet",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14572"
+      },
+      {
+        "label": "IXL: Compound events - find the number of outcomes",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/url/view.php?id=18145"
+      }
+    ]
+  },
+  "4.5": {
+    "title": "Compound Probabilities Using Multiplication & Simulation",
+    "page": 135,
+    "links": [
+      {
+        "label": "Video",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14583"
+      },
+      {
+        "label": "Slides",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=17255"
+      },
+      {
+        "label": "Student text",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14581"
+      },
+      {
+        "label": "Worksheet",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14584"
+      },
+      {
+        "label": "IXL: Multiplication counting principle",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/url/view.php?id=18146"
+      }
+    ]
+  },
+  "4.6": {
+    "title": "Random Sampling",
+    "page": 143,
+    "links": [
+      {
+        "label": "Video",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14595"
+      },
+      {
+        "label": "Slides",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=17257"
+      },
+      {
+        "label": "Student text",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14593"
+      },
+      {
+        "label": "Worksheet",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14596"
+      },
+      {
+        "label": "IXL: Identify representative, random and biased samples",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/url/view.php?id=18147"
+      }
+    ]
+  },
+  "4.7": {
+    "title": "Inferences About a Population",
+    "page": 148,
+    "links": [
+      {
+        "label": "Video",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14607"
+      },
+      {
+        "label": "Slides",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=17259"
+      },
+      {
+        "label": "Student text",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14605"
+      },
+      {
+        "label": "Worksheet",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14608"
+      },
+      {
+        "label": "IXL: Make predictions",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/url/view.php?id=18148"
+      }
+    ]
+  },
+  "4.8": {
+    "title": "Measures of Center and Variability in Two Data Sets",
+    "page": 153,
+    "links": [
+      {
+        "label": "Video",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14619"
+      },
+      {
+        "label": "Slides",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=17261"
+      },
+      {
+        "label": "Student text",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14617"
+      },
+      {
+        "label": "Worksheet",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14620"
+      },
+      {
+        "label": "IXL: Calculate mean, median, mode and range",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/url/view.php?id=18149"
+      }
+    ]
+  }
+}
