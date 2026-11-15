@@ -36,7 +36,7 @@ test('cliCommand runs claude with no tools and none of my own settings', () => {
 async function startTutor(fakeClaude, extraEnv = {}) {
   const bin = mkdtempSync(join(tmpdir(), 'tutorbin-'));
   if (fakeClaude) { writeFileSync(join(bin, 'claude'), `#!/bin/sh\n${fakeClaude}\n`); chmodSync(join(bin, 'claude'), 0o755); }
-  const srv = spawn(process.execPath, ['scripts/tutor.mjs'], { env: { ...process.env, PORT: '0', PATH: `${bin}:/bin:/usr/bin`, ...extraEnv } });
+  const srv = spawn(process.execPath, ['scripts/tutor.mjs'], { env: { ...process.env, PORT: '0', PATH: `${bin}:/bin:/usr/bin`, TUTOR_LOG_DIR: bin, ...extraEnv } });
   const port = await new Promise((res, rej) => {
     srv.stdout.on('data', (d) => { const m = String(d).match(/:(\d+)\//); if (m) res(m[1]); });
     srv.on('exit', () => rej(new Error('server exited')));

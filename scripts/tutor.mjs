@@ -12,7 +12,7 @@ import { serveDist } from './static.mjs';
 import { validateAsk, validateCheck, loadHelp, loadKey, buildPrompt, buildCheckPrompt, parseCheck, cliCommand } from './tutor-lib.mjs';
 
 const PORT = process.env.PORT === undefined ? 8080 : Number(process.env.PORT);
-const LOG_DIR = join(ROOT, 'logs');
+const LOG_DIR = process.env.TUTOR_LOG_DIR || join(ROOT, 'logs');
 const UNAVAILABLE = "The tutor isn't available right now.";
 const TIMEOUT_MS = Number(process.env.TUTOR_TIMEOUT_MS) || 60_000;
 // The CLI runs in an empty folder so it can't pick up this repo's CLAUDE.md or project memory.

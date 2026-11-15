@@ -13,7 +13,9 @@ const CONF = join(homedir(), '.config', 'kok-tutor');
 const KEY_FILE = join(CONF, 'key');
 const AGENTS = join(homedir(), 'Library', 'LaunchAgents');
 const UID = process.getuid();
-const which = (cmd) => spawnSync('/usr/bin/which', [cmd], { encoding: 'utf8' }).stdout.trim();
+// First real binary on PATH: skips version-manager and terminal shims, which don't work (or vanish) under launchd.
+const which = (cmd) => ['/opt/homebrew/bin', ...(process.env.PATH || '').split(':')]
+  .filter((d) => d && !/shim/i.test(d)).map((d) => join(d, cmd)).find((f) => existsSync(f));
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 
 function plist(label, args, env = {}) {
@@ -43,7 +45,7 @@ function install(host) {
   const key = readFileSync(KEY_FILE, 'utf8').trim();
   const claude = which('claude');
   if (!claude) throw new Error('claude CLI not found on PATH');
-  const node = process.execPath; // the real binary, not a version-manager shim
+  const node = which('node') || process.execPath;
   const PATH = [...new Set([dirname(node), dirname(claude), '/usr/bin', '/bin'])].join(':');
 
   // Rebuild on every start so a restart picks up new forms and hints.
