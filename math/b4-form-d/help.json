@@ -1,0 +1,324 @@
+{
+  "entries": {
+    "I-1": {
+      "lesson": "4.1",
+      "tag": "Lesson 4.1 · Ex. 3, p. 113",
+      "skill": "Experimental probability as a percent",
+      "hints": [
+        "Experimental probability uses what really happened: (times it happened) ÷ (total tries). Write that fraction, simplify it, then turn it into a percent.",
+        "Example: Mia made 12 of her 20 free throws. P(make) = 12/20 = 3/5 = 0.6 = 60%. Count on top, total on the bottom, then change to a percent.",
+        "Leo hit 18 of 24 arrows, so P(hit) = 18/24. Divide top and bottom by 6: 3/4 = 0.75 = 75%. The answer is D. (18% and 24% just copy the numbers from the problem; they are not percents of anything.)"
+      ]
+    },
+    "I-2": {
+      "lesson": "4.2",
+      "tag": "Lesson 4.2 · Ex. 2, p. 118",
+      "skill": "Predicting with probability",
+      "hints": [
+        "First find each color's probability: sections of that color ÷ all 8 sections. Then ask: what part of the 40 spins should be that color? Is an expected number ever a sure thing?",
+        "Example: a bag has 2 red and 3 white marbles. Draw (and replace) 50 times and you expect about 2/5 · 50 = 20 reds. Expected count = probability · number of tries, but the real count can be a little more or less.",
+        "Blue: 3/8 · 40 = 15, so 2a is YES. Green: 1/8 · 40 = 5, not 10, so 2b is NO. Red: 4/8 · 40 = 20 is only what you expect, and nothing makes it certain, so 2c is NO."
+      ]
+    },
+    "I-3": {
+      "lesson": "4.3",
+      "tag": "Lesson 4.3 · Ex. 1, p. 123",
+      "skill": "Pie chart sector angles",
+      "hints": [
+        "A whole pie chart is 360°. What fraction of the 45 students chose Sports? The Sports sector gets that same fraction of 360°.",
+        "Example: 10 of 40 students chose pizza. 10/40 = x/360, so 40x = 3,600 and x = 90°. The pizza sector is a quarter of the circle.",
+        "Sports: 18/45 = x/360, so 45x = 6,480 and x = 144°. The answer is A. Check: Video games 120° + Reading 96° + 144° = 360°. (18° just uses the number of students, not degrees.)"
+      ]
+    },
+    "I-4": {
+      "lesson": "4.4",
+      "tag": "Lesson 4.4 · Ex. 2, p. 131",
+      "skill": "Ordering without replacement",
+      "hints": [
+        "June keeps each card, so there is one fewer card each draw. How many cards could come 1st, 2nd, 3rd and 4th? Multiply to count all the orders.",
+        "Example: 3 cards, A, B and C, drawn and kept. 3 · 2 · 1 = 6 possible orders (ABC, ACB, BAC, BCA, CAB, CBA). Only one is ABC, so P(ABC) = 1/6.",
+        "4 cards could come first, then 3, then 2, then 1: 4 · 3 · 2 · 1 = 24 orders. Only one is W, I, N, D, so P = 1/24. The answer is C. (1/256 = 1/4 · 1/4 · 1/4 · 1/4 would only be right if she put each card back.)"
+      ]
+    },
+    "I-5": {
+      "lesson": "4.5",
+      "tag": "Lesson 4.5 · Ex. 4, p. 137",
+      "skill": "Probability of two events",
+      "hints": [
+        "Ty puts the card back, so each pick is out of 8. Multiply: P(first pick) · P(second pick). Write each part as a fraction out of 8. Watch for a number that isn't on any card.",
+        "Example: cards 1–6, pick, replace, pick again. P(5 then a number greater than 4) = 1/6 · 2/6 = 2/36 = 1/18.",
+        "A: 1/8 · 1/8 = 1/64, not 1/16 ✗. B: 4/8 · 4/8 = 1/2 · 1/2 = 1/4 ✓. C: there is no card 9, so it is 0 ✗. D: less than 3 is 1 or 2, so 2/8 · 1/8 = 2/64 = 1/32 ✓. E: 4/8 · 1/8 = 4/64 = 1/16 ✓. Answer: B, D, E."
+      ]
+    },
+    "I-6": {
+      "lesson": "4.5",
+      "tag": "Lesson 4.5 · Ex. 3, p. 136",
+      "skill": "Counting with no repeats",
+      "hints": [
+        "After a student wins first place, can that same student also win second? How many students are left for second, and then for third?",
+        "Example: 6 runners in a race, medals for 1st and 2nd. Any of the 6 can be 1st, then 5 are left for 2nd: 6 · 5 = 30 ways. Each place has one fewer choice.",
+        "7 students can win first, then 6 are left for second and 5 for third: 7 · 6 · 5 = 210 ways. The answer is A. (343 = 7 · 7 · 7 would let one student win more than one ribbon.)"
+      ]
+    },
+    "I-7": {
+      "lesson": "4.5",
+      "tag": "Lesson 4.5 · Explore! Simulation, p. 138",
+      "skill": "Choosing a fair simulation",
+      "hints": [
+        "A good simulation has the same probability as the real thing. Find P(prize) for each choice. Which one equals 1/3?",
+        "Example: a player makes 1/4 of her shots. A spinner with 4 equal parts where 1 part means \"make\" is a good model, because P(make) = 1/4.",
+        "A: 1/2. B: a 1 or 2 is 2 of 6 outcomes, so 2/6 = 1/3 ✓. C: 1/6. D: 3 of 4 slips, so 3/4. The answer is B. (D uses the numbers 3 and 1, but 3 prize slips out of 4 is 3/4, not 1/3.)"
+      ]
+    },
+    "I-8": {
+      "lesson": "4.6",
+      "tag": "Lesson 4.6 · Ex. 1, p. 144",
+      "skill": "Biased samples",
+      "hints": [
+        "A fair sample gives every person in town the same chance to be picked. Who could Owen pick, and how might they feel about soccer fields?",
+        "Example: asking people at a bookstore whether the town needs a new library is biased: book lovers are more likely to say yes. Picking random names from the whole town is fair.",
+        "Only people at a soccer game could be chosen, and soccer fans are more likely to want soccer fields. The sample does not represent everyone in town, so the answer is C. (50 people is not too many, and the time of day isn't the problem.)"
+      ]
+    },
+    "I-9": {
+      "lesson": "4.7",
+      "tag": "Lesson 4.7 · Ex. 2, p. 149",
+      "skill": "Strong and weak inferences",
+      "hints": [
+        "Change each count to a percent of the 80 students. A strong inference matches the data without stretching it. Be careful with words like \"almost all\" and \"exactly\".",
+        "Example: in a random sample of 50, 30 like dogs best (60%). \"Most students like dogs best\" is strong. \"Almost all like dogs\" is too big a claim, and \"exactly 60% of the school\" is too exact for a sample.",
+        "Bus: 44/80 = 55%, which is more than half, so B is strong. A: 55% is not \"almost all\". C: car or walk/bike is 24 + 12 = 36 of 80 = 45%, less than half. D: a sample can't give an exact percent for the whole school. The answer is B."
+      ]
+    },
+    "I-10": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Ex. 1, p. 154",
+      "skill": "Finding the median",
+      "hints": [
+        "Before you look for the middle number, what must you do to the list first? Then count to the middle of the 7 values.",
+        "Example: 10, 3, 7, 1, 5. In order: 1, 3, 5, 7, 10. The middle value is 5, so the median is 5, not 7 (the middle of the unsorted list).",
+        "In order: 4, 6, 8, 9, 11, 12, 15. The 4th of 7 values is 9, so the median is 9 and Tess forgot to order the list. The answer is D. (B's 9.3 is the mean, and a median does not need repeats.)"
+      ]
+    },
+    "I-11": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · pp. 154–156",
+      "skill": "Mode, range and median",
+      "hints": [
+        "Put each list in order first. Then find the mode (the most common value or values), the range (largest − smallest) and the median (the middle value). Test each choice.",
+        "Example: 2, 4, 4, 5, 7, 7, 8. Modes 4 and 7 (a set can have two modes), range 8 − 2 = 6, median 5.",
+        "Lily: 3, 4, 6, 7, 9, 9, 9 → mode 9, range 6, median 7. Noah: 2, 5, 5, 6, 8, 8, 9 → modes 5 and 8, range 7, median 6. A is true. B is false (Noah's range is 7), C is false (7 − 6 = 1), D is false (Noah has two modes). The answer is A."
+      ]
+    },
+    "II-1": {
+      "lesson": "4.1",
+      "tag": "Lesson 4.1 · Ex. 3, p. 113",
+      "skill": "Theoretical probability",
+      "hints": [
+        "Probability = (ways to get what you want) ÷ (all possible outcomes). How many letters are in BOOKKEEPER, and how many of them are K?",
+        "Example: the word APPLE has 5 letters and 2 are P. P(P) = 2/5 = 40%.",
+        "BOOKKEEPER has 10 letters, and 2 are K. P(K) = 2/10 = 1/5 = 20%."
+      ]
+    },
+    "II-2": {
+      "lesson": "4.1",
+      "tag": "Lesson 4.1 · Ex. 3, p. 113",
+      "skill": "Theoretical probability",
+      "hints": [
+        "The vowels are A, E, I, O and U. Count every vowel card, including repeats.",
+        "Example: the word BANANA has 6 letters. The vowels are A, A, A, so P(vowel) = 3/6 = 1/2 = 50%.",
+        "The vowels are O, O, E, E, E: 5 of 10 letters. P(vowel) = 5/10 = 1/2 = 50%."
+      ]
+    },
+    "II-3": {
+      "lesson": "4.1",
+      "tag": "Lesson 4.1 · Ex. 1, p. 111",
+      "skill": "Impossible events",
+      "hints": [
+        "Is there a Z card at all? What is the probability of something that can't happen?",
+        "Example: on a number cube, P(7) = 0/6 = 0. It is impossible. A certain event, like P(less than 7), is 6/6 = 1.",
+        "There is no Z in BOOKKEEPER, so P(Z) = 0/10 = 0 = 0%. It is impossible."
+      ]
+    },
+    "II-4": {
+      "lesson": "4.1",
+      "tag": "Lesson 4.1 · Ex. 2, p. 112",
+      "skill": "Complements",
+      "hints": [
+        "It's often easier to count the opposite. How many cards ARE E? Then P(not E) = 1 − P(E).",
+        "Example: the word SEASONS has 7 letters and 3 are S. P(not S) = 1 − 3/7 = 4/7.",
+        "There are 3 E's out of 10 letters, so P(E) = 3/10. P(not E) = 1 − 3/10 = 7/10 = 70%."
+      ]
+    },
+    "II-5": {
+      "lesson": "4.1",
+      "tag": "Lesson 4.1 · Ex. 3, p. 113",
+      "skill": "Designing a spinner",
+      "hints": [
+        "P(red) = 1/4 means 1/4 of the 12 sections are red. Find 1/4 of 12 and 1/3 of 12. Whatever is left is yellow.",
+        "Example: a spinner has 10 sections with P(green) = 1/2 and P(white) = 1/5. Green: 1/2 · 10 = 5. White: 1/5 · 10 = 2. The other 10 − 5 − 2 = 3 are purple, so P(purple) = 3/10.",
+        "Red: 1/4 · 12 = 3 sections. Blue: 1/3 · 12 = 4 sections. Yellow: 12 − 3 − 4 = 5 sections, so P(yellow) = 5/12."
+      ]
+    },
+    "II-6": {
+      "lesson": "4.2",
+      "tag": "Lesson 4.2 · Ex. 1, p. 117",
+      "skill": "Capture/recapture",
+      "hints": [
+        "The fraction of tagged rabbits she counted later should match the fraction of tagged rabbits in the whole park. Write those two fractions as a proportion.",
+        "Example: a ranger tags 20 fish. Later she catches 25 fish and 5 are tagged. 5/25 = 20/n, so 5n = 500 and n = 100 fish.",
+        "Later count: 4 tagged out of 30. Whole park: 18 tagged out of n. 4/30 = 18/n, so 4n = 540 and n = 135 rabbits. Check: 4/30 = 2/15 and 18/135 = 2/15."
+      ]
+    },
+    "II-7": {
+      "lesson": "4.7",
+      "tag": "Lesson 4.7 · Ex. 1, p. 148",
+      "skill": "Predicting from a sample",
+      "hints": [
+        "Find P(Kim) from the sample of 60. Then use it on all 380 voters. To win, a candidate needs more than half the votes.",
+        "Example: 15 of 40 sampled students want pizza for lunch, so P = 15/40 = 3/8. With 240 students, predict 3/8 · 240 = 90 want pizza.",
+        "(a) P(Kim) = 27/60 = 9/20 = 45%. (b) 9/20 · 380 = 380 ÷ 20 · 9 = 171 votes. (c) No. Lopez is predicted to get 380 − 171 = 209 votes, which is more than half of 380."
+      ]
+    },
+    "II-8": {
+      "lesson": "4.3",
+      "tag": "Lesson 4.3 · Ex. 3, p. 125",
+      "skill": "Probability from a histogram",
+      "hints": [
+        "Each bar's height is how many flights are in that distance range. Add all the bars for the total. \"10 to 19 feet\" uses two bars: 10–14 and 15–19.",
+        "Example: a histogram has bars of 4, 8, 6 and 2 (20 students). P(a student is in the middle two bars) = (8 + 6)/20 = 14/20 = 7/10. For 100 students, predict 7/10 · 100 = 70.",
+        "Total: 3 + 7 + 10 + 6 + 4 = 30 flights. 10 to 19 feet: 10 + 6 = 16, so P = 16/30 = 8/15. For 10–14 feet only: 10/30 = 1/3, and 1/3 · 150 = 50 airplanes."
+      ]
+    },
+    "II-9": {
+      "lesson": "4.4",
+      "tag": "Lesson 4.4 · Ex. 1, p. 130",
+      "skill": "Counting with a tree diagram",
+      "hints": [
+        "Make a tree: a branch for each shirt, then split each branch by pants, then split again by shoes. Count the ends. How many of them have shorts AND sandals?",
+        "Example: 2 drinks (milk, juice) and 3 snacks (apple, chips, cracker): 2 · 3 = 6 combos. Only milk–chips is milk with chips, so P = 1/6.",
+        "2 shirts · 3 pants · 2 shoes = 12 outfits. Shorts and sandals: polo–shorts–sandals and tee–shorts–sandals, 2 of 12. P = 2/12 = 1/6."
+      ]
+    },
+    "II-10": {
+      "lesson": "4.4",
+      "tag": "Lessons 4.4–4.5 · Ex. 2, p. 131; Ex. 4, p. 137",
+      "skill": "With and without replacement",
+      "hints": [
+        "Count the beads first. If she puts the bead back, the second pick looks just like the first. If she keeps it, how many yellow beads and how many beads in all are left?",
+        "Example: a bag has 4 blue and 2 white marbles. Replace: P(blue then blue) = 4/6 · 4/6 = 16/36 = 4/9. Keep: P(blue then blue) = 4/6 · 3/5 = 12/30 = 2/5.",
+        "There are 10 beads and 3 are yellow. (a) 3/10 · 3/10 = 9/100. (b) After keeping a yellow, 2 yellow and 9 beads are left: 3/10 · 2/9 = 6/90 = 1/15. (c) Putting it back: 9/100 = 0.09 is greater than 1/15 ≈ 0.067."
+      ]
+    },
+    "II-11": {
+      "lesson": "4.5",
+      "tag": "Lesson 4.5 · Explore! Simulation, p. 138",
+      "skill": "Simulation and experimental probability",
+      "hints": [
+        "A true/false guess is right half the time, just like a coin landing heads. How many tosses make one quiz? For the theoretical probability, multiply 1/2 once per question.",
+        "Example: guessing on 3 true/false questions. Toss a coin 3 times (heads = right). P(all 3 right) = 1/2 · 1/2 · 1/2 = 1/8. If 5 of 50 trials were all heads, the experimental probability is 5/50 = 1/10.",
+        "(a) Heads = a correct guess, tails = wrong. Toss 4 times for one quiz and record whether all 4 were heads; repeat many times. (b) 1/2 · 1/2 · 1/2 · 1/2 = 1/16. (c) 6/80 = 3/40, which is close to 1/16."
+      ]
+    },
+    "II-12": {
+      "lesson": "4.6",
+      "tag": "Lesson 4.6 · Ex. 2, p. 145",
+      "skill": "Systematic samples and predictions",
+      "hints": [
+        "Was the sample spread over all the muffins, or just one batch? Then check her math: what fraction of the checked muffins were underbaked, and what is that fraction of 600?",
+        "Example: a factory checks every 20th bottle out of 400, so 20 bottles. 2 leak. The sample covers the whole day, so predict 2/20 · 400 = 40 leaky bottles.",
+        "Yes. Checking every 25th muffin spreads the sample over the whole morning, so it represents all 600. 1 of 24 was underbaked: 1/24 · 600 = 25 muffins, which matches her prediction."
+      ]
+    },
+    "II-13": {
+      "lesson": "4.7",
+      "tag": "Lesson 4.7 · Ex. 2, p. 149",
+      "skill": "Inferences from two samples",
+      "hints": [
+        "Turn the counts into percents so the two samples (60 and 80 students) can be compared. What is true in BOTH samples? Does \"most\" mean more than half?",
+        "Example: two samples of 50: soccer 20 and 22, swimming 15 and 14, tennis 15 and 14. Strong: \"Soccer is the favorite\" (40% and 44%). Weak: \"Most students prefer soccer\" (less than half in both).",
+        "PE: 24/60 = 40% and 32/80 = 40%, the favorite in both. English: 10% and 12.5%, the least favorite. Math is second (30% and 27.5%). \"Most students prefer PE\" is weak, because 40% is less than half."
+      ]
+    },
+    "II-14": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Ex. 1, p. 153",
+      "skill": "Mean",
+      "hints": [
+        "Mean = add all the values, then divide by how many there are. Each group has 9 students.",
+        "Example: 5, 6, 8, 10, 11. The sum is 40 and there are 5 values, so the mean is 40 ÷ 5 = 8.",
+        "Group X: 14 + 19 + 12 + 44 + 14 + 17 + 13 + 15 + 14 = 162, and 162 ÷ 9 = 18 minutes. Group Y: the total is 189, and 189 ÷ 9 = 21 minutes."
+      ]
+    },
+    "II-15": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Ex. 1, p. 154",
+      "skill": "Median and mode",
+      "hints": [
+        "Put each group's times in order. With 9 values, the median is the 5th one. The mode is the value that shows up most often; if nothing repeats, there is no mode.",
+        "Example: 3, 5, 5, 6, 8, 9, 10, 11, 12 is in order. The 5th value is 8, so the median is 8. The mode is 5.",
+        "Group X: 12, 13, 14, 14, 14, 15, 17, 19, 44 → median 14, mode 14. Group Y: 14, 16, 17, 19, 21, 23, 25, 26, 28 → median 21, no mode."
+      ]
+    },
+    "II-16": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Ex. 1, p. 154",
+      "skill": "Outliers and the best center",
+      "hints": [
+        "Look at Group X's times. Is one of them far away from the rest? How does that one value affect the mean compared to the median?",
+        "Example: 5, 6, 6, 7, 31. The mean is 55 ÷ 5 = 11, but four of the five values are 7 or less. The outlier 31 pulls the mean up, so the median, 6, is more typical.",
+        "No. The 44 is an outlier that pulls the mean up to 18, and 7 of the 9 times are below 18. The median, 14 minutes, describes a typical time better."
+      ]
+    },
+    "II-17": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Ex. 2, p. 155",
+      "skill": "Five-number summary",
+      "hints": [
+        "The five numbers are the minimum, Q1, median, Q3 and maximum. Use your ordered lists from #15. With 9 values, leave the median out: Q1 is the median of the lowest 4, Q3 of the highest 4.",
+        "Example: 2, 4, 5, 7, 8, 9, 12. Minimum 2, median 7, Q1 = median of 2, 4, 5 = 4, Q3 = median of 8, 9, 12 = 9, maximum 12.",
+        "Group X: the lowest 4 are 12, 13, 14, 14, so Q1 = 13.5; the highest 4 are 15, 17, 19, 44, so Q3 = 18. That gives 12 ~ 13.5 ~ 14 ~ 18 ~ 44. Group Y: 14 ~ 16.5 ~ 21 ~ 25.5 ~ 28."
+      ]
+    },
+    "II-18": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Explore! Comparing Tests, p. 156",
+      "skill": "Range and interquartile range",
+      "hints": [
+        "Range = maximum − minimum. Interquartile range (IQR) = Q3 − Q1, the spread of the middle half. Use your five-number summaries from #17.",
+        "Example: for 2 ~ 4 ~ 7 ~ 9 ~ 12, the range is 12 − 2 = 10 and the IQR is 9 − 4 = 5.",
+        "Group X: range 44 − 12 = 32; IQR 18 − 13.5 = 4.5. Group Y: range 28 − 14 = 14; IQR 25.5 − 16.5 = 9."
+      ]
+    },
+    "II-19": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Ex. 3, p. 158",
+      "skill": "Mean absolute deviation",
+      "hints": [
+        "Use each group's mean from #14. Find how far each time is from the mean (distances are never negative), add the distances, then divide by 9.",
+        "Example: 5, 6, 8, 10, 11 has mean 8. The distances are 3, 2, 0, 2, 3, which add to 10, so MAD = 10 ÷ 5 = 2.",
+        "Group X (mean 18): distances 4, 1, 6, 26, 4, 1, 5, 3, 4 add to 54, so MAD = 54 ÷ 9 = 6 minutes. Group Y (mean 21): distances 2, 7, 5, 2, 7, 4, 0, 4, 5 add to 36, so MAD = 36 ÷ 9 = 4 minutes."
+      ]
+    },
+    "II-20": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · pp. 156–158",
+      "skill": "Comparing variability",
+      "hints": [
+        "Pick a measure of spread you found (range, IQR or MAD) and compare the two groups. A bigger number means the times are more spread out. Does the outlier 44 matter for that measure?",
+        "Example: \"Class A's IQR is 8 and Class B's is 3, so the middle half of Class A's scores is more spread out.\"",
+        "Sample: Group X has the larger MAD (6 vs. 4) because of the outlier 44, but Group Y has the larger IQR (9 vs. 4.5), so the middle half of Group Y's times is more spread out."
+      ]
+    },
+    "III": {
+      "lesson": "4.3",
+      "tag": "Lessons 4.3, 4.5 & 4.7 · pp. 123, 137, 148",
+      "skill": "Sector, two events, then a prediction",
+      "hints": [
+        "Three steps. Sector: hip-hop's fraction of 160 times 360°. Probability: find P(hip-hop) and P(speaker) from the tables and multiply them for \"hip-hop AND speaker\". Prediction: use that probability on all 1,000 students.",
+        "Example: 30 of 120 students like jazz, so the sector is 30/120 · 360° = 90°. If P(jazz) = 1/4 and P(headphones) = 2/5, then P(both) = 1/4 · 2/5 = 2/20 = 1/10. In a school of 800, predict 1/10 · 800 = 80 students.",
+        "Sector: 48/160 = x/360, so x = 108°. P(hip-hop) = 48/160 = 3/10. P(speaker) = 40/160 = 1/4. P(hip-hop and speaker) = 3/10 · 1/4 = 3/40. Prediction: 3/40 · 1,000 = 75 students."
+      ]
+    }
+  }
+}

@@ -1,0 +1,324 @@
+{
+  "entries": {
+    "I-1": {
+      "lesson": "4.1",
+      "tag": "Lesson 4.1 · Ex. 2, p. 112",
+      "skill": "Experimental probability",
+      "hints": [
+        "Experimental probability uses what really happened: (times it happened) ÷ (total tries). How many seeds sprouted, and how many seeds did Marcus plant?",
+        "Example: Lena shot 50 free throws and made 35. P(make) = 35/50 = 7/10. Count on top, total on the bottom, then simplify.",
+        "28 of the 40 seeds sprouted, so P(sprout) = 28/40. Divide top and bottom by 4: 28/40 = 7/10. The answer is B. (3/10 is the chance a seed does NOT sprout.)"
+      ]
+    },
+    "I-2": {
+      "lesson": "4.2",
+      "tag": "Lesson 4.2 · Ex. 2, p. 118",
+      "skill": "Predicting with probability",
+      "hints": [
+        "First count all the sections. Each color's probability is its sections ÷ all the sections. Then ask: what part of the 36 spins should be that color?",
+        "Example: a bag has 2 red and 8 blue chips. Draw (and replace) 30 times and you expect about 2/10 · 30 = 6 reds. Expected count = probability · number of tries.",
+        "There are 3 + 5 + 4 = 12 sections. Yellow: 3/12 · 36 = 9, not 12, so 2a is NO. Purple: 5/12 · 36 = 15, so 2b is YES. Orange: 4/12 · 36 = 12, so 2c is YES."
+      ]
+    },
+    "I-3": {
+      "lesson": "4.3",
+      "tag": "Lesson 4.3 · Ex. 2, p. 124",
+      "skill": "Probability from a pie chart",
+      "hints": [
+        "The pie chart is a sample of 40 students. What fraction of them chose birds? Expect about the same fraction in a bigger group.",
+        "Example: 12 of 60 people in a pie chart chose pizza, so P(pizza) = 12/60 = 1/5. For 250 people, predict 1/5 · 250 = 50.",
+        "Birds: 8 of 40 = 8/40 = 1/5. For 300 students: 1/5 · 300 = 60 students. The answer is C. (2,400 comes from 8 · 300, which forgets to divide by the 40 in the sample.)"
+      ]
+    },
+    "I-4": {
+      "lesson": "4.4",
+      "tag": "Lesson 4.4 · Ex. 1, p. 130",
+      "skill": "Listing outcomes",
+      "hints": [
+        "List every order for three children, using B and G (BBB, BBG, ...). Then mark the ones with exactly two G's, no more and no less.",
+        "Example: flip a coin 3 times. Outcomes: HHH, HHT, HTH, HTT, THH, THT, TTH, TTT (8 in all). Exactly one heads: HTT, THT, TTH, so 3.",
+        "There are 2 · 2 · 2 = 8 orders. Exactly two girls: BGG, GBG, GGB. That's 3, so the answer is B. (GGG has three girls, so it does not count.)"
+      ]
+    },
+    "I-5": {
+      "lesson": "4.4",
+      "tag": "Lesson 4.4 · Ex. 3, p. 131",
+      "skill": "Probability of two events",
+      "hints": [
+        "For two events, multiply: P(coin) · P(cube). The coin part is always 1/2. Write the cube part as a fraction out of 6. Watch for a number that isn't on the cube.",
+        "Example: flip a coin and spin a spinner numbered 1–4. P(heads, then a number greater than 1) = 1/2 · 3/4 = 3/8. Out of 8 equally likely pairs, 3 work.",
+        "A: 1/2 · 1/6 = 1/12 ✓. B: P(even) = 3/6 = 1/2, so 1/2 · 1/2 = 1/4 ✓. C: a cube has no 7, so it is 0 ✗. D: less than 3 is 1 or 2, so 1/2 · 2/6 = 1/6, not 1/3 ✗. E: greater than 4 is 5 or 6, so 1/2 · 2/6 = 1/6 ✓. Answer: A, B, E."
+      ]
+    },
+    "I-6": {
+      "lesson": "4.5",
+      "tag": "Lesson 4.5 · Ex. 3, p. 136",
+      "skill": "Counting with no repeats",
+      "hints": [
+        "After one student becomes president, can that same student also be vice president? How many students are left to choose from?",
+        "Example: 6 runners race for gold and silver. Any of the 6 can win gold, then 5 are left for silver: 6 · 5 = 30 ways. Each place has one fewer choice, because nobody wins twice.",
+        "8 students can be president. That student is out, so 7 can be vice president. 8 · 7 = 56 ways, answer C. (64 = 8 · 8 would let the same student hold both offices.)"
+      ]
+    },
+    "I-7": {
+      "lesson": "4.5",
+      "tag": "Lesson 4.5 · Ex. 2 & 5, pp. 136–137",
+      "skill": "Counting with repeats, then probability",
+      "hints": [
+        "How many choices does each digit have? Digits can repeat. How many codes are possible, and how many of them are 1111?",
+        "Example: a 3-letter tag where each letter is X or Y, and letters can repeat. 2 · 2 · 2 = 8 tags. Only one is XXX, so P(XXX) = 1/8.",
+        "Each of the 4 digits has 3 choices (1, 2 or 3): 3 · 3 · 3 · 3 = 81 codes. Only one is 1111, so P = 1/81. The answer is A. (1/12 comes from 3 · 4, which adds the choices instead of multiplying them.)"
+      ]
+    },
+    "I-8": {
+      "lesson": "4.6",
+      "tag": "Lesson 4.6 · Ex. 1, p. 144",
+      "skill": "Random vs. biased samples",
+      "hints": [
+        "A fair sample gives every student at the school the same chance to be picked. Which choices only reach a certain kind of student?",
+        "Example: to learn which new park game kids want, asking only the soccer team is biased: they like soccer. Drawing names from a list of all kids in town is fair.",
+        "The cooking club already loves food, the suggestion box only gets volunteers, and eighth graders leave out the other grades. Drawing 60 names from a list of all students is fair, so the answer is B."
+      ]
+    },
+    "I-9": {
+      "lesson": "4.7",
+      "tag": "Lesson 4.7 · Ex. 2, p. 149",
+      "skill": "Strong and weak inferences",
+      "hints": [
+        "Check each statement against the numbers. The weakest inference is the one the data does NOT support. For \"more than half\", find half of 60 first.",
+        "Example: 50 students chose a color: blue 22, red 18, green 10. \"Blue is most popular\" is strong. \"Most students chose blue\" is weak, because 22 is less than half of 50 (25).",
+        "A: summer's 27 is the most ✓. B: fall 9 = winter 9 ✓. C: spring 15 > winter 9 ✓. D: half of 60 is 30, and 27 is less than 30 (only 45%) ✗. D is the weakest, so the answer is D."
+      ]
+    },
+    "I-10": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Ex. 3, p. 158",
+      "skill": "Mean absolute deviation",
+      "hints": [
+        "Mean absolute deviation (MAD) is how far the values are from the mean, on average. Both means are 33. Which set's values stay closer to 33?",
+        "Example: Set X runs from 48 to 52 and Set Y runs from 20 to 80, both with mean 50. Every value in X is within 2 of 50, but Y has values 30 away, so X has the smaller MAD.",
+        "Set P goes from 30 to 36, so every value is within 3 of 33. Set Q goes from 10 to 58, with values more than 20 away. Set P is less spread out, so it has the smaller MAD. The answer is A. (The equal means don't make the MADs equal.)"
+      ]
+    },
+    "I-11": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Ex. 1, p. 154",
+      "skill": "Comparing medians",
+      "hints": [
+        "The median is the middle value, but only after you put the numbers in order. With 7 values, the median is the 4th one.",
+        "Example: 8, 3, 6, 9, 5 in order is 3, 5, 6, 8, 9. The middle (3rd) value is 6, so the median is 6.",
+        "Ava in order: 9, 9, 10, 11, 12, 14, 15, median 11. Ben in order: 7, 8, 10, 12, 13, 13, 16, median 12. Ben's is 1 point greater, so the answer is B. (Taking the 4th number without sorting gives 10 and 10, which looks like D.)"
+      ]
+    },
+    "II-1": {
+      "lesson": "4.1",
+      "tag": "Lesson 4.1 · Ex. 1, p. 111",
+      "skill": "Probability of one outcome",
+      "hints": [
+        "Probability = (ways to get what you want) ÷ (all the possible outcomes). How many tiles show 12, and how many tiles are there?",
+        "Example: a bag has 20 cards numbered 1 to 20. P(7) = 1/20, because only one card is a 7.",
+        "Only one tile is numbered 12, out of 30 tiles. P(12) = 1/30."
+      ]
+    },
+    "II-2": {
+      "lesson": "4.1",
+      "tag": "Lesson 4.1 · Ex. 1, p. 111",
+      "skill": "Counting favorable outcomes",
+      "hints": [
+        "List the multiples of 5 from 1 to 30 and count them. Put that count over 30.",
+        "Example: cards 1 to 20. Multiples of 4: 4, 8, 12, 16, 20, so 5 cards. P(multiple of 4) = 5/20 = 1/4.",
+        "Multiples of 5: 5, 10, 15, 20, 25, 30. That's 6 tiles. P = 6/30 = 1/5."
+      ]
+    },
+    "II-3": {
+      "lesson": "4.1",
+      "tag": "Lesson 4.1 · Ex. 1, p. 111",
+      "skill": "Impossible events",
+      "hints": [
+        "Is there a tile numbered 35 in the bag? If something can't happen, what is its probability?",
+        "Example: a number cube has 1 to 6. P(rolling a 9) = 0/6 = 0. An impossible event always has probability 0.",
+        "The tiles only go up to 30, so no tile is 35. P(35) = 0/30 = 0. It is impossible."
+      ]
+    },
+    "II-4": {
+      "lesson": "4.1",
+      "tag": "Lesson 4.1 · Ex. 2, p. 112",
+      "skill": "Complement of an event",
+      "hints": [
+        "It's easier to count the multiples of 3 first. The tiles that are NOT multiples of 3 are all the rest.",
+        "Example: cards 1 to 20. Multiples of 4: 5 cards, so 15 are not. P(not a multiple of 4) = 15/20 = 3/4. Or: 1 − 1/4 = 3/4.",
+        "Multiples of 3 up to 30: 3, 6, 9, ..., 30, which is 10 tiles. Not multiples of 3: 30 − 10 = 20 tiles. P = 20/30 = 2/3."
+      ]
+    },
+    "II-5": {
+      "lesson": "4.1",
+      "tag": "Lesson 4.1 · Ex. 1, p. 111",
+      "skill": "Probability of each color",
+      "hints": [
+        "Add up all the markers first. Then write each color as a fraction of the total and simplify. Which one equals 1/3?",
+        "Example: a jar has 5 red, 10 blue and 15 white beads (30 total). P(blue) = 10/30 = 1/3, P(red) = 5/30 = 1/6, P(white) = 15/30 = 1/2. Blue has the 1/3 chance.",
+        "There are 8 + 4 + 12 = 24 markers. Red: 8/24 = 1/3. Yellow: 4/24 = 1/6. Green: 12/24 = 1/2. Red is the color with a 1/3 chance, because 8 is one third of 24."
+      ]
+    },
+    "II-6": {
+      "lesson": "4.2",
+      "tag": "Lesson 4.2 · Ex. 1, p. 117",
+      "skill": "Capture-recapture proportion",
+      "hints": [
+        "The tagged part of the second catch should match the tagged part of the whole pond. Set up tagged/caught = 12/n, where n is all the turtles.",
+        "Example: a ranger tags 20 fish. Later she catches 25 and 5 are tagged. 5/25 = 20/n, so 5n = 500 and n = 100 fish.",
+        "4/30 = 12/n. Cross multiply: 4n = 30 · 12 = 360, so n = 90. Check: 4/30 = 2/15 and 12/90 = 2/15. About 90 turtles. (Don't put the 12 over 30; the 12 tagged turtles belong with the whole pond.)"
+      ]
+    },
+    "II-7": {
+      "lesson": "4.2",
+      "tag": "Lesson 4.2 · Ex. 2, p. 118",
+      "skill": "Predicting with probability",
+      "hints": [
+        "Which numbers on a cube are less than 3? Find that probability, then multiply it by the 54 rolls.",
+        "Example: roll a cube 30 times. Numbers greater than 4 are 5 and 6, so P = 2/6 = 1/3. Predict 1/3 · 30 = 10 times.",
+        "Less than 3 means 1 or 2 (3 itself doesn't count). P = 2/6 = 1/3. Predict 1/3 · 54 = 18 times."
+      ]
+    },
+    "II-8": {
+      "lesson": "4.3",
+      "tag": "Lesson 4.3 · Ex. 3, p. 125",
+      "skill": "Probability from a histogram",
+      "hints": [
+        "Each bar's height is how many students are in that time range. Add all the bars for the total. Then use only the 20–29 bar for the probability.",
+        "Example: a histogram has bars of 4, 6, 7 and 3 (20 students). P(a student is in the third bar) = 7/20.",
+        "Bars: 3 + 8 + 12 + 5 + 2 = 30 students. The 20–29 bar is 12, so P = 12/30 = 2/5."
+      ]
+    },
+    "II-9": {
+      "lesson": "4.4",
+      "tag": "Lesson 4.4 · Ex. 1, p. 130",
+      "skill": "Counting with a tree diagram",
+      "hints": [
+        "Each bread can go with each filling. Make a branch for every bread, then a branch for every filling coming off it.",
+        "Example: 2 shirts (red, blue) and 3 pants (jeans, shorts, khakis). Red–jeans, red–shorts, red–khakis, blue–jeans, blue–shorts, blue–khakis: 2 · 3 = 6 outfits.",
+        "3 breads · 4 fillings = 12 sandwiches: white–turkey, white–ham, white–tuna, white–cheese, wheat–turkey, wheat–ham, wheat–tuna, wheat–cheese, rye–turkey, rye–ham, rye–tuna, rye–cheese. (3 + 4 = 7 would forget that each bread pairs with every filling.)"
+      ]
+    },
+    "II-10": {
+      "lesson": "4.5",
+      "tag": "Lesson 4.5 · Ex. 5, p. 137",
+      "skill": "Independent events in a row",
+      "hints": [
+        "What is the chance of guessing one question right? Each question is separate, so multiply that chance once for each question.",
+        "Example: guess on 3 true/false questions. Each is 1/2, so P(all right) = 1/2 · 1/2 · 1/2 = 1/8.",
+        "Each question: 1/4. Four questions: 1/4 · 1/4 · 1/4 · 1/4 = 1/256. (1/16 only covers two questions.)"
+      ]
+    },
+    "II-11": {
+      "lesson": "4.5",
+      "tag": "Lesson 4.5 · Ex. 4, p. 137",
+      "skill": "Probability of two events",
+      "hints": [
+        "Find P(spin a 4) and P(draw an even card) separately, then multiply them.",
+        "Example: spin a 1–4 spinner and draw from cards 1–6. P(3 and an odd card) = 1/4 · 3/6 = 3/24 = 1/8.",
+        "P(4) = 1/5. Even cards: 2, 4, 6, 8, 10, so P(even) = 5/10 = 1/2. P(both) = 1/5 · 5/10 = 5/50 = 1/10."
+      ]
+    },
+    "II-12": {
+      "lesson": "4.6",
+      "tag": "Lesson 4.6 · Ex. 1, p. 144",
+      "skill": "Spotting a biased sample",
+      "hints": [
+        "Who did Mr. Ortiz ask? Do those students like books the same way as everyone at the school?",
+        "Example: asking people at a pizza shop what dinner the town likes best is biased: they already chose pizza. A fair survey picks people at random from the whole town.",
+        "No, it isn't accurate. The sample is biased: graphic novel club members are much more likely to pick graphic novels than other students. He should survey a random sample of students from the whole school."
+      ]
+    },
+    "II-13": {
+      "lesson": "4.7",
+      "tag": "Lesson 4.7 · Ex. 2, p. 149",
+      "skill": "Inferences from two samples",
+      "hints": [
+        "The samples have different totals (60 and 70), so compare percents, not raw counts. Look for what is true in BOTH samples.",
+        "Example: Sample 1: 20 of 50 chose red (40%). Sample 2: 30 of 60 chose red (50%). Red was the top pick in both, so a strong inference is \"Red is the most popular color.\"",
+        "Pizza: 24/60 = 40% and 35/70 = 50%, the most in both, so pizza is the most popular lunch. Salad: 6/60 = 10% and 10/70 ≈ 14%, so salad is one of the least popular. Tacos: 30% and about 21%, second in both samples."
+      ]
+    },
+    "II-14": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Ex. 1, p. 153",
+      "skill": "Finding the mean",
+      "hints": [
+        "Mean = (sum of all the values) ÷ (how many values). Each class has 10 values.",
+        "Example: 4, 6, 7, 3, 5. Sum = 25, and there are 5 values, so the mean is 25 ÷ 5 = 5.",
+        "Class A: 8 + 2 + 12 + 5 + 9 + 4 + 12 + 6 + 5 + 7 = 70, and 70/10 = 7 books. Class B: 9 + 6 + 10 + 8 + 7 + 9 + 11 + 8 + 12 + 10 = 90, and 90/10 = 9 books."
+      ]
+    },
+    "II-15": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Ex. 1, p. 154",
+      "skill": "Finding the median",
+      "hints": [
+        "Put each list in order first. With 10 values there are two middle numbers (the 5th and 6th), so the median is halfway between them.",
+        "Example: 3, 4, 6, 8, 9, 10. The middle two are 6 and 8, so the median is (6 + 8) ÷ 2 = 7.",
+        "Class A in order: 2, 4, 5, 5, 6, 7, 8, 9, 12, 12. Middle two are 6 and 7, so the median is 6.5. Class B in order: 6, 7, 8, 8, 9, 9, 10, 10, 11, 12. Middle two are 9 and 9, so the median is 9."
+      ]
+    },
+    "II-16": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Ex. 1, p. 153",
+      "skill": "Comparing means",
+      "hints": [
+        "Use the means you found in #14. How far apart are they?",
+        "Example: Team X's mean score is 15 and Team Y's is 12. Team X scored 15 − 12 = 3 more points on average.",
+        "Yes, she is right. Class B's mean is 9 and Class A's mean is 7, and 9 − 7 = 2 books."
+      ]
+    },
+    "II-17": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Ex. 2, p. 155",
+      "skill": "Five-number summary",
+      "hints": [
+        "The five numbers are: minimum, Q1, median, Q3, maximum. Q1 is the median of the lower half and Q3 is the median of the upper half.",
+        "Example: 1, 3, 4, 6, 7, 8, 9, 11. Median = (6 + 7) ÷ 2 = 6.5. Lower half 1, 3, 4, 6 gives Q1 = 3.5. Upper half 7, 8, 9, 11 gives Q3 = 8.5. Summary: 1 ~ 3.5 ~ 6.5 ~ 8.5 ~ 11.",
+        "Class A: lower half 2, 4, 5, 5, 6 gives Q1 = 5; upper half 7, 8, 9, 12, 12 gives Q3 = 9. Summary: 2 ~ 5 ~ 6.5 ~ 9 ~ 12. Class B: lower half 6, 7, 8, 8, 9 gives Q1 = 8; upper half 9, 10, 10, 11, 12 gives Q3 = 10. Summary: 6 ~ 8 ~ 9 ~ 10 ~ 12."
+      ]
+    },
+    "II-18": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Explore! Comparing Tests, p. 156",
+      "skill": "Interquartile range",
+      "hints": [
+        "Interquartile range (IQR) = Q3 − Q1. Use the five-number summaries from #17.",
+        "Example: a summary of 1 ~ 3.5 ~ 6.5 ~ 8.5 ~ 11 has IQR = 8.5 − 3.5 = 5.",
+        "Class A: 9 − 5 = 4. Class B: 10 − 8 = 2. (Max − min is the range, not the IQR.)"
+      ]
+    },
+    "II-19": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Ex. 3, p. 158",
+      "skill": "Mean absolute deviation",
+      "hints": [
+        "Find how far each value is from the mean (always positive). Add those distances, then divide by 10.",
+        "Example: 2, 4, 6, 8, mean 5. Distances: 3, 1, 1, 3. Sum 8, and 8 ÷ 4 = 2, so the MAD is 2.",
+        "Class A (mean 7): distances 1, 5, 5, 2, 2, 3, 5, 1, 2, 0. Sum 26, MAD = 26/10 = 2.6 books. Class B (mean 9): distances 0, 3, 1, 1, 2, 0, 2, 1, 3, 1. Sum 14, MAD = 14/10 = 1.4 books."
+      ]
+    },
+    "II-20": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · pp. 156–158",
+      "skill": "Comparing variability",
+      "hints": [
+        "Pick one measure of spread (MAD or IQR). A bigger number means the data is more spread out.",
+        "Example: Town X's rainfall has a MAD of 3 inches and Town Y's has a MAD of 1 inch, so Town X's rainfall varies more from year to year.",
+        "Class A's MAD is 2.6 and Class B's is 1.4, so the number of books read in Class A is more spread out. (Or: Class A's IQR of 4 is twice Class B's IQR of 2.)"
+      ]
+    },
+    "III": {
+      "lesson": "4.5",
+      "tag": "Lessons 4.5 & 4.7 · Ex. 4, p. 137; Ex. 1, p. 148",
+      "skill": "Two events, then a prediction",
+      "hints": [
+        "Find two probabilities from Maya's tables: P(basketball) and P(juice). Multiply them for \"basketball AND juice\". Then use that probability on all 500 students.",
+        "Example: in a sample, P(soccer) = 1/4 and P(water) = 2/5. P(both) = 1/4 · 2/5 = 2/20 = 1/10. In a school of 800, predict 1/10 · 800 = 80 students.",
+        "P(basketball) = 48/120 = 2/5. P(juice) = 36/120 = 3/10. P(both) = 2/5 · 3/10 = 6/50 = 3/25. Prediction: 3/25 · 500 = 60 students. (Don't add 2/5 + 3/10; \"both\" means multiply.)"
+      ]
+    }
+  }
+}
