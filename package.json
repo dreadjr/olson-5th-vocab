@@ -11,6 +11,8 @@
     "new": "node scripts/new-set.mjs",
     "preview": "node scripts/build.mjs && node scripts/serve.mjs",
     "deploy": "node scripts/build.mjs && bunx firebase-tools deploy --only hosting --project kok-5th",
-    "math:pdf": "node scripts/render-math.mjs"
+    "math:pdf": "node scripts/render-math.mjs",
+    "tutor": "node scripts/build.mjs && node scripts/tutor.mjs",
+    "test": "node --test scripts/"
   }
 }
