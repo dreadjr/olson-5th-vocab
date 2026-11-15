@@ -232,7 +232,7 @@
   const close = el('button', 'calc-close', '×');
   close.type = 'button';
   close.setAttribute('aria-label', 'Close calculator');
-  head.append(el('b', '', 'Calculator'), el('span', 'calc-tip', 'Enter: new line · / makes a fraction · → steps out of it'), close);
+  head.append(el('b', '', 'Calculator'), el('span', 'calc-tip', 'Enter or + for a new line · / for a fraction'), close);
   const body = el('div', 'calc-body');
   const foot = el('div', 'calc-foot', 'mean  median  range  mad  q1  q3  iqr  min  max  sum  sqrt  round  ·  “of”  “as %”  ans  ·  18/45 = x/360');
   panel.append(head, body, foot);
@@ -350,6 +350,17 @@
       return mf;
     };
     for (const l of lines) add(l);
+    // "+ New line" for touch screens, where Enter is hard to find.
+    const plus = el('button', 'calc-add', '+ New line');
+    plus.type = 'button';
+    plus.addEventListener('click', () => {
+      const mf = add('');
+      mf.focus();
+      requestAnimationFrame(() => { if (!mf.hasFocus()) mf.focus(); });
+      mf.scrollIntoView({ block: 'nearest' });
+      save(); render();
+    });
+    body.append(plus);
     render();
     // Keep the phone drawer above MathLive's on-screen keyboard.
     window.mathVirtualKeyboard?.addEventListener('geometrychange', () => {

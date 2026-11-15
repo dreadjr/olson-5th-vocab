@@ -181,12 +181,15 @@ a.lesson-chip:hover{color:var(--accent);border-color:var(--accent)}
 .calc{position:fixed;z-index:7;display:flex;flex-direction:column;background:var(--paper);color:var(--ink);border:1px solid var(--rule);box-shadow:0 6px 24px rgba(0,0,0,.18);
   right:16px;top:72px;bottom:16px;width:460px;border-radius:8px}
 .calc-head{display:flex;align-items:center;gap:8px;padding:8px 8px 8px 14px;border-bottom:1px solid var(--rule);font:600 13px var(--display)}
-.calc-tip{flex:1;color:var(--muted);font-weight:400}
+.calc-tip{flex:1;min-width:0;color:var(--muted);font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .calc-close{margin-left:auto}
 .calc-close{width:44px;height:44px;border:0;background:none;color:var(--ink);font:400 26px/1 var(--display);cursor:pointer;border-radius:6px}
 .calc-body{flex:1;min-height:0}
 .calc-body.plain{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}
 .calc-body.rows{overflow:auto;background:linear-gradient(to right,transparent 60%,var(--tint) 60%)}
+.calc-add{display:block;margin:8px 10px 12px;min-height:44px;padding:0 16px;border:1.5px dashed var(--rule);border-radius:8px;background:var(--paper);color:var(--accent);font:700 14px var(--display);cursor:pointer}
+.calc-add:hover{border-color:var(--accent)}
+.calc-add:focus-visible{outline:3px solid var(--key);outline-offset:2px}
 .calc-loading{padding:16px;color:var(--muted);font:14px var(--display)}
 .calc-line{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);align-items:center;border-bottom:1px solid var(--tint);min-height:44px}
 .calc-line math-field{display:block;width:100%;min-width:0;font-size:19px;padding:4px 10px;border:0;border-radius:0;background:transparent;color:var(--ink);outline:none;--caret-color:var(--accent);--selection-background-color:var(--tint)}
