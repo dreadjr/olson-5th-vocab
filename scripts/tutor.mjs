@@ -67,5 +67,5 @@ const server = createServer(async (req, res) => {
 });
 
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Tutor at http://${hostname().replace(/\.local$/, '')}.local:${server.address().port}/  (using ${cliCommand(process.env).cmd})`);
+  console.log(`Tutor at http://${hostname().split('.')[0]}.local:${server.address().port}/  (using ${cliCommand(process.env).cmd})`);
 });

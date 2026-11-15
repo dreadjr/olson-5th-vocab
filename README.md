@@ -114,3 +114,17 @@ After adding or changing a form, render its PDFs with the local Chrome and commi
 bun run math:pdf                 # every form
 bun run math:pdf b4-form-b       # just one
 ```
+
+### Help and the local tutor
+
+A form with a `help.json` next to its `index.html` gets a **Help** button on each question. The button shows a hint, then a similar example, then a walkthrough of this problem, plus the lesson's classroom links from `math/lessons.json`. `bun run check` fails if a form's `help.json` doesn't match its questions. Block 4 Form C has hints so far.
+
+To let your kid type questions to an AI tutor, run it on your Mac and open the address it prints from any device on the home wifi:
+
+```sh
+bun run tutor                    # http://<your-mac>.local:8080/ ; uses the claude CLI
+TUTOR_CLI=codex bun run tutor    # use Codex instead
+TUTOR_MODEL=opus bun run tutor   # pick the Claude model (default: sonnet)
+```
+
+The tutor runs your CLI with no tools and is told not to give away more than the step the student is on. Every hint opened and question asked is added to `logs/tutor.jsonl` (not committed). On the public site, the hints and links still work, and the Ask box is hidden.

@@ -22,6 +22,8 @@ Where the material behind `math/` (Core Focus on Proportions & Probability, SMC 
 
 ## Block 4 ~ Probability & Random Sampling
 
+Every lesson's classroom links (video, slides, student text, worksheet, IXL) are also in `math/lessons.json`, which the Help panel uses.
+
 | Lesson | Title | Page | Student text |
 |---|---|---|---|
 | 4.1 | Probability | 110 | |
