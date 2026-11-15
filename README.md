@@ -117,7 +117,7 @@ bun run math:pdf b4-form-b       # just one
 
 ### Help and the local tutor
 
-A form with a `help.json` next to its `index.html` gets a **Help** button on each question. The button shows a hint, then a similar example, then a walkthrough of this problem, plus the lesson's classroom links from `math/lessons.json`. `bun run check` fails if a form's `help.json` doesn't match its questions. Each of those questions also gets an answer box. A **Progress** bar at the top counts answered, right, to-fix and unchecked questions, with a list of every checked answer (newest first, each linking to its question), and each question number gets a mark: ✓ right, ✗ not yet, • answered but not checked. All of this is kept in that browser only. Block 4 Form C has hints so far.
+A form with a `help.json` next to its `index.html` gets a **Help** button on each question. The button shows a hint, then a similar example, then a walkthrough of this problem, plus the lesson's classroom links from `math/lessons.json`. `bun run check` fails if a form's `help.json` doesn't match its questions. Each of those questions also gets an answer box. A **Progress** bar at the top counts answered, right, to-fix and unchecked questions, with a list of every checked answer (newest first, each linking to its question), and each question number gets a mark: ✓ right, ✗ not yet, • answered but not checked. A **Lessons covered** row of checkboxes hides the questions from lessons the class hasn't reached yet; the choice applies to every form and also to printing. All of this is kept in that browser only. Block 4 Form C has hints so far.
 
 To let your kid type questions to an AI tutor, run it on your Mac and open the address it prints from any device on the home wifi:
 

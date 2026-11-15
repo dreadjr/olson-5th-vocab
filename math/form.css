@@ -110,7 +110,13 @@ body.show .work{min-height:0}
 .mark{display:inline-block;min-width:1em;font-weight:700;color:var(--muted)}
 .mark:empty{display:none}
 .task>.mark{font-size:20px}
-@media print{.helpbtn,.help,.answer,.progress,.mark{display:none!important}}
+/* Lesson filter (math/help.js) */
+[hidden]{display:none!important}
+.lessons{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin:0 0 10px;padding:8px 12px;border:1px solid var(--rule);border-radius:3px;font:600 14px var(--display)}
+.lessons legend{padding:0 4px;color:var(--muted)}
+.lessons label{display:inline-flex;align-items:center;gap:4px;min-height:32px;cursor:pointer}
+.lessons input{width:18px;height:18px;accent-color:var(--accent)}
+@media print{.helpbtn,.help,.answer,.progress,.mark,.lessons{display:none!important}}
 .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;border-top:1px solid var(--rule);margin-top:18px;padding-top:6px;font-size:11px;color:var(--muted)}
 
 @page{size:letter;margin:.5in}

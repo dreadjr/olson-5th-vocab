@@ -31,7 +31,7 @@
   const MARK_TEXT = { right: 'right', wrong: 'not yet right', answered: 'answered, not checked' };
 
   // Question ids: same rule as scripts/help-check.mjs questionIds().
-  const questions = [];
+  const questions = [], qEls = {}, qLesson = {};
   document.querySelectorAll('section.part').forEach((part, i) => {
     part.querySelectorAll('.q, .task').forEach((q) => {
       const n = q.querySelector(':scope > .n');
@@ -39,6 +39,7 @@
       const entry = id && help.entries?.[id];
       if (!entry) return;
       questions.push(id);
+      qEls[id] = q; qLesson[id] = entry.lesson;
       q.id = `q-${id}`;
       labels[id] = id.includes('-') ? `Part ${id.replace('-', ' #')}` : `Part ${id}`;
       marks[id] = el('span', 'mark');
@@ -54,13 +55,47 @@
   const summary = el('summary');
   const list = el('ul', 'progress-list');
   panel.append(summary, list);
-  document.querySelector('section.part')?.before(panel);
+  document.querySelector('section.part')?.before(lessonFilter(), panel);
   render();
 
+  // Lessons the class hasn't covered yet: hidden on every form, remembered in this browser.
+  // shortcut: a question is filed under its first lesson only (help.json "lesson"); fine while tags name one lesson.
+  function lessonFilter() {
+    let hidden = new Set();
+    try { hidden = new Set(JSON.parse(localStorage.getItem('hide-lessons')) || []); } catch { /* storage blocked */ }
+    const box = el('fieldset', 'lessons');
+    box.append(el('legend', '', 'Lessons covered'));
+    const apply = () => {
+      for (const id of questions) qEls[id].hidden = hidden.has(qLesson[id]);
+      document.querySelectorAll('section.part').forEach((part) => {
+        const qs = [...part.querySelectorAll('.q, .task')];
+        part.hidden = qs.length > 0 && qs.every((q) => q.hidden);
+      });
+      render();
+    };
+    for (const n of [...new Set(questions.map((id) => qLesson[id]))].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))) {
+      const label = el('label');
+      const cb = el('input');
+      cb.type = 'checkbox';
+      cb.checked = !hidden.has(n);
+      cb.addEventListener('change', () => {
+        cb.checked ? hidden.delete(n) : hidden.add(n);
+        try { localStorage.setItem('hide-lessons', JSON.stringify([...hidden])); } catch { /* storage blocked */ }
+        apply();
+      });
+      label.title = lessons[n]?.title || '';
+      label.append(cb, ` ${n}`);
+      box.append(label);
+    }
+    queueMicrotask(apply); // after the progress panel exists
+    return box;
+  }
+
   function render() {
-    const by = (st) => questions.filter((id) => progress[id]?.status === st).length;
-    const done = questions.filter((id) => progress[id]?.status).length;
-    summary.textContent = `Progress: ${done} of ${questions.length} answered · ${by('right')} right · ${by('wrong')} to fix · ${by('answered')} not checked`;
+    const shown = questions.filter((id) => !qEls[id].hidden);
+    const by = (st) => shown.filter((id) => progress[id]?.status === st).length;
+    const done = shown.filter((id) => progress[id]?.status).length;
+    summary.textContent = `Progress: ${done} of ${shown.length} answered · ${by('right')} right · ${by('wrong')} to fix · ${by('answered')} not checked`;
     for (const id of questions) {
       const st = progress[id]?.status || '';
       marks[id].textContent = MARK[st] || '';
