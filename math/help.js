@@ -1,6 +1,7 @@
 // Help panel for review forms: three hints in order (nudge, similar example, this problem) plus lesson links.
 // Reads ./help.json and ../lessons.json; does nothing on pages without them. When the local tutor
-// (bun run tutor) is serving the page, an Ask box sends questions to /api/ask.
+// (bun run tutor) is serving the page, an Ask box sends questions to /api/ask, and each question's
+// answer box gets a Check button (/api/check). Typed answers are remembered in this browser.
 (async () => {
   const page = location.pathname.split('/').filter(Boolean).at(-1) || '';
   let help, lessons;
@@ -25,7 +26,10 @@
       const n = q.querySelector(':scope > .n');
       const id = q.classList.contains('task') ? ROMAN[i] : n && `${ROMAN[i]}-${parseInt(n.textContent, 10)}`;
       const entry = id && help.entries?.[id];
-      if (entry) attach(q.classList.contains('task') ? q : q.lastElementChild, id, entry);
+      if (!entry) return;
+      const host = q.classList.contains('task') ? q : q.lastElementChild;
+      host.append(answerBox(id, host, q.classList.contains('task')));
+      attach(host, id, entry);
     });
   });
 
@@ -72,6 +76,55 @@
     });
   }
 
+  // The question's own text, without the key, help or answer box, for the tutor.
+  function questionText(host) {
+    const copy = host.cloneNode(true);
+    copy.querySelectorAll('.ans, .help, .helpbtn, .answer').forEach((x) => x.remove());
+    return copy.textContent.replace(/\s+/g, ' ').trim();
+  }
+
+  function answerBox(id, host, big) {
+    const box = el('form', 'answer');
+    const input = el(big ? 'textarea' : 'input');
+    if (big) input.rows = 3;
+    input.maxLength = 500;
+    input.placeholder = 'Your answer';
+    input.setAttribute('aria-label', `Your answer to ${id}`);
+    const saved = `answer:${page}:${id}`;
+    try { input.value = localStorage.getItem(saved) || ''; } catch { /* storage blocked */ }
+    const result = el('div', 'answer-result');
+    result.setAttribute('aria-live', 'polite');
+    input.addEventListener('input', () => {
+      try { localStorage.setItem(saved, input.value); } catch { /* storage blocked */ }
+      box.classList.remove('right', 'wrong');
+      result.textContent = '';
+    });
+    box.append(input);
+    if (!local) { box.addEventListener('submit', (e) => e.preventDefault()); return box; }
+    const check = el('button', '', 'Check');
+    check.type = 'submit';
+    box.append(check, result);
+    box.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const answer = input.value.trim();
+      if (!answer || check.disabled) return;
+      check.disabled = true;
+      box.classList.remove('right', 'wrong');
+      result.textContent = 'Checking…';
+      try {
+        const r = await post('/api/check', { page, id, question: questionText(host), answer });
+        if (!r.ok) throw new Error();
+        const { correct, feedback } = await r.json();
+        box.classList.add(correct ? 'right' : 'wrong');
+        result.textContent = '';
+        result.append(el('b', '', correct ? 'Right! ' : 'Not yet. '), feedback);
+      } catch {
+        result.textContent = "The checker isn't available right now.";
+      } finally { check.disabled = false; }
+    });
+    return box;
+  }
+
   function askBox(id, getStep, host) {
     const box = el('form', 'help-ask');
     const input = el('textarea');
@@ -86,12 +139,10 @@
       e.preventDefault();
       const message = input.value.trim();
       if (!message || send.disabled) return;
-      const copy = host.cloneNode(true);
-      copy.querySelectorAll('.ans, .help, .helpbtn').forEach((x) => x.remove());
       send.disabled = true;
       reply.textContent = '…';
       try {
-        const r = await post('/api/ask', { page, id, step: getStep(), question: copy.textContent.replace(/\s+/g, ' ').trim(), message });
+        const r = await post('/api/ask', { page, id, step: getStep(), question: questionText(host), message });
         if (!r.ok) throw new Error(await r.text());
         reply.textContent = '';
         const reader = r.body.pipeThrough(new TextDecoderStream()).getReader();

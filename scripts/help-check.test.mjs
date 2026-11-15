@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { questionIds, helpErrors } from './help-check.mjs';
+import { questionIds, helpErrors, answerKeys } from './help-check.mjs';
 
 const html = readFileSync(new URL('../math/b4-form-c/index.html', import.meta.url), 'utf8');
 const lessons = { '4.5': {} };
@@ -15,9 +15,19 @@ test('questionIds reads Form C', () => {
 });
 
 test('helpErrors', () => {
-  const page = '<section class="part"><div class="q"><span class="n">1.</span></div><div class="q"><span class="n">2.</span></div></section>';
+  const page = '<section class="part"><div class="q"><span class="n">1.</span><div class="ans">a</div></div><div class="q"><span class="n">2.</span><div class="ans">b</div></div></section>';
   assert.deepEqual(helpErrors(page, { entries: { 'I-1': entry, 'I-2': entry } }, lessons), []);
   assert.ok(helpErrors(page, { entries: { 'I-1': entry } }, lessons).some((e) => e.includes('I-2')));
   assert.ok(helpErrors(page, { entries: { 'I-1': entry, 'I-2': { ...entry, hints: ['a', 'b'] } } }, lessons).length);
   assert.ok(helpErrors(page, { entries: { 'I-1': entry, 'I-2': { ...entry, lesson: '9.9' } } }, lessons).length);
+});
+
+test('answerKeys pairs each question with its answer', () => {
+  const keys = answerKeys(html);
+  assert.equal(Object.keys(keys).length, 32);
+  assert.match(keys['I-6'], /72/);
+  assert.match(keys.III, /90 students/);
+  assert.match(Object.values(keys).find((k) => k.includes('40 plants')), /40 plants \/ .*7/);
+  const page = '<section class="part"><div class="q"><span class="n">1.</span><div class="ans">x</div></div><div class="q"><span class="n">2.</span></div></section>';
+  assert.ok(helpErrors(page, { entries: {} }, lessons).some((e) => e.includes('answer')));
 });

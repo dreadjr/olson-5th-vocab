@@ -13,8 +13,20 @@ export function questionIds(html) {
   ]);
 }
 
+/** Each question id's answer-key HTML: every .ans between its number and the next question
+ *  (a question with parts a and b has two), joined with " / ". Same ids as questionIds(). */
+export function answerKeys(html) {
+  return Object.fromEntries(html.split('<section class="part">').slice(1).flatMap((part, i) => {
+    const marks = [...part.matchAll(/<span class="n">(\d+)\.<\/span>|class="task"/g)];
+    return marks.map((m, j) => [m[1] ? `${ROMAN[i]}-${m[1]}` : ROMAN[i],
+      [...part.slice(m.index, marks[j + 1]?.index).matchAll(/<div class="ans">([\s\S]*?)<\/div>/g)].map((a) => a[1]).join(' / ')]);
+  }).filter(([, key]) => key));
+}
+
 export function helpErrors(html, help, lessons) {
   const ids = questionIds(html), entries = help?.entries || {}, errs = [];
+  const keys = answerKeys(html);
+  for (const id of ids) if (!keys[id]) errs.push(`${id}: no answer (.ans)`);
   for (const id of ids) if (!entries[id]) errs.push(`${id}: no help entry`);
   for (const [id, e] of Object.entries(entries)) {
     if (!ids.includes(id)) errs.push(`${id}: not a question on the page`);

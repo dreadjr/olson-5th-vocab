@@ -5,7 +5,7 @@ import { mkdtempSync, writeFileSync, chmodSync } from 'node:fs';
 import { connect } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { validateAsk, buildPrompt, cliCommand } from './tutor-lib.mjs';
+import { validateAsk, validateCheck, buildPrompt, buildCheckPrompt, parseCheck, cliCommand } from './tutor-lib.mjs';
 
 const ok = { page: 'b4-form-c', id: 'I-6', step: 1, question: 'q', message: 'why 72?' };
 
@@ -92,5 +92,34 @@ test('bad requests do not crash the server', async () => {
     });
     await new Promise((r) => setTimeout(r, 200));
     assert.equal((await fetch(`${t.base}/api/health`)).status, 200);
+  } finally { t.stop(); }
+});
+
+test('validateCheck', () => {
+  const c = { page: 'b4-form-c', id: 'I-6', question: 'q', answer: ' C ' };
+  assert.deepEqual(validateCheck(c), { ...c, answer: 'C' });
+  for (const bad of [{ answer: '' }, { answer: 'x'.repeat(501) }, { id: 'nope' }]) assert.ok(validateCheck({ ...c, ...bad }).error, JSON.stringify(bad));
+  assert.ok(validateCheck(null).error);
+});
+
+test('buildCheckPrompt gives the key and keeps it secret', () => {
+  const p = buildCheckPrompt({ key: 'C (72)', question: 'Nine dogs', answer: '81' });
+  assert.ok(p.includes('C (72)') && p.includes('81'));
+  assert.match(p.trim().split('\n').at(-1), /RIGHT|NOT YET/);
+});
+
+test('parseCheck', () => {
+  assert.deepEqual(parseCheck('RIGHT\nNice, 9 · 8.'), { correct: true, feedback: 'Nice, 9 · 8.' });
+  assert.deepEqual(parseCheck('NOT YET\nCan the same dog win twice?'), { correct: false, feedback: 'Can the same dog win twice?' });
+  assert.equal(parseCheck('Sure! The answer is 72.'), null);
+});
+
+test('check grades with the key from disk', async () => {
+  // The fake CLI answers RIGHT only if the real key (72) is in the prompt.
+  const t = await startTutor('grep -q 72 && printf "RIGHT\\nYes, 9 · 8 = 72." || echo "NOT YET"');
+  try {
+    const r = await fetch(`${t.base}/api/check`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ page: 'b4-form-c', id: 'I-6', question: 'q', answer: 'C' }) });
+    assert.equal(r.status, 200);
+    assert.deepEqual(await r.json(), { correct: true, feedback: 'Yes, 9 · 8 = 72.' });
   } finally { t.stop(); }
 });

@@ -7,7 +7,7 @@ import { hostname, tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { ROOT } from './lib.mjs';
 import { serveDist } from './static.mjs';
-import { validateAsk, loadHelp, buildPrompt, cliCommand } from './tutor-lib.mjs';
+import { validateAsk, validateCheck, loadHelp, loadKey, buildPrompt, buildCheckPrompt, parseCheck, cliCommand } from './tutor-lib.mjs';
 
 const PORT = process.env.PORT === undefined ? 8080 : Number(process.env.PORT);
 const LOG_DIR = join(ROOT, 'logs');
@@ -31,31 +31,50 @@ async function readJson(req) {
 
 const send = (res, code, text) => { res.writeHead(code, { 'content-type': 'text/plain; charset=utf-8' }); res.end(text); };
 
+/** Run the CLI on a prompt. Resolves the trimmed reply, or null if it failed, timed out or printed nothing.
+ *  Only a clean exit counts: the CLI prints its errors (usage limit, sign-in) on stdout too. */
+function runCli(prompt) {
+  return new Promise((resolve) => {
+    const { cmd, args } = cliCommand(process.env);
+    const child = spawn(cmd, args, { cwd: SANDBOX, stdio: ['pipe', 'pipe', 'ignore'] });
+    let out = '', done = false;
+    const finish = (ok) => {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      if (!ok) child.kill('SIGKILL');
+      resolve(ok ? out.trim() : null);
+    };
+    const timer = setTimeout(() => finish(false), TIMEOUT_MS);
+    child.on('error', () => finish(false)); // CLI not installed
+    child.stdout.on('data', (d) => { out += d; });
+    child.on('close', (code) => finish(code === 0 && out.trim() !== ''));
+    child.stdin.on('error', () => {});
+    child.stdin.end(prompt);
+  });
+}
+
 async function ask(req, res) {
   const a = validateAsk(await readJson(req));
   if (a.error) return send(res, 400, a.error);
   const entry = loadHelp(a.page)?.entries?.[a.id];
   if (!entry) return send(res, 400, 'unknown question');
+  const reply = await runCli(buildPrompt({ entry, ...a }));
+  if (!reply) return send(res, 503, UNAVAILABLE);
+  send(res, 200, reply);
+  log({ event: 'ask', page: a.page, id: a.id, step: a.step, message: a.message, reply });
+}
 
-  // The whole reply is buffered: the CLI prints its errors (usage limit, sign-in) on stdout too,
-  // so only a clean exit counts as an answer. Replies are a few sentences, so streaming gained little.
-  const { cmd, args } = cliCommand(process.env);
-  const child = spawn(cmd, args, { cwd: SANDBOX, stdio: ['pipe', 'pipe', 'ignore'] });
-  let reply = '', done = false;
-  const finish = (ok) => {
-    if (done) return;
-    done = true;
-    clearTimeout(timer);
-    if (!ok) { child.kill('SIGKILL'); return send(res, 503, UNAVAILABLE); }
-    send(res, 200, reply.trim());
-    log({ event: 'ask', page: a.page, id: a.id, step: a.step, message: a.message, reply: reply.trim() });
-  };
-  const timer = setTimeout(() => finish(false), TIMEOUT_MS);
-  child.on('error', () => finish(false)); // CLI not installed
-  child.stdout.on('data', (d) => { reply += d; });
-  child.on('close', (code) => finish(code === 0 && reply.trim() !== ''));
-  child.stdin.on('error', () => {});
-  child.stdin.end(buildPrompt({ entry, ...a }));
+async function check(req, res) {
+  const a = validateCheck(await readJson(req));
+  if (a.error) return send(res, 400, a.error);
+  const key = loadKey(a.page, a.id); // from the page on disk, never from the browser
+  if (!key) return send(res, 400, 'unknown question');
+  const reply = await runCli(buildCheckPrompt({ key, ...a }));
+  const result = reply && parseCheck(reply);
+  if (!result) return send(res, 503, UNAVAILABLE);
+  send(res, 200, JSON.stringify(result));
+  log({ event: 'check', page: a.page, id: a.id, answer: a.answer, ...result });
 }
 
 const server = createServer((req, res) => handle(req, res).catch(() => {
@@ -66,6 +85,7 @@ async function handle(req, res) {
   const { pathname } = new URL(req.url, 'http://x');
   if (pathname === '/api/health') return send(res, 200, JSON.stringify({ ok: true, cli: cliCommand(process.env).cmd }));
   if (pathname === '/api/ask' && req.method === 'POST') return ask(req, res);
+  if (pathname === '/api/check' && req.method === 'POST') return check(req, res);
   if (pathname === '/api/log' && req.method === 'POST') {
     const b = await readJson(req);
     if (b && /^[a-z0-9-]+$/.test(b.page) && /^(I|II|III)(-\d+)?$/.test(b.id) && [1, 2, 3].includes(b.step)) {

@@ -2,16 +2,16 @@
    two-column selected response, roomy constructed response, one problem-solving task. */
 :root{
   --paper:#ffffff; --desk:#eef1f4; --ink:#16191d; --muted:#5a636d; --rule:#9aa3ad;
-  --accent:#1f4e79; --key:#b3261e; --tint:#f3f6f9;
+  --accent:#1f4e79; --key:#b3261e; --tint:#f3f6f9; --ok:#1e6b34;
   --display:"Libre Franklin",ui-sans-serif,system-ui,sans-serif;
   --body:"Source Serif 4",Georgia,"Times New Roman",serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --paper:#1b1f24; --desk:#101317; --ink:#e7eaee; --muted:#a3acb6; --rule:#59626c;
-  --accent:#8db8e3; --key:#f19a8f; --tint:#232930; color-scheme:dark}}
+  --accent:#8db8e3; --key:#f19a8f; --tint:#232930; --ok:#7fd19b; color-scheme:dark}}
 :root[data-theme="dark"]{
   --paper:#1b1f24; --desk:#101317; --ink:#e7eaee; --muted:#a3acb6; --rule:#59626c;
-  --accent:#8db8e3; --key:#f19a8f; --tint:#232930; color-scheme:dark}
+  --accent:#8db8e3; --key:#f19a8f; --tint:#232930; --ok:#7fd19b; color-scheme:dark}
 
 *{box-sizing:border-box}
 body{margin:0;background:var(--desk);color:var(--ink);font:15px/1.45 var(--body)}
@@ -86,7 +86,19 @@ body.show .work{min-height:0}
 .help-reply{grid-column:1/-1;white-space:pre-wrap}
 .help-reply:empty{display:none}
 .helpbtn:focus-visible,.help button:focus-visible,.help a:focus-visible{outline:3px solid var(--key);outline-offset:2px}
-@media print{.helpbtn,.help{display:none!important}}
+/* Answer box (math/help.js) */
+.answer{display:grid;grid-template-columns:1fr auto;gap:6px;margin-top:8px;max-width:520px}
+.answer input,.answer textarea{font:inherit;padding:6px 8px;border:1.5px solid var(--rule);border-radius:3px;background:var(--paper);color:var(--ink);min-width:0;min-height:36px}
+.answer.right input,.answer.right textarea{border-color:var(--ok)}
+.answer.wrong input,.answer.wrong textarea{border-color:var(--key)}
+.answer button{font:700 13px/1 var(--display);color:var(--paper);background:var(--accent);border:0;border-radius:4px;padding:9px 12px;cursor:pointer}
+.answer button:disabled{opacity:.5;cursor:wait}
+.answer-result{grid-column:1/-1;font-size:14px;white-space:pre-wrap}
+.answer-result:empty{display:none}
+.answer.right .answer-result b{color:var(--ok)}
+.answer.wrong .answer-result b{color:var(--key)}
+.answer :focus-visible{outline:3px solid var(--key);outline-offset:2px}
+@media print{.helpbtn,.help,.answer{display:none!important}}
 .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;border-top:1px solid var(--rule);margin-top:18px;padding-top:6px;font-size:11px;color:var(--muted)}
 
 @page{size:letter;margin:.5in}

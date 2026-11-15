@@ -117,7 +117,7 @@ bun run math:pdf b4-form-b       # just one
 
 ### Help and the local tutor
 
-A form with a `help.json` next to its `index.html` gets a **Help** button on each question. The button shows a hint, then a similar example, then a walkthrough of this problem, plus the lesson's classroom links from `math/lessons.json`. `bun run check` fails if a form's `help.json` doesn't match its questions. Block 4 Form C has hints so far.
+A form with a `help.json` next to its `index.html` gets a **Help** button on each question. The button shows a hint, then a similar example, then a walkthrough of this problem, plus the lesson's classroom links from `math/lessons.json`. `bun run check` fails if a form's `help.json` doesn't match its questions. Each of those questions also gets an answer box; what's typed is remembered in that browser. Block 4 Form C has hints so far.
 
 To let your kid type questions to an AI tutor, run it on your Mac and open the address it prints from any device on the home wifi:
 
@@ -126,4 +126,4 @@ bun run tutor                    # http://<your-mac>.local:8080/ ; uses the clau
 TUTOR_MODEL=opus bun run tutor   # pick the Claude model (default: sonnet)
 ```
 
-The tutor runs `claude` with no tools, in an empty folder, without your own settings, hooks, plugins or memory, and tells it not to give away more than the step the student is on. If the CLI fails, times out (60 s) or is signed out, the panel says the tutor isn't available. Codex isn't offered because `codex exec` can still run shell commands. Every hint opened and question asked is added to `logs/tutor.jsonl` (not committed). On the public site, the hints and links still work, and the Ask box is hidden.
+The tutor runs `claude` with no tools, in an empty folder, without your own settings, hooks, plugins or memory, and tells it not to give away more than the step the student is on. If the CLI fails, times out (60 s) or is signed out, the panel says the tutor isn't available. Codex isn't offered because `codex exec` can still run shell commands. With the tutor running, the answer box also gets a **Check** button: the AI compares the answer with the key on the page (so 2/6 counts for 1/3) and says right or not yet, with a nudge that doesn't give the answer away. Every hint opened, question asked and answer checked is added to `logs/tutor.jsonl` (not committed). On the public site, the hints and links still work, and the Ask box is hidden.
