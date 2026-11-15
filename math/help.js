@@ -269,6 +269,19 @@
         const body = el('span');
         body.innerHTML = entry.hints[step].replace(/^Example:\s*/, ''); // our own checked content from help.json
         li.append(body);
+        const sums = calcBits(body.textContent);
+        if (sums.length && window.Calc?.addLine) {
+          const row = el('div', 'help-calc');
+          for (const sum of sums) {
+            const b = el('button', '', `+ ${sum}`);
+            b.type = 'button';
+            b.title = 'Add to the calculator';
+            b.setAttribute('aria-label', `Add ${sum} to the calculator`);
+            b.addEventListener('click', () => window.Calc.addLine(sum));
+            row.append(b);
+          }
+          li.append(row);
+        }
         steps.append(li);
         step++;
         if (local) post('/api/log', { page, id, step }).catch(() => {});
@@ -365,6 +378,20 @@
     const got = Object.fromEntries([...answer.matchAll(/(\d+[a-z])\s*(YES|NO)/gi)].map((m) => [m[1].toLowerCase(), m[2].toUpperCase()]));
     const wrong = Object.keys(key.rows).filter((k) => got[k] !== key.rows[k]);
     return { correct: !wrong.length, feedback: wrong.length ? `Look again at ${wrong.join(', ')}.` : '' };
+  }
+
+  // Calculations written in a hint ("9 · 8 = 72", "4/12", "20% of 80"), left side only, for the "+" buttons.
+  function calcBits(text) {
+    const n = '\\d+(?:\\.\\d+)?%?(?:/\\d+(?:\\.\\d+)?)?';
+    const re = new RegExp(`${n}(?:(?:\\s*[·×*÷+−-]\\s*|(?<=%)\\s+of\\s+)${n})*`, 'g'); // "of" only after a %: "4 of 12" is words
+    const gcd = (a, b) => (b ? gcd(b, a % b) : a);
+    const out = [];
+    for (const m of text.matchAll(re)) {
+      const s = m[0].trim(), f = s.match(/^(\d+)\/(\d+)$/);
+      const worth = f ? gcd(+f[1], +f[2]) > 1 : /[·×*÷+−-]|\bof\b/.test(s); // a lone fraction only if it still simplifies (4/12, not 1/3)
+      if (worth && !out.includes(s)) out.push(s);
+    }
+    return out.slice(0, 4);
   }
 
   // The question's own text, without the key, help or answer box, for the tutor.

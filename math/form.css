@@ -80,6 +80,10 @@ body.show .work{min-height:0}
 .help-links a{color:var(--accent);border:1px solid var(--rule);border-radius:10px;padding:3px 9px;text-decoration:none;background:var(--paper)}
 .help-links a:hover{border-color:var(--accent)}
 .help-steps{margin:8px 0;padding-left:1.3em;display:grid;gap:8px}
+.help-calc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.help-calc button{min-height:32px;padding:0 10px;border:1px solid var(--rule);border-radius:16px;background:var(--paper);color:var(--accent);font:600 13px var(--body);cursor:pointer}
+.help-calc button:hover{border-color:var(--accent)}
+.help-calc button:focus-visible{outline:3px solid var(--key);outline-offset:2px}
 .help-next,.help-ask button{font:700 13px/1 var(--display);color:var(--paper);background:var(--accent);border:0;border-radius:4px;padding:9px 12px;cursor:pointer}
 .help-ask{display:grid;grid-template-columns:1fr auto;gap:6px;margin-top:10px}
 .help-ask textarea{font:inherit;padding:6px;border:1px solid var(--rule);border-radius:3px;background:var(--paper);color:var(--ink);min-width:0}
@@ -216,7 +220,7 @@ a.lesson-chip:hover{color:var(--accent);border-color:var(--accent)}
   .calc-tip{display:none}
 }
 @media (pointer:coarse){
-  .helpbtn,.help-next,.help-ask button,.answer button,.lessons label,.progress summary{min-height:44px}
+  .helpbtn,.help-next,.help-ask button,.answer button,.lessons label,.progress summary,.help-calc button{min-height:44px}
   .answer input{min-height:44px}
   .progress summary{display:list-item;padding:10px 0}
   .lesson-chip::before,.help-links a::before{content:"";position:absolute;inset:-12px -4px}

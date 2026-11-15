@@ -270,7 +270,7 @@
   const toLatex = (line) => line
     .replace(/[\\{}]/g, '').replace(/[#%&_$]/g, (c) => `\\${c}`)
     .replace(/(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)/g, '\\frac{$1}{$2}')
-    .replace(/\*/g, '\\cdot ').replace(/ /g, '\\:');
+    .replace(/[*·×]/g, '\\cdot ').replace(/ /g, '\\:');
 
   // ---- fallback: one plain-text box (no network, school filters, old browsers)
   function plainMode() {
@@ -289,7 +289,16 @@
     input.addEventListener('input', () => { store(KEY, input.value); render(); });
     input.addEventListener('scroll', () => { out.scrollTop = input.scrollTop; });
     render();
-    return () => input.focus();
+    return {
+      focus: () => input.focus(),
+      append: (text) => {
+        input.value = (input.value.trim() ? input.value.replace(/\n*$/, '\n') : '') + text;
+        store(KEY, input.value); render();
+        input.focus();
+        input.setSelectionRange(input.value.length, input.value.length);
+        input.scrollTop = input.scrollHeight;
+      },
+    };
   }
 
   // ---- math fields: one per line, fractions stack as you type
@@ -366,20 +375,31 @@
     window.mathVirtualKeyboard?.addEventListener('geometrychange', () => {
       panel.style.setProperty('--kb', `${window.mathVirtualKeyboard.visible ? window.mathVirtualKeyboard.boundingRect.height : 0}px`);
     });
-    return () => fields.at(-1).focus();
+    return {
+      focus: () => fields.at(-1).focus(),
+      append: (text) => {
+        const last = fields.at(-1);
+        const mf = last && !last.value ? last : add('');
+        mf.value = toLatex(text);
+        mf.focus();
+        requestAnimationFrame(() => { if (!mf.hasFocus()) mf.focus(); mf.position = mf.lastOffset; });
+        mf.scrollIntoView({ block: 'nearest' });
+        save(); render();
+      },
+    };
   }
 
-  let focusFirst = null;
+  let api = null; // {focus, append} once the panel is built
   const ready = () => {
-    if (focusFirst) return Promise.resolve(focusFirst);
-    if (window.MathfieldElement) return Promise.resolve(focusFirst = mathMode());
+    if (api) return Promise.resolve(api);
+    if (window.MathfieldElement) return Promise.resolve(api = mathMode());
     body.replaceChildren(el('div', 'calc-loading', 'Loading the calculator…'));
     return new Promise((res) => {
       const s = document.createElement('script');
-      const fail = () => res(focusFirst = plainMode());
+      const fail = () => res(api = plainMode());
       const timer = setTimeout(fail, 8000);
       s.src = MATHLIVE;
-      s.onload = () => { clearTimeout(timer); try { res(focusFirst = window.MathfieldElement ? mathMode() : plainMode()); } catch { fail(); } };
+      s.onload = () => { clearTimeout(timer); try { res(api = window.MathfieldElement ? mathMode() : plainMode()); } catch { fail(); } };
       s.onerror = () => { clearTimeout(timer); fail(); };
       document.head.append(s);
     });
@@ -392,7 +412,7 @@
     panel.hidden = !open;
     document.body.classList.toggle('calc-open', open);
     btn.setAttribute('aria-expanded', String(open));
-    if (open) ready().then((f) => f());
+    if (open) ready().then((a) => a.focus());
     else window.mathVirtualKeyboard?.hide();
   };
   btn.addEventListener('click', () => set(panel.hidden));
@@ -401,4 +421,6 @@
   const toggle = document.getElementById('toggle');
   toggle ? toggle.before(btn) : document.querySelector('.toolbar')?.append(btn);
   document.body.append(panel);
+  /** Open the calculator and add a line (used by the Help panel's "+ 9 · 8" buttons). */
+  Calc.addLine = (text) => { if (panel.hidden) set(true); return ready().then((a) => a.append(text)); };
 })();
