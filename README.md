@@ -98,7 +98,7 @@ Best quiz scores are saved in the browser, separately for each set.
 
 ## Math block reviews
 
-Practice versions of the Core Focus on Proportions & Probability block review tests, published at `/math/`.
+Practice versions of the Core Focus on Proportions & Probability block review tests, published at `/math/`. The textbook, classroom and teacher-site links are in [docs/math-sources.md](docs/math-sources.md).
 
 ```
 math/<slug>/index.html   one review form, e.g. math/b4-form-b/ (copy src/math-form-example.html to start)
