@@ -123,3 +123,18 @@ test('check grades with the key from disk', async () => {
     assert.deepEqual(await r.json(), { correct: true, feedback: 'Yes, 9 · 8 = 72.' });
   } finally { t.stop(); }
 });
+
+test('with TUTOR_KEY, the API needs the key cookie', async () => {
+  const t = await startTutor('cat >/dev/null; echo hi', { TUTOR_KEY: 'k3y' });
+  try {
+    assert.equal((await fetch(`${t.base}/api/health`)).status, 401);
+    assert.equal((await fetch(`${t.base}/api/ask`, askBody)).status, 401);
+    const r = await fetch(`${t.base}/math/?key=k3y`, { redirect: 'manual' });
+    assert.equal(r.status, 302);
+    assert.equal(r.headers.get('location'), '/math/');
+    const cookie = r.headers.get('set-cookie').split(';')[0];
+    assert.equal((await fetch(`${t.base}/api/health`, { headers: { cookie } })).status, 200);
+    assert.equal((await fetch(`${t.base}/api/ask`, { ...askBody, headers: { ...askBody.headers, cookie } })).status, 200);
+    assert.equal((await fetch(`${t.base}/api/health`, { headers: { cookie: 'tutor=wrong' } })).status, 401);
+  } finally { t.stop(); }
+});

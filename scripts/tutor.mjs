@@ -1,5 +1,7 @@
 // Local AI tutor: serves dist/ plus /api/* on the home network, answering with your own AI CLI.
 // Run: bun run tutor   (TUTOR_MODEL picks the Claude model)
+//      bun run service install <host>   runs it at login behind a Cloudflare tunnel (scripts/service.mjs)
+// TUTOR_KEY: when set, /api/* needs the key, given once as ?key=... and then kept in a cookie.
 import { createServer } from 'node:http';
 import { spawn } from 'node:child_process';
 import { appendFileSync, mkdirSync, mkdtempSync } from 'node:fs';
@@ -77,12 +79,24 @@ async function check(req, res) {
   log({ event: 'check', page: a.page, id: a.id, answer: a.answer, ...result });
 }
 
-const server = createServer((req, res) => handle(req, res).catch(() => {
-  if (!res.headersSent) send(res, 400, 'bad request'); else res.end();
-}));
+const server = createServer((req, res) => {
+  res.setHeader('referrer-policy', 'no-referrer'); // lesson links shouldn't leak the tunnel address
+  handle(req, res).catch(() => {
+    if (!res.headersSent) send(res, 400, 'bad request'); else res.end();
+  });
+});
+
+const KEY = process.env.TUTOR_KEY || '';
+const hasKey = (req) => !KEY || (req.headers.cookie || '').split(/;\s*/).includes(`tutor=${KEY}`);
 
 async function handle(req, res) {
-  const { pathname } = new URL(req.url, 'http://x');
+  const url = new URL(req.url, 'http://x'), { pathname } = url;
+  if (KEY && url.searchParams.get('key') === KEY) { // one-time link: keep the key in a cookie, drop it from the address
+    url.searchParams.delete('key');
+    res.writeHead(302, { location: url.pathname + url.search, 'set-cookie': `tutor=${KEY}; Path=/; Max-Age=31536000; HttpOnly; SameSite=Lax` });
+    return res.end();
+  }
+  if (pathname.startsWith('/api/') && !hasKey(req)) return send(res, 401, 'needs the tutor key');
   if (pathname === '/api/health') return send(res, 200, JSON.stringify({ ok: true, cli: cliCommand(process.env).cmd }));
   if (pathname === '/api/ask' && req.method === 'POST') return ask(req, res);
   if (pathname === '/api/check' && req.method === 'POST') return check(req, res);
@@ -97,5 +111,7 @@ async function handle(req, res) {
 }
 
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Tutor at http://${hostname().split('.')[0]}.local:${server.address().port}/  (using ${cliCommand(process.env).cmd})`);
+  const port = server.address().port;
+  console.log(`Tutor at http://${hostname().split('.')[0]}.local:${port}/  (using ${cliCommand(process.env).cmd})`);
 });
+
