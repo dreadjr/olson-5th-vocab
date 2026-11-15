@@ -126,16 +126,14 @@ bun run tutor                    # http://<your-mac>.local:8080/ ; uses the clau
 TUTOR_MODEL=opus bun run tutor   # pick the Claude model (default: sonnet)
 ```
 
-To keep it running all the time and reach it from anywhere, run it as a login service behind the Cloudflare tunnel:
+To keep it running all the time and reach it from anywhere, run it as a login service and point a Cloudflare tunnel at it:
 
 ```sh
-# once: copy the tunnel's token from the Cloudflare dashboard (Zero Trust → Networks → Tunnels)
-pbpaste > ~/.config/kok-tutor/tunnel-token && chmod 600 ~/.config/kok-tutor/tunnel-token
-bun run service install tutor.example.com   # starts the tutor (port 8080) and the tunnel; restarts them if they stop
+bun run service install tutor.example.com   # starts the tutor on port 8080 at login; restarts it if it stops
 bun run service status
 bun run service uninstall
 ```
 
-In the dashboard, point the tunnel's public hostname at `http://localhost:8080`. The service rebuilds the site each time it starts, so restart it (`bun run service install`) after changing forms or hints. Because the address is public, the service sets a private key (kept in `~/.config/kok-tutor/key`): `install` prints a link with `?key=…` to open once on each device. Without the key, the pages and hints still work but Ask and Check are hidden. Logs go to `logs/com.kok5th.*.log`.
+The tunnel runs as its own system service (installed once with `sudo cloudflared service install <token>` from the Cloudflare dashboard, Zero Trust → Networks → Tunnels). In the dashboard, give the tunnel a public hostname that points at `http://localhost:8080`. The tutor rebuilds the site each time it starts, so run `bun run service install` again after changing forms or hints. Because the address is public, the service sets a private key (kept in `~/.config/kok-tutor/key`): `install` prints a link with `?key=…` to open once on each device. Without the key, the pages and hints still work but Ask and Check are hidden. The log is `logs/com.kok5th.tutor.log`.
 
 The tutor runs `claude` with no tools, in an empty folder, without your own settings, hooks, plugins or memory, and tells it not to give away more than the step the student is on. If the CLI fails, times out (60 s) or is signed out, the panel says the tutor isn't available. Codex isn't offered because `codex exec` can still run shell commands. With the tutor running, the answer box also gets a **Check** button: the AI compares the answer with the key on the page (so 2/6 counts for 1/3) and says right or not yet, with a nudge that doesn't give the answer away. Every hint opened, question asked and answer checked is added to `logs/tutor.jsonl` (not committed). On the public site, the hints and links still work, and the Ask box is hidden.
