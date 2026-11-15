@@ -3,321 +3,321 @@
     "I-1": {
       "lesson": "4.1",
       "tag": "Lesson 4.1 · Ex. 2, p. 112",
-      "skill": "TODO",
+      "skill": "Experimental probability",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "Experimental probability uses what really happened: (times it happened) ÷ (total tries). How many customers ordered strawberry, and how many customers were there?",
+        "Example: Kyle rolled a number cube 60 times and got a 6 fifteen times. P(6) = 15/60 = 1/4. Count on top, total on the bottom, then simplify.",
+        "9 of the 36 customers ordered strawberry, so P(strawberry) = 9/36. Divide top and bottom by 9: 9/36 = 1/4. The answer is B."
       ]
     },
     "I-2": {
       "lesson": "4.2",
       "tag": "Lesson 4.2 · Ex. 2, p. 118",
-      "skill": "TODO",
+      "skill": "Predicting with probability",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "First find each color's probability: marbles of that color ÷ all the marbles. Then ask: what part of the 50 draws should be that color?",
+        "Example: a spinner is 1/4 red. Spin it 40 times and you expect about 1/4 · 40 = 10 reds. Expected count = probability · number of tries.",
+        "There are 10 marbles. Red: 6/10 · 50 = 30, so 2a is YES. White: 3/10 · 50 = 15, not 10, so 2b is NO. Blue: 1/10 · 50 = 5, so 2c is YES."
       ]
     },
     "I-3": {
       "lesson": "4.3",
       "tag": "Lesson 4.3 · Ex. 2, p. 124",
-      "skill": "TODO",
+      "skill": "Probability from a pie chart",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "The pie chart is a sample of 60 people. What fraction of them chose bananas? Expect about the same fraction in a bigger group.",
+        "Example: 15 of 40 students in a pie chart chose chocolate, so P(chocolate) = 15/40 = 3/8. For 400 students, predict 3/8 · 400 = 150.",
+        "Bananas: 24 of 60 = 24/60 = 2/5. For 500 people: 2/5 · 500 = 200 people. The answer is C."
       ]
     },
     "I-4": {
       "lesson": "4.4",
       "tag": "Lesson 4.4 · Ex. 1, p. 130",
-      "skill": "TODO",
+      "skill": "Listing outcomes",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "List every outcome: each side of the coin with each number on the cube. Then mark the ones with tails AND a number bigger than 2.",
+        "Example: spin a 1–3 spinner and flip a coin. Outcomes: 1H, 1T, 2H, 2T, 3H, 3T (6 in all). Heads with an odd number: 1H and 3H, so 2.",
+        "There are 2 · 6 = 12 outcomes. Tails with a number greater than 2: T3, T4, T5, T6. That's 4, so the answer is B."
       ]
     },
     "I-5": {
       "lesson": "4.4",
       "tag": "Lesson 4.4 · Ex. 3, p. 131",
-      "skill": "TODO",
+      "skill": "Probability of two events",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "For two spins, multiply: P(first spin) · P(second spin). Write each part as a fraction out of 4 first. Watch for a number that isn't on the spinner.",
+        "Example: a spinner with 1, 2, 3, 4 is spun twice. P(3, then a number greater than 1) = 1/4 · 3/4 = 3/16. Out of 16 equally likely pairs, 3 work.",
+        "A: 1/4 · 1/4 = 1/16 ✓. B: P(odd) = 1/2 and P(even) = 1/2, so 1/2 · 1/2 = 1/4 ✓. C: there is no 5, so it is 0 ✗. D: P(less than 4) = 3/4, so 3/4 · 1/4 = 3/16 ✓. E: 1/2 · 1/4 = 1/8, not 1/4 ✗. Answer: A, B, D."
       ]
     },
     "I-6": {
       "lesson": "4.5",
       "tag": "Lesson 4.5 · Ex. 3, p. 136",
-      "skill": "TODO",
+      "skill": "Counting with no repeats",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "After a dog wins 1st place, can that same dog also win 2nd place? How many dogs are left to choose from for 2nd?",
+        "Example: 5 students run a race. Any of the 5 can finish 1st, then 4 are left for 2nd and 3 for 3rd: 5 · 4 · 3 = 60 ways. Each place has one fewer choice, because nobody finishes twice.",
+        "9 dogs can win 1st. That dog is out, so 8 can win 2nd. 9 · 8 = 72 ways, answer C. (81 = 9 · 9 would let the same dog win both ribbons.)"
       ]
     },
     "I-7": {
       "lesson": "4.5",
       "tag": "Lesson 4.5 · Ex. 2 & 5, pp. 136–137",
-      "skill": "TODO",
+      "skill": "Counting with repeats, then probability",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "How many letters can each wheel show? Any wheel can show any letter, even one another wheel shows. How many codes are possible, and how many of them are F-F-F?",
+        "Example: a 4-digit ATM password where digits can repeat. Each digit has 10 choices: 10 · 10 · 10 · 10 = 10,000 passwords. Only one is 1234, so P(1234) = 1/10,000.",
+        "Each wheel has 6 letters (A–F): 6 · 6 · 6 = 216 codes. Only one is F-F-F, so P = 1/216. The answer is D."
       ]
     },
     "I-8": {
       "lesson": "4.6",
       "tag": "Lesson 4.6 · Ex. 1, p. 144",
-      "skill": "TODO",
+      "skill": "Random vs. biased samples",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "A fair sample gives every person in the city the same chance to be picked. Which choices only reach a certain kind of person?",
+        "Example: to learn whether a city wants a dog park, calling people from a vet's client list is biased: they all have pets. Picking random names from the whole city is fair.",
+        "Skate-shop customers lean toward skaters, radio callers are volunteers, and the mayor's street is one small area. 200 residents picked at random from everyone is fair, so the answer is D."
       ]
     },
     "I-9": {
       "lesson": "4.7",
       "tag": "Lesson 4.7 · Ex. 2, p. 149",
-      "skill": "TODO",
+      "skill": "Strong and weak inferences",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "Check each statement against the numbers. The weakest inference is the one the data does NOT support. When a choice combines two options, add them.",
+        "Example: 60 students chose tablet, 30 computer, 10 textbook. \"Tablet is most popular\" is strong. \"Most students prefer a computer or a textbook\" is weak, because 30 + 10 = 40 is less than 60.",
+        "A: the zoo's 32 is the most ✓. B: aquarium 28 > museum 20 ✓. D: 32 is less than half of 80 ✓. C: museum or aquarium = 20 + 28 = 48, which beats the zoo's 32 ✗. C is the weakest, so the answer is C."
       ]
     },
     "I-10": {
       "lesson": "4.8",
       "tag": "Lesson 4.8 · Ex. 3, p. 158",
-      "skill": "TODO",
+      "skill": "Mean absolute deviation",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "Mean absolute deviation (MAD) is how far the values are from the mean, on average. Both means are 15. Which set's values are spread farther from 15?",
+        "Example: 5, 6, 8, 10, 11 has mean 8. The distances from 8 are 3, 2, 0, 2, 3, which add to 10, so MAD = 10 ÷ 5 = 2. Values farther from the mean make a bigger MAD.",
+        "Set X runs from 12 to 18, close to 15. Set Y runs from 2 to 28, much farther from 15. So Set Y has the greater MAD, answer B. (Equal means don't make the MADs equal.)"
       ]
     },
     "I-11": {
       "lesson": "4.8",
       "tag": "Lesson 4.8 · Ex. 1, p. 154",
-      "skill": "TODO",
+      "skill": "Median of an even-sized set",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "Put each person's minutes in order first. With 8 values there is no single middle value, so the median is halfway between the 4th and 5th.",
+        "Example: 60, 75, 81, 85, 86, 87 in order. The middle two are 81 and 85, so the median is (81 + 85) ÷ 2 = 83.",
+        "Priya: 20, 25, 30, 30, 35, 35, 40, 45 → (30 + 35) ÷ 2 = 32.5. Sam: 25, 30, 30, 35, 40, 40, 45, 50 → (35 + 40) ÷ 2 = 37.5. Sam's is 5 minutes greater, so the answer is C."
       ]
     },
     "II-1": {
       "lesson": "4.1",
       "tag": "Lesson 4.1 · Ex. 1, p. 111",
-      "skill": "TODO",
+      "skill": "Theoretical probability",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "Probability = (ways to get what you want) ÷ (all possible outcomes). How many sections show 9, and how many sections are there?",
+        "Example: on a number cube, P(1 or 2) = 2/6 = 1/3, because 2 of the 6 numbers work.",
+        "One section out of 12 is a 9, so P(9) = 1/12."
       ]
     },
     "II-2": {
       "lesson": "4.1",
       "tag": "Lesson 4.1 · Ex. 1, p. 111",
-      "skill": "TODO",
+      "skill": "Theoretical probability",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "List the numbers from 1 to 12 that are greater than 8. Careful: \"greater than 8\" does not include 8.",
+        "Example: on a number cube, P(greater than 4) = 2/6 = 1/3, because only 5 and 6 work.",
+        "9, 10, 11 and 12 are greater than 8. That's 4 of 12, so P = 4/12 = 1/3."
       ]
     },
     "II-3": {
       "lesson": "4.1",
       "tag": "Lesson 4.1 · Ex. 1, p. 111",
-      "skill": "TODO",
+      "skill": "Certain and impossible events",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "Is there any section that is NOT less than 13? What does it mean when every outcome works?",
+        "Example: on a number cube, P(less than 7) = 6/6 = 1, which means certain. P(7) = 0/6 = 0, which means impossible.",
+        "All 12 sections are less than 13, so P = 12/12 = 1. It is certain."
       ]
     },
     "II-4": {
       "lesson": "4.1",
       "tag": "Lesson 4.1 · Ex. 2, p. 112",
-      "skill": "TODO",
+      "skill": "Complements",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "It's often easier to count the opposite. Which numbers ARE multiples of 4? Then P(not) = 1 − P(it is).",
+        "Example: on a number cube, P(6) = 1/6, so P(not 6) = 1 − 1/6 = 5/6. The two are complements: together they make 1.",
+        "The multiples of 4 are 4, 8 and 12: 3 of 12. P(not a multiple of 4) = 1 − 3/12 = 9/12 = 3/4."
       ]
     },
     "II-5": {
       "lesson": "4.1",
       "tag": "Lesson 4.1 · Ex. 1, p. 111",
-      "skill": "TODO",
+      "skill": "Theoretical probability",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "Find the total number of bars first. Then write each flavor's probability as a fraction and simplify. Which one equals 1/3?",
+        "Example: a bag has 3 red, 4 blue and 5 green marbles, 12 in all. P(blue) = 4/12 = 1/3.",
+        "12 + 10 + 8 = 30 bars. Peanut butter: 10/30 = 1/3. (Chocolate is 12/30 = 2/5 and oatmeal is 8/30 = 4/15.) So peanut butter has the 1/3 chance."
       ]
     },
     "II-6": {
       "lesson": "4.2",
       "tag": "Lesson 4.2 · Ex. 1, p. 117",
-      "skill": "TODO",
+      "skill": "Capture/recapture",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "The fraction of marked fish in her second catch should match the fraction of marked fish in the whole pond. Write those two fractions as a proportion.",
+        "Example: rangers tag 20 deer. Later they catch 300 deer and 15 are tagged. 15/300 = 20/n, so 15n = 6,000 and n = 400 deer.",
+        "Second catch: 5 marked out of 25. Whole pond: 20 marked out of n. 5/25 = 20/n, so 5n = 500 and n = 100 fish. Check: 5/25 = 1/5 and 20/100 = 1/5."
       ]
     },
     "II-7": {
       "lesson": "4.2",
       "tag": "Lesson 4.2 · Ex. 2, p. 118",
-      "skill": "TODO",
+      "skill": "Predicting with probability",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "Find P(green) first. Then use it on the 64 spins: what part of them should land on green?",
+        "Example: Lou hit 12 home runs in 40 pitches, so P = 12/40 = 3/10. With 30 pitches, predict 3/10 · 30 = 9 home runs.",
+        "P(green) = 3/8. 3/8 · 64 = 64 ÷ 8 · 3 = 24 times."
       ]
     },
     "II-8": {
       "lesson": "4.3",
       "tag": "Lesson 4.3 · Ex. 3, p. 125",
-      "skill": "TODO",
+      "skill": "Probability from a histogram",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "Each bar's height is how many plants are in that height range. Add all the bars for the total. \"At least 25 inches\" means the 25–29 bar and every bar above it.",
+        "Example: a histogram has bars of 2, 6, 8 and 4 (20 students). P(a student is in the last two bars) = (8 + 4)/20 = 12/20 = 3/5.",
+        "Total: 5 + 9 + 12 + 10 + 4 = 40 plants. At least 25 inches: 25–29 (10) and 30–34 (4), so 14. P = 14/40 = 7/20."
       ]
     },
     "II-9": {
       "lesson": "4.4",
       "tag": "Lesson 4.4 · Ex. 1, p. 130",
-      "skill": "TODO",
+      "skill": "Counting with a tree diagram",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "For each flavor, how many topping choices are there? Try a tree: a branch for each flavor, then split each branch by topping.",
+        "Example: 4 shirts and 3 pairs of shorts. Each shirt goes with 3 shorts: 4 · 3 = 12 outfits. The tree has 4 branches, each splitting into 3.",
+        "4 flavors · 2 toppings = 8 cups: vanilla–sprinkles, vanilla–nuts, berry–sprinkles, berry–nuts, mango–sprinkles, mango–nuts, chocolate–sprinkles, chocolate–nuts."
       ]
     },
     "II-10": {
       "lesson": "4.5",
       "tag": "Lesson 4.5 · Ex. 5, p. 137",
-      "skill": "TODO",
+      "skill": "Probability of several events",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "What is the chance of guessing one question right? Each question is separate, so multiply that chance once for each question.",
+        "Example: a test has 5 questions with 4 choices each. P(all right) = 1/4 · 1/4 · 1/4 · 1/4 · 1/4 = 1/1,024.",
+        "Each question: 1/5. Four questions: 1/5 · 1/5 · 1/5 · 1/5 = 1/625."
       ]
     },
     "II-11": {
       "lesson": "4.5",
       "tag": "Lesson 4.5 · Ex. 4, p. 137",
-      "skill": "TODO",
+      "skill": "Probability of two events",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "Find each part separately: P(heads) and P(blue). The coin doesn't change the bag, so multiply them.",
+        "Example: a bag has 3 red, 4 blue and 5 green marbles. Pick one, put it back, pick again. P(red then green) = 3/12 · 5/12 = 15/144 = 5/48.",
+        "P(heads) = 1/2 and P(blue) = 7/10. 1/2 · 7/10 = 7/20."
       ]
     },
     "II-12": {
       "lesson": "4.6",
       "tag": "Lesson 4.6 · Ex. 1, p. 144",
-      "skill": "TODO",
+      "skill": "Biased samples",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "Who did Kai ask? Would students at basketball practice feel the same about a new gym as all the students at the school?",
+        "Example: to learn whether a city wants a dog park, calling only people on a vet's list is biased: pet owners are more likely to say yes. A random sample of everyone is fair.",
+        "No. Students at basketball practice use the gym, so they are more likely to want a new one: the sample is biased. He should ask a random sample of all the students."
       ]
     },
     "II-13": {
       "lesson": "4.7",
       "tag": "Lesson 4.7 · Ex. 2, p. 149",
-      "skill": "TODO",
+      "skill": "Inferences from two samples",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "Turn the counts into percents so the two samples (90 and 100 students) can be compared. What is true in BOTH samples?",
+        "Example: two samples of 100: tablet 60 and 69, computer 30 and 16, textbook 10 and 15. Strong: \"Most students prefer tablets\" (true in both). Weak: \"More students prefer textbooks than computers\" (true in only one).",
+        "Sports is the most popular: 45/90 = 50% and 40/100 = 40%. Art is the least popular: about 11% and 10%. Games is second in both (about 22% and 30%)."
       ]
     },
     "II-14": {
       "lesson": "4.8",
       "tag": "Lesson 4.8 · Ex. 1, p. 153",
-      "skill": "TODO",
+      "skill": "Mean",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "Mean = add all the values, then divide by how many there are. Each team played 9 games.",
+        "Example: 5, 6, 8, 10, 11. The sum is 40 and there are 5 values, so the mean is 40 ÷ 5 = 8.",
+        "Hawks: 47 + 33 + 53 + 40 + 57 + 45 + 37 + 50 + 43 = 405, and 405 ÷ 9 = 45 points. Owls: the total is 432, and 432 ÷ 9 = 48 points."
       ]
     },
     "II-15": {
       "lesson": "4.8",
       "tag": "Lesson 4.8 · Ex. 1, p. 154",
-      "skill": "TODO",
+      "skill": "Median",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "Put each team's scores in order. With 9 values, the median is the 5th one.",
+        "Example: 60, 75, 81, 85, 85, 86, 87, 93, 95 is in order. The 5th value is 85, so the median is 85.",
+        "Hawks: 33, 37, 40, 43, 45, 47, 50, 53, 57 → 45. Owls: 44, 46, 46, 47, 48, 49, 49, 51, 52 → 48."
       ]
     },
     "II-16": {
       "lesson": "4.8",
       "tag": "Lesson 4.8 · Ex. 1, p. 154",
-      "skill": "TODO",
+      "skill": "Comparing medians",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "Use your medians from #15. Subtract to see how much higher the Owls' median really is.",
+        "Example: if one median is 85 and the other is 81, the first is 85 − 81 = 4 points higher.",
+        "No. The medians are 48 and 45, so the Owls' median is 48 − 45 = 3 points higher, not 4."
       ]
     },
     "II-17": {
       "lesson": "4.8",
       "tag": "Lesson 4.8 · Ex. 2, p. 155",
-      "skill": "TODO",
+      "skill": "Five-number summary",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "The five numbers are the minimum, Q1, median, Q3 and maximum. Use your ordered lists from #15. With 9 values, leave the median out: Q1 is the median of the lowest 4, Q3 of the highest 4.",
+        "Example: 2, 4, 5, 7, 8, 9, 12. Minimum 2, median 7, Q1 = median of 2, 4, 5 = 4, Q3 = median of 8, 9, 12 = 9, maximum 12.",
+        "Hawks: the lowest 4 are 33, 37, 40, 43, so Q1 = 38.5; the highest 4 are 47, 50, 53, 57, so Q3 = 51.5. That gives 33 ~ 38.5 ~ 45 ~ 51.5 ~ 57. Owls: 44 ~ 46 ~ 48 ~ 50 ~ 52."
       ]
     },
     "II-18": {
       "lesson": "4.8",
       "tag": "Lesson 4.8 · Explore! Comparing Tests, p. 156",
-      "skill": "TODO",
+      "skill": "Interquartile range",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "Interquartile range (IQR) = Q3 − Q1, the spread of the middle half of the data. Use your answers from #17.",
+        "Example: if Q1 = 4 and Q3 = 9, the IQR is 9 − 4 = 5.",
+        "Hawks: 51.5 − 38.5 = 13. Owls: 50 − 46 = 4."
       ]
     },
     "II-19": {
       "lesson": "4.8",
       "tag": "Lesson 4.8 · Ex. 3, p. 158",
-      "skill": "TODO",
+      "skill": "Mean absolute deviation",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "Use each team's mean from #14. Find how far each score is from the mean (distances are never negative), add the distances, then divide by 9.",
+        "Example: 5, 6, 8, 10, 11 has mean 8. The distances are 3, 2, 0, 2, 3, which add to 10, so MAD = 10 ÷ 5 = 2.",
+        "Hawks (mean 45): distances 12, 8, 5, 2, 0, 2, 5, 8, 12 add to 54, so MAD = 54 ÷ 9 = 6 points. Owls (mean 48): distances 4, 2, 2, 1, 0, 1, 1, 3, 4 add to 18, so MAD = 18 ÷ 9 = 2 points."
       ]
     },
     "II-20": {
       "lesson": "4.8",
       "tag": "Lesson 4.8 · pp. 156–158",
-      "skill": "TODO",
+      "skill": "Comparing variability",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "Pick a measure of spread you found (the IQR or the MAD) and compare the two teams. A bigger number means the scores change more from game to game.",
+        "Example: \"Class A's MAD is 2.6 and Class B's is 1.4, so the number of books Class A read is more spread out.\"",
+        "Sample: The Hawks' MAD (6) is three times the Owls' MAD (2), so the Hawks' scores vary much more from game to game. (Or compare the IQRs: 13 vs. 4.)"
       ]
     },
     "III": {
       "lesson": "4.5",
       "tag": "Lessons 4.5 & 4.7 · Ex. 4, p. 137; Ex. 1, p. 148",
-      "skill": "TODO",
+      "skill": "Two events, then a prediction",
       "hints": [
-        "TODO",
-        "TODO",
-        "TODO"
+        "Find two probabilities from Ella's tables: P(fall) and P(cheese). Multiply them for \"fall AND cheese\". Then use that probability on all 900 students.",
+        "Example: in a sample, P(summer) = 2/5 and P(juice) = 1/4. P(both) = 2/5 · 1/4 = 2/20 = 1/10. In a school of 600, predict 1/10 · 600 = 60 students.",
+        "P(fall) = 45/150 = 3/10. P(cheese) = 50/150 = 1/3. P(fall and cheese) = 3/10 · 1/3 = 1/10. Prediction: 1/10 · 900 = 90 students."
       ]
     }
   }
