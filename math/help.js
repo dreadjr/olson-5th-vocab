@@ -276,8 +276,9 @@
         li.append(el('b', '', `${STEP_NAMES[step]}: `));
         const body = el('span');
         body.innerHTML = entry.hints[step].replace(/^Example:\s*/, ''); // our own checked content from help.json
+        const sums = calcBits(body.textContent); // read before fractions are stacked
+        stackFractions(body);
         li.append(body);
-        const sums = calcBits(body.textContent);
         if (sums.length && window.Calc?.addLine) {
           const row = el('div', 'help-calc');
           for (const sum of sums) {
@@ -426,6 +427,24 @@
     return { correct: !wrong.length, feedback: wrong.length ? `Look again at ${wrong.join(', ')}.` : '' };
   }
 
+  // "3/10" in hints and feedback shown as a stacked fraction, like the printed tests (.f in form.css).
+  function stackFractions(root) {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const texts = [];
+    for (let n; (n = walker.nextNode());) if (/\d\/\d/.test(n.data) && !n.parentElement.closest('.f, button')) texts.push(n);
+    for (const t of texts) {
+      const parts = t.data.split(/(?<![\d.])(\d+(?:\.\d+)?\/\d+(?:\.\d+)?)(?!\d|\.\d)/); // a sentence's last "." is fine
+      t.replaceWith(...parts.map((p, i) => {
+        if (i % 2 === 0) return document.createTextNode(p);
+        const [a, b] = p.split('/');
+        const f = el('span', 'f');
+        f.setAttribute('aria-label', `${a} over ${b}`);
+        f.append(el('span', '', a), el('span', '', b));
+        return f;
+      }));
+    }
+  }
+
   // Calculations written in a hint ("9 · 8 = 72", "4/12", "20% of 80"), left side only, for the "+" buttons.
   function calcBits(text) {
     const n = '\\d+(?:\\.\\d+)?%?(?:/\\d+(?:\\.\\d+)?)?';
@@ -463,6 +482,7 @@
     const showResult = (correct, feedback) => {
       box.classList.add(correct ? 'right' : 'wrong');
       result.replaceChildren(el('b', '', correct ? '✓ Right! ' : '✗ Not yet. '), feedback || '');
+      stackFractions(result);
     };
     if (r0?.status === 'right' || r0?.status === 'wrong') showResult(r0.status === 'right', r0.feedback);
     input.addEventListener('input', () => {
