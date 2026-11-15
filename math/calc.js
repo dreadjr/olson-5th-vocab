@@ -219,8 +219,11 @@
   // ---- the panel on the form pages
   if (typeof document === 'undefined') return;
   const page = location.pathname.split('/').filter(Boolean).at(-1) || '';
-  const KEY = `calc:${page}`;
+  const KEY = `calc:${page}`, KEY2 = `calc2:${page}`;
+  const MATHLIVE = 'https://cdn.jsdelivr.net/npm/mathlive@0.111.4/mathlive.min.js';
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; };
+  const load = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
+  const store = (k, v) => { try { localStorage.setItem(k, v); } catch { /* storage blocked */ } };
 
   const panel = el('aside', 'calc');
   panel.hidden = true;
@@ -229,18 +232,9 @@
   const close = el('button', 'calc-close', '×');
   close.type = 'button';
   close.setAttribute('aria-label', 'Close calculator');
-  head.append(el('b', '', 'Calculator'), el('span', 'calc-tip', 'one per line · fractions stay exact'), close);
+  head.append(el('b', '', 'Calculator'), el('span', 'calc-tip', 'Enter: new line · / makes a fraction · → steps out of it'), close);
   const body = el('div', 'calc-body');
-  const input = el('textarea', 'calc-in');
-  input.wrap = 'off';
-  input.spellcheck = false;
-  input.setAttribute('autocapitalize', 'off');
-  input.setAttribute('aria-label', 'Calculations, one per line');
-  input.placeholder = '9/36\n1/6 * 1/6 * 1/6\n20% of 80\n3/4 as %\np = 45/150\np * 1/3 * 900\nmedian(30 25 40 35 20 45)\nmad(2 8 15 22 28)';
-  const out = el('div', 'calc-out');
-  out.setAttribute('aria-label', 'Answers');
-  body.append(input, out);
-  const foot = el('div', 'calc-foot', 'mean  median  range  mad  q1  q3  iqr  min  max  sum  sqrt  round  ·  “of”  “as %”  ans');
+  const foot = el('div', 'calc-foot', 'mean  median  range  mad  q1  q3  iqr  min  max  sum  sqrt  round  ·  “of”  “as %”  ans  ·  18/45 = x/360');
   panel.append(head, body, foot);
 
   // "35/2" shown as a stacked fraction, the way the forms print them (the copy stays "35/2").
@@ -252,26 +246,133 @@
     f.append(el('span', '', m[1]), el('span', '', m[2]));
     return f;
   });
-  const render = () => {
-    const rows = Calc.evalLines(input.value);
-    out.replaceChildren(...rows.map((r) => {
-      const row = el('div', `calc-row${r.error ? ' err' : ''}`);
-      if (r.error) { row.textContent = r.error; row.title = r.error; return row; }
-      if (!r.text) return row;
-      const b = el('button', 'calc-val');
-      b.append(...stacked(r.text));
-      b.type = 'button';
-      b.title = 'Copy';
-      b.addEventListener('click', () => { navigator.clipboard?.writeText(r.text.replace(/^≈ /, '')).then(() => { b.textContent = 'copied'; setTimeout(() => b.replaceChildren(...stacked(r.text)), 900); }, () => {}); });
-      row.append(b);
-      if (r.hint) row.append(el('span', 'calc-hint', r.hint));
-      return row;
-    }));
-    out.scrollTop = input.scrollTop;
+  const resultRow = (r) => {
+    const row = el('div', `calc-row${r.error ? ' err' : ''}`);
+    if (r.error) { row.textContent = r.error; row.title = r.error; return row; }
+    if (!r.text) return row;
+    const b = el('button', 'calc-val');
+    b.type = 'button';
+    b.title = 'Copy';
+    b.append(...stacked(r.text));
+    b.addEventListener('click', () => { navigator.clipboard?.writeText(r.text.replace(/^≈ /, '')).then(() => { b.textContent = 'copied'; setTimeout(() => b.replaceChildren(...stacked(r.text)), 900); }, () => {}); });
+    row.append(b);
+    if (r.hint) row.append(el('span', 'calc-hint', r.hint));
+    return row;
   };
-  try { input.value = localStorage.getItem(KEY) || ''; } catch { /* storage blocked */ }
-  input.addEventListener('input', () => { try { localStorage.setItem(KEY, input.value); } catch { /* storage blocked */ } render(); });
-  input.addEventListener('scroll', () => { out.scrollTop = input.scrollTop; });
+
+  // MathLive's ascii-math (what each math field holds) into the engine's syntax.
+  const fromAscii = (a) => a
+    .replace(/-:/g, '/').replace(/\bxx\b/g, '*').replace(/[∗⋅]/g, '*').replace(/\*\*/g, '^')
+    .replace(/\\[ :;,]|\\quad|\\!/g, ' ').replace(/[“”"]/g, '').replace(/\s+/g, ' ').trim()
+    .replace(/(?<![A-Za-z])[A-Za-z](?: [A-Za-z])+(?![A-Za-z])/g, (w) => w.replace(/ /g, '')) // "m e d i a n" -> "median"
+    .replace(/(\d)\s*x\s*(?=\d)/g, '$1*'); // "6x6" typed as times
+  // Saved plain-text lines (the earlier notepad) into LaTeX for the math fields.
+  const toLatex = (line) => line
+    .replace(/[\\{}]/g, '').replace(/[#%&_$]/g, (c) => `\\${c}`)
+    .replace(/(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)/g, '\\frac{$1}{$2}')
+    .replace(/\*/g, '\\cdot ').replace(/ /g, '\\:');
+
+  // ---- fallback: one plain-text box (no network, school filters, old browsers)
+  function plainMode() {
+    const input = el('textarea', 'calc-in');
+    input.wrap = 'off';
+    input.spellcheck = false;
+    input.setAttribute('autocapitalize', 'off');
+    input.setAttribute('aria-label', 'Calculations, one per line');
+    input.placeholder = '9/36\n1/6 * 1/6 * 1/6\n20% of 80\n3/4 as %\n18/45 = x/360\nmedian(30 25 40 35 20 45)';
+    const out = el('div', 'calc-out');
+    out.setAttribute('aria-label', 'Answers');
+    body.className = 'calc-body plain';
+    body.replaceChildren(input, out);
+    input.value = load(KEY) || '';
+    const render = () => { out.replaceChildren(...Calc.evalLines(input.value).map(resultRow)); out.scrollTop = input.scrollTop; };
+    input.addEventListener('input', () => { store(KEY, input.value); render(); });
+    input.addEventListener('scroll', () => { out.scrollTop = input.scrollTop; });
+    render();
+    return () => input.focus();
+  }
+
+  // ---- math fields: one per line, fractions stack as you type
+  function mathMode() {
+    const ME = window.MathfieldElement;
+    ME.soundsDirectory = null;
+    body.className = 'calc-body rows';
+    const list = el('div', 'calc-lines');
+    body.replaceChildren(list);
+    let lines = null;
+    try { lines = JSON.parse(load(KEY2)); } catch { /* bad data */ }
+    if (!Array.isArray(lines)) lines = (load(KEY) || '').split('\n').filter((l, i, a) => l.trim() || i < a.length - 1).map(toLatex);
+    if (!lines.length) lines = [''];
+    const fields = [];
+    const save = () => store(KEY2, JSON.stringify(fields.map((f) => f.value)));
+    const render = () => {
+      const results = Calc.evalLines(fields.map((f) => fromAscii(f.getValue('ascii-math'))).join('\n'));
+      fields.forEach((f, i) => f.closest('.calc-line').querySelector('.calc-row').replaceWith(resultRow(results[i] || {})));
+    };
+    const add = (latex, after) => {
+      const line = el('div', 'calc-line');
+      const mf = new ME();
+      mf.mathModeSpace = '\\:';
+      mf.smartFence = true;
+      mf.value = latex;
+      mf.setAttribute('aria-label', 'Calculation');
+      line.append(mf, el('div', 'calc-row'));
+      const i = after ? fields.indexOf(after) + 1 : fields.length;
+      fields.splice(i, 0, mf);
+      after ? after.closest('.calc-line').after(line) : list.append(line);
+      mf.inlineShortcuts = {}; // (needs the field on the page) no ∘ for "of" or operator names: plain letters become words in fromAscii
+      mf.addEventListener('input', () => { save(); render(); });
+      const newLine = () => {
+        const next = add('', mf);
+        next.focus();
+        requestAnimationFrame(() => { if (!next.hasFocus()) next.focus(); }); // in case the new field wasn't ready yet
+        save(); render();
+      };
+      // Keys are caught on the line, before MathLive's own handling (which keeps focus in its field).
+      line.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); e.stopPropagation(); newLine(); return; }
+        if (e.key !== 'Backspace' || mf.value || fields.length < 2) return;
+        e.preventDefault();
+        e.stopPropagation();
+        const k = fields.indexOf(mf);
+        fields.splice(k, 1);
+        line.remove();
+        const prev = fields[Math.max(0, k - 1)];
+        prev.focus();
+        prev.position = prev.lastOffset;
+        save(); render();
+      }, true);
+      mf.addEventListener('beforeinput', (e) => { if (e.inputType === 'insertLineBreak') { e.preventDefault(); newLine(); } }); // on-screen keyboard's return
+      mf.addEventListener('move-out', (e) => {
+        const k = fields.indexOf(mf) + (e.detail.direction === 'upward' || e.detail.direction === 'backward' ? -1 : 1);
+        if (fields[k]) { e.preventDefault(); fields[k].focus(); }
+      });
+      return mf;
+    };
+    for (const l of lines) add(l);
+    render();
+    // Keep the phone drawer above MathLive's on-screen keyboard.
+    window.mathVirtualKeyboard?.addEventListener('geometrychange', () => {
+      panel.style.setProperty('--kb', `${window.mathVirtualKeyboard.visible ? window.mathVirtualKeyboard.boundingRect.height : 0}px`);
+    });
+    return () => fields.at(-1).focus();
+  }
+
+  let focusFirst = null;
+  const ready = () => {
+    if (focusFirst) return Promise.resolve(focusFirst);
+    if (window.MathfieldElement) return Promise.resolve(focusFirst = mathMode());
+    body.replaceChildren(el('div', 'calc-loading', 'Loading the calculator…'));
+    return new Promise((res) => {
+      const s = document.createElement('script');
+      const fail = () => res(focusFirst = plainMode());
+      const timer = setTimeout(fail, 8000);
+      s.src = MATHLIVE;
+      s.onload = () => { clearTimeout(timer); try { res(focusFirst = window.MathfieldElement ? mathMode() : plainMode()); } catch { fail(); } };
+      s.onerror = () => { clearTimeout(timer); fail(); };
+      document.head.append(s);
+    });
+  };
 
   const btn = el('button', 'calc-btn', 'Calculator');
   btn.type = 'button';
@@ -280,7 +381,8 @@
     panel.hidden = !open;
     document.body.classList.toggle('calc-open', open);
     btn.setAttribute('aria-expanded', String(open));
-    if (open) { render(); input.focus(); }
+    if (open) ready().then((f) => f());
+    else window.mathVirtualKeyboard?.hide();
   };
   btn.addEventListener('click', () => set(panel.hidden));
   close.addEventListener('click', () => { set(false); btn.focus(); });
