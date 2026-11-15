@@ -1,6 +1,7 @@
 // Numi-style calculator for the review forms: one calculation per line, answers to the right.
 // Exact fractions (9/36 = 1/4), statistics (mean, median, mad, q1, q3…), percents ("20% of 80",
-// "3/4 as %"), named values ("p = 45/150") and "ans" for the line before. No dependencies.
+// "3/4 as %"), named values ("p = 45/150"), "ans" for the line before, and equations in one
+// unknown ("18/45 = x/360" gives x = 144). No dependencies.
 // The engine (globalThis.Calc) is plain JS so scripts/calc.test.mjs can run it in node.
 (() => {
   // ---- numbers: exact rationals {n, d} (BigInt) or floats {f} when exactness is lost (sqrt, decimals powers…)
@@ -164,16 +165,46 @@
       if (!as) throw new Error('try “as %”, “as decimal” or “as fraction”');
       toks = toks.slice(0, at);
     }
-    let name = null;
-    if (toks[0]?.t === 'id' && toks[1]?.t === 'op' && toks[1].v === '=') {
-      name = toks[0].v;
-      if (LIST[name] || ONE[name] || RESERVED.has(name)) throw new Error(`“${name}” is already a word I use`);
-      toks = toks.slice(2);
+    const eq = toks.findIndex((t) => t.t === 'op' && t.v === '=');
+    if (eq < 0) { const v = parse(toks, env); env.ans = v; return format(v, as); }
+    if (toks.slice(eq + 1).some((t) => t.t === 'op' && t.v === '=')) throw new Error('only one “=” on a line');
+    const L = toks.slice(0, eq), R = toks.slice(eq + 1);
+    const word = (t) => t.t === 'id' && !LIST[t.v] && !ONE[t.v] && !RESERVED.has(t.v);
+    // "p = 45/150": a name on its own on the left, not used on the right, is an assignment.
+    if (L.length === 1 && word(L[0]) && !R.some((t) => t.t === 'id' && t.v === L[0].v)) {
+      const v = parse(R, env);
+      env[L[0].v] = env.ans = v;
+      return format(v, as);
     }
-    const v = parse(toks, env);
-    if (name) env[name] = v;
-    env.ans = v;
-    return format(v, as);
+    if (L.length === 1 && L[0].t === 'id' && !word(L[0])) throw new Error(`“${L[0].v}” is already a word I use`);
+    // Anything else with "=" is an equation in one unknown: 18/45 = x/360, 45/18 = 360/x, 2x + 3 = 15.
+    let unknowns = [...new Set(toks.filter((t) => word(t) && !(t.v in env)).map((t) => t.v))];
+    const letters = [...new Set(toks.filter(word).map((t) => t.v))];
+    if (!unknowns.length && letters.length === 1) unknowns = letters; // each equation on its own line solves fresh, even if x was found above
+    if (unknowns.length !== 1) throw new Error(unknowns.length ? `more than one unknown (${unknowns.join(', ')})` : 'nothing to solve for: every letter already has a value');
+    const u = unknowns[0], x = solve(L, R, u, env);
+    env[u] = env.ans = x;
+    const f = format(x, as);
+    return { ...f, text: `${u} = ${f.text}` };
+  }
+
+  // One unknown appearing once, on top (linear) or underneath (reciprocal): fit a line through 3 points and find
+  // where it crosses zero, then check the answer by putting it back in.
+  function solve(L, R, u, env) {
+    const f = (val) => { const e = { ...env, [u]: val }; return sub(parse(L, e), parse(R, e)); };
+    const same = (a, b) => (isQ(a) && isQ(b) ? a.n === b.n && a.d === b.d : Math.abs(num(a) - num(b)) <= 1e-9 * Math.max(1, Math.abs(num(a))));
+    const root = (g) => {
+      try {
+        const [g1, g2, g3] = [1n, 2n, 3n].map((k) => g(Q(k)));
+        const slope = sub(g2, g1);
+        if (!same(slope, sub(g3, g2)) || num(slope) === 0) return null;
+        return add(Q(1n), div(neg(g1), slope)); // k where the line through (1, g1) hits 0
+      } catch { return null; }
+    };
+    let x = root(f);
+    if (x === null) { const y = root((k) => f(div(Q(1n), k))); if (y !== null && num(y) !== 0) x = div(Q(1n), y); }
+    try { if (x !== null && same(f(x), Q(0n))) return x; } catch { /* the answer divides by 0 */ }
+    throw new Error(`can’t solve that for ${u}; try a proportion like 18/45 = ${u}/360`);
   }
 
   /** One result per line: {text, hint?} for a calculation, {error} for a broken one, {} for notes and blanks. */
