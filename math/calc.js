@@ -232,10 +232,28 @@
   const close = el('button', 'calc-close', '×');
   close.type = 'button';
   close.setAttribute('aria-label', 'Close calculator');
-  head.append(el('b', '', 'Calculator'), el('span', 'calc-tip', 'Enter or + for a new line · / for a fraction'), close);
+  const clearB = el('button', 'calc-clear', 'Clear');
+  clearB.type = 'button';
+  clearB.setAttribute('aria-label', 'Clear all lines');
+  head.append(el('b', '', 'Calculator'), el('span', 'calc-tip', 'Enter or + for a new line · / for a fraction'), clearB, close);
   const body = el('div', 'calc-body');
   const foot = el('div', 'calc-foot', 'mean  median  range  mad  q1  q3  iqr  min  max  sum  sqrt  round  ·  “of”  “as %”  ans  ·  18/45 = x/360');
-  panel.append(head, body, foot);
+  // "Clear" empties everything at once, with Undo for a few seconds instead of an "are you sure?" box.
+  const undoBar = el('div', 'calc-undo');
+  undoBar.hidden = true;
+  undoBar.setAttribute('role', 'status');
+  const undoB = el('button', '', 'Undo');
+  undoB.type = 'button';
+  undoBar.append(el('span', '', 'Cleared.'), undoB);
+  let undoTimer = 0, undoFn = null;
+  clearB.addEventListener('click', () => ready().then((a) => {
+    undoFn = a.clear();
+    undoBar.hidden = false;
+    clearTimeout(undoTimer);
+    undoTimer = setTimeout(() => { undoBar.hidden = true; undoFn = null; }, 8000);
+  }));
+  undoB.addEventListener('click', () => { undoFn?.(); undoFn = null; undoBar.hidden = true; });
+  panel.append(head, body, undoBar, foot);
 
   // Resize: drag the left edge (wide screens) or the top handle (phone drawer); arrow keys work too. Kept per device.
   const grip = el('div', 'calc-grip');
@@ -329,6 +347,11 @@
     input.addEventListener('scroll', () => { out.scrollTop = input.scrollTop; });
     render();
     return {
+      clear: () => {
+        const was = input.value;
+        input.value = ''; store(KEY, ''); render(); input.focus();
+        return () => { input.value = was; store(KEY, was); render(); input.focus(); };
+      },
       focus: () => input.focus(),
       append: (text) => {
         input.value = (input.value.trim() ? input.value.replace(/\n*$/, '\n') : '') + text;
@@ -357,6 +380,17 @@
       const results = Calc.evalLines(fields.map((f) => fromAscii(f.getValue('ascii-math'))).join('\n'));
       fields.forEach((f, i) => f.closest('.calc-line').querySelector('.calc-row').replaceWith(resultRow(results[i] || {})));
     };
+    // Delete a line (the last one left just empties); the cursor goes to the line above.
+    const remove = (mf) => {
+      if (fields.length < 2) { mf.value = ''; mf.focus(); save(); render(); return; }
+      const k = fields.indexOf(mf);
+      fields.splice(k, 1);
+      mf.closest('.calc-line').remove();
+      const prev = fields[Math.max(0, k - 1)];
+      prev.focus();
+      prev.position = prev.lastOffset;
+      save(); render();
+    };
     const add = (latex, after) => {
       const line = el('div', 'calc-line');
       const mf = new ME();
@@ -364,7 +398,12 @@
       mf.smartFence = true;
       mf.value = latex;
       mf.setAttribute('aria-label', 'Calculation');
-      line.append(mf, el('div', 'calc-row'));
+      const del = el('button', 'calc-del', '×');
+      del.type = 'button';
+      del.title = 'Delete this line';
+      del.setAttribute('aria-label', 'Delete this line');
+      del.addEventListener('click', () => remove(mf));
+      line.append(mf, el('div', 'calc-row'), del);
       const i = after ? fields.indexOf(after) + 1 : fields.length;
       fields.splice(i, 0, mf);
       after ? after.closest('.calc-line').after(line) : list.append(line);
@@ -382,13 +421,7 @@
         if (e.key !== 'Backspace' || mf.value || fields.length < 2) return;
         e.preventDefault();
         e.stopPropagation();
-        const k = fields.indexOf(mf);
-        fields.splice(k, 1);
-        line.remove();
-        const prev = fields[Math.max(0, k - 1)];
-        prev.focus();
-        prev.position = prev.lastOffset;
-        save(); render();
+        remove(mf);
       }, true);
       mf.addEventListener('beforeinput', (e) => { if (e.inputType === 'insertLineBreak') { e.preventDefault(); newLine(); } }); // on-screen keyboard's return
       mf.addEventListener('move-out', (e) => {
@@ -414,7 +447,14 @@
     window.mathVirtualKeyboard?.addEventListener('geometrychange', () => {
       panel.style.setProperty('--kb', `${window.mathVirtualKeyboard.visible ? window.mathVirtualKeyboard.boundingRect.height : 0}px`);
     });
+    const reset = (values) => {
+      fields.splice(0).forEach((f) => f.closest('.calc-line').remove());
+      for (const v of values.length ? values : ['']) add(v);
+      save(); render();
+      fields.at(-1).focus();
+    };
     return {
+      clear: () => { const was = fields.map((f) => f.value); reset([]); return () => reset(was); },
       focus: () => fields.at(-1).focus(),
       append: (text) => {
         const last = fields.at(-1);
