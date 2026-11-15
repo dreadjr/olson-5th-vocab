@@ -7,9 +7,9 @@ const DIST = join(ROOT, 'dist');
 const TYPES = { '.html': 'text/html; charset=utf-8', '.json': 'application/json', '.css': 'text/css', '.js': 'text/javascript', '.pdf': 'application/pdf' };
 
 export async function serveDist(req, res) {
-  let p = normalize(decodeURIComponent(new URL(req.url, 'http://x').pathname)).replace(/^(\.\.[/\\])+/, '');
-  let file = join(DIST, p);
   try {
+    const p = normalize(decodeURIComponent(new URL(req.url, 'http://x').pathname)).replace(/^(\.\.[/\\])+/, '');
+    let file = join(DIST, p);
     if ((await stat(file)).isDirectory()) file = join(file, 'index.html');
     const body = await readFile(file);
     res.writeHead(200, { 'content-type': TYPES[extname(file)] || 'application/octet-stream' });

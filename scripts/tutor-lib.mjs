@@ -45,8 +45,8 @@ export function buildPrompt({ entry, step, question, message }) {
   ].join('\n');
 }
 
-/** The AI CLI to run, with tools off and nothing saved. The prompt is added by the caller. */
+/** The AI CLI to run: no tools, no MCP servers, none of my own settings, hooks or plugins, nothing saved.
+ *  The prompt goes in on stdin. Codex isn't offered: `codex exec` can still run shell commands. */
 export function cliCommand(env) {
-  if (env.TUTOR_CLI === 'codex') return { cmd: 'codex', args: ['exec', '--skip-git-repo-check', '-s', 'read-only', '-'] };
-  return { cmd: 'claude', args: ['-p', '--tools', '', '--no-session-persistence', '--strict-mcp-config', '--model', env.TUTOR_MODEL || 'sonnet'] };
+  return { cmd: 'claude', args: ['-p', '--tools', '', '--setting-sources', '', '--no-session-persistence', '--strict-mcp-config', '--model', env.TUTOR_MODEL || 'sonnet'] };
 }

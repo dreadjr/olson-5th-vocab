@@ -123,8 +123,7 @@ To let your kid type questions to an AI tutor, run it on your Mac and open the a
 
 ```sh
 bun run tutor                    # http://<your-mac>.local:8080/ ; uses the claude CLI
-TUTOR_CLI=codex bun run tutor    # use Codex instead
 TUTOR_MODEL=opus bun run tutor   # pick the Claude model (default: sonnet)
 ```
 
-The tutor runs your CLI with no tools and is told not to give away more than the step the student is on. Every hint opened and question asked is added to `logs/tutor.jsonl` (not committed). On the public site, the hints and links still work, and the Ask box is hidden.
+The tutor runs `claude` with no tools, in an empty folder, without your own settings, hooks, plugins or memory, and tells it not to give away more than the step the student is on. If the CLI fails, times out (60 s) or is signed out, the panel says the tutor isn't available. Codex isn't offered because `codex exec` can still run shell commands. Every hint opened and question asked is added to `logs/tutor.jsonl` (not committed). On the public site, the hints and links still work, and the Ask box is hidden.

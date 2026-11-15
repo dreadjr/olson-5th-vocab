@@ -1,9 +1,9 @@
 // Local AI tutor: serves dist/ plus /api/* on the home network, answering with your own AI CLI.
-// Run: bun run tutor   (TUTOR_CLI=codex to use Codex, TUTOR_MODEL to pick the Claude model)
+// Run: bun run tutor   (TUTOR_MODEL picks the Claude model)
 import { createServer } from 'node:http';
 import { spawn } from 'node:child_process';
-import { appendFileSync, mkdirSync } from 'node:fs';
-import { hostname } from 'node:os';
+import { appendFileSync, mkdirSync, mkdtempSync } from 'node:fs';
+import { hostname, tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { ROOT } from './lib.mjs';
 import { serveDist } from './static.mjs';
@@ -12,6 +12,9 @@ import { validateAsk, loadHelp, buildPrompt, cliCommand } from './tutor-lib.mjs'
 const PORT = process.env.PORT === undefined ? 8080 : Number(process.env.PORT);
 const LOG_DIR = join(ROOT, 'logs');
 const UNAVAILABLE = "The tutor isn't available right now.";
+const TIMEOUT_MS = Number(process.env.TUTOR_TIMEOUT_MS) || 60_000;
+// The CLI runs in an empty folder so it can't pick up this repo's CLAUDE.md or project memory.
+const SANDBOX = mkdtempSync(join(tmpdir(), 'tutor-'));
 
 function log(event) {
   mkdirSync(LOG_DIR, { recursive: true });
@@ -19,9 +22,11 @@ function log(event) {
 }
 
 async function readJson(req) {
-  let s = '';
-  for await (const c of req) { s += c; if (s.length > 10000) return null; }
-  try { return JSON.parse(s); } catch { return null; }
+  try {
+    let s = '';
+    for await (const c of req) { s += c; if (s.length > 10000) return null; }
+    return JSON.parse(s);
+  } catch { return null; } // bad JSON, or the upload was cut off
 }
 
 const send = (res, code, text) => { res.writeHead(code, { 'content-type': 'text/plain; charset=utf-8' }); res.end(text); };
@@ -32,27 +37,32 @@ async function ask(req, res) {
   const entry = loadHelp(a.page)?.entries?.[a.id];
   if (!entry) return send(res, 400, 'unknown question');
 
+  // The whole reply is buffered: the CLI prints its errors (usage limit, sign-in) on stdout too,
+  // so only a clean exit counts as an answer. Replies are a few sentences, so streaming gained little.
   const { cmd, args } = cliCommand(process.env);
-  const child = spawn(cmd, args, { stdio: ['pipe', 'pipe', 'ignore'] });
-  let reply = '';
-  const timer = setTimeout(() => child.kill(), 60_000);
-  child.on('error', () => {}); // ENOENT etc.; handled on close
-  child.stdout.on('data', (d) => {
-    if (!res.headersSent) res.writeHead(200, { 'content-type': 'text/plain; charset=utf-8' });
-    reply += d;
-    res.write(d);
-  });
-  child.on('close', (code) => {
+  const child = spawn(cmd, args, { cwd: SANDBOX, stdio: ['pipe', 'pipe', 'ignore'] });
+  let reply = '', done = false;
+  const finish = (ok) => {
+    if (done) return;
+    done = true;
     clearTimeout(timer);
-    if (!res.headersSent) return send(res, 503, UNAVAILABLE);
-    res.end();
-    if (code === 0) log({ event: 'ask', page: a.page, id: a.id, step: a.step, message: a.message, reply });
-  });
+    if (!ok) { child.kill('SIGKILL'); return send(res, 503, UNAVAILABLE); }
+    send(res, 200, reply.trim());
+    log({ event: 'ask', page: a.page, id: a.id, step: a.step, message: a.message, reply: reply.trim() });
+  };
+  const timer = setTimeout(() => finish(false), TIMEOUT_MS);
+  child.on('error', () => finish(false)); // CLI not installed
+  child.stdout.on('data', (d) => { reply += d; });
+  child.on('close', (code) => finish(code === 0 && reply.trim() !== ''));
   child.stdin.on('error', () => {});
   child.stdin.end(buildPrompt({ entry, ...a }));
 }
 
-const server = createServer(async (req, res) => {
+const server = createServer((req, res) => handle(req, res).catch(() => {
+  if (!res.headersSent) send(res, 400, 'bad request'); else res.end();
+}));
+
+async function handle(req, res) {
   const { pathname } = new URL(req.url, 'http://x');
   if (pathname === '/api/health') return send(res, 200, JSON.stringify({ ok: true, cli: cliCommand(process.env).cmd }));
   if (pathname === '/api/ask' && req.method === 'POST') return ask(req, res);
@@ -64,7 +74,7 @@ const server = createServer(async (req, res) => {
     res.writeHead(204); return res.end();
   }
   return serveDist(req, res);
-});
+}
 
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`Tutor at http://${hostname().split('.')[0]}.local:${server.address().port}/  (using ${cliCommand(process.env).cmd})`);
