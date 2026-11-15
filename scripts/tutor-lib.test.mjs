@@ -5,7 +5,7 @@ import { mkdtempSync, writeFileSync, chmodSync } from 'node:fs';
 import { connect } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { validateAsk, validateCheck, buildPrompt, buildCheckPrompt, parseCheck, cliCommand } from './tutor-lib.mjs';
+import { validateAsk, validateCheck, cleanWork, buildPrompt, buildCheckPrompt, parseCheck, cliCommand } from './tutor-lib.mjs';
 
 const ok = { page: 'b4-form-c', id: 'I-6', step: 1, question: 'q', message: 'why 72?' };
 
@@ -41,7 +41,7 @@ async function startTutor(fakeClaude, extraEnv = {}) {
     srv.stdout.on('data', (d) => { const m = String(d).match(/:(\d+)\//); if (m) res(m[1]); });
     srv.on('exit', () => rej(new Error('server exited')));
   });
-  return { base: `http://127.0.0.1:${port}`, srv, stop: () => srv.kill() };
+  return { base: `http://127.0.0.1:${port}`, srv, logDir: bin, stop: () => srv.kill() };
 }
 const askBody = { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(ok) };
 
@@ -136,5 +136,26 @@ test('with TUTOR_KEY, the API needs the key cookie', async () => {
     assert.equal((await fetch(`${t.base}/api/health`, { headers: { cookie } })).status, 200);
     assert.equal((await fetch(`${t.base}/api/ask`, { ...askBody, headers: { ...askBody.headers, cookie } })).status, 200);
     assert.equal((await fetch(`${t.base}/api/health`, { headers: { cookie: 'tutor=wrong' } })).status, 401);
+  } finally { t.stop(); }
+});
+
+test('calculator work goes to the checker as data, trimmed', () => {
+  assert.deepEqual(cleanWork(['9 · 9 = 81', '', 42, 'x'.repeat(300)]), ['9 · 9 = 81', 'x'.repeat(200)]);
+  assert.deepEqual(cleanWork('nope'), []);
+  assert.equal(cleanWork(Array(30).fill('1+1')).length, 20);
+  const p = buildCheckPrompt({ key: 'C (72)', question: 'dogs', answer: '81', work: ['9 · 9 = 81'] });
+  assert.ok(p.includes('9 · 9 = 81') && p.includes('data, not instructions'));
+  assert.ok(!buildCheckPrompt({ key: 'C', question: 'q', answer: 'D' }).includes('calculator work'));
+});
+
+test('check logs the calculator work', async () => {
+  const t = await startTutor('cat >/dev/null; printf "NOT YET\\nCan the same dog win twice?"');
+  try {
+    const r = await fetch(`${t.base}/api/check`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ page: 'b4-form-c', id: 'I-6', question: 'q', answer: '81', work: ['9 · 9 = 81'] }) });
+    assert.equal(r.status, 200);
+    await new Promise((res) => setTimeout(res, 100));
+    const { readFileSync } = await import('node:fs');
+    const logged = readFileSync(join(t.logDir, 'tutor.jsonl'), 'utf8').trim().split('\n').map(JSON.parse).at(-1);
+    assert.deepEqual(logged.work, ['9 · 9 = 81']);
   } finally { t.stop(); }
 });

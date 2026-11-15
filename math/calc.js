@@ -223,6 +223,10 @@
   const MATHLIVE = 'https://cdn.jsdelivr.net/npm/mathlive@0.111.4/mathlive.min.js';
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; };
   const load = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
+  // The question being worked on, from math/help.js (window.StudyState); calculator lines are tagged with it.
+  const currentQ = () => window.StudyState?.current || null;
+  const questionLabel = (q) => window.StudyState?.labels?.[q] || q;
+  const pretty = (a) => a.replace(/\((\d+(?:\.\d+)?|[A-Za-z])\)\/\((\d+(?:\.\d+)?|[A-Za-z])\)/g, '$1/$2').replace(/\*/g, ' · ').replace(/\s+/g, ' ').trim();
   const store = (k, v) => { try { localStorage.setItem(k, v); } catch { /* storage blocked */ } };
 
   const panel = el('aside', 'calc');
@@ -373,12 +377,25 @@
     let lines = null;
     try { lines = JSON.parse(load(KEY2)); } catch { /* bad data */ }
     if (!Array.isArray(lines)) lines = (load(KEY) || '').split('\n').filter((l, i, a) => l.trim() || i < a.length - 1).map(toLatex);
-    if (!lines.length) lines = [''];
+    lines = lines.map((l) => (typeof l === 'string' ? { v: l, q: null } : { v: String(l?.v ?? ''), q: l?.q ?? null }));
+    if (!lines.length) lines = [{ v: '', q: null }];
     const fields = [];
-    const save = () => store(KEY2, JSON.stringify(fields.map((f) => f.value)));
+    // Saved per line: the LaTeX, the question it was written for, and its plain text (so the work can be shown without MathLive).
+    const save = () => store(KEY2, JSON.stringify(fields.map((f) => ({ v: f.value, q: f.dataset.q || null, a: fromAscii(f.getValue('ascii-math')) }))));
     const render = () => {
       const results = Calc.evalLines(fields.map((f) => fromAscii(f.getValue('ascii-math'))).join('\n'));
-      fields.forEach((f, i) => f.closest('.calc-line').querySelector('.calc-row').replaceWith(resultRow(results[i] || {})));
+      fields.forEach((f, i) => {
+        const row = resultRow(results[i] || {});
+        if (f.dataset.q && f.value) {
+          const tag = el('button', 'calc-q', questionLabel(f.dataset.q));
+          tag.type = 'button';
+          tag.title = 'Go to this question';
+          tag.addEventListener('click', () => window.StudyState?.goto?.(f.dataset.q));
+          row.prepend(tag);
+        }
+        f.closest('.calc-line').querySelector('.calc-row').replaceWith(row);
+      });
+      document.dispatchEvent(new CustomEvent('calc-change'));
     };
     // Delete a line (the last one left just empties); the cursor goes to the line above.
     const remove = (mf) => {
@@ -391,9 +408,10 @@
       prev.position = prev.lastOffset;
       save(); render();
     };
-    const add = (latex, after) => {
+    const add = (latex, after, q = currentQ()) => {
       const line = el('div', 'calc-line');
       const mf = new ME();
+      if (q) mf.dataset.q = q;
       mf.mathModeSpace = '\\:';
       mf.smartFence = true;
       mf.value = latex;
@@ -408,7 +426,10 @@
       fields.splice(i, 0, mf);
       after ? after.closest('.calc-line').after(line) : list.append(line);
       mf.inlineShortcuts = {}; // (needs the field on the page) no ∘ for "of" or operator names: plain letters become words in fromAscii
-      mf.addEventListener('input', () => { save(); render(); });
+      mf.addEventListener('input', () => {
+        if (!mf.dataset.q && currentQ()) mf.dataset.q = currentQ(); // a line belongs to the question you were on when you wrote it
+        save(); render();
+      });
       const newLine = () => {
         const next = add('', mf);
         next.focus();
@@ -430,7 +451,7 @@
       });
       return mf;
     };
-    for (const l of lines) add(l);
+    for (const l of lines) add(l.v, null, l.q);
     // "+ New line" for touch screens, where Enter is hard to find.
     const plus = el('button', 'calc-add', '+ New line');
     plus.type = 'button';
@@ -449,16 +470,17 @@
     });
     const reset = (values) => {
       fields.splice(0).forEach((f) => f.closest('.calc-line').remove());
-      for (const v of values.length ? values : ['']) add(v);
+      for (const l of values.length ? values : [{ v: '', q: null }]) add(l.v, null, l.q);
       save(); render();
       fields.at(-1).focus();
     };
     return {
-      clear: () => { const was = fields.map((f) => f.value); reset([]); return () => reset(was); },
+      clear: () => { const was = fields.map((f) => ({ v: f.value, q: f.dataset.q || null })); reset([]); return () => reset(was); },
       focus: () => fields.at(-1).focus(),
       append: (text) => {
         const last = fields.at(-1);
         const mf = last && !last.value ? last : add('');
+        if (currentQ()) mf.dataset.q = currentQ();
         mf.value = toLatex(text);
         mf.focus();
         requestAnimationFrame(() => { if (!mf.hasFocus()) mf.focus(); mf.position = mf.lastOffset; });
@@ -500,6 +522,15 @@
   const toggle = document.getElementById('toggle');
   toggle ? toggle.before(btn) : document.querySelector('.toolbar')?.append(btn);
   document.body.append(panel);
+  /** A question's calculator work, worked out from what's saved: [{expr, result}] (the plain-text box isn't tagged). */
+  Calc.workFor = (id) => {
+    let saved = [];
+    try { saved = JSON.parse(load(KEY2)) || []; } catch { /* bad data */ }
+    if (!Array.isArray(saved)) return [];
+    const rows = evalLines(saved.map((l) => (typeof l === 'object' && l?.a) || '').join('\n'));
+    return saved.flatMap((l, i) => (l?.q === id && l.a ? [{ expr: pretty(l.a), result: rows[i]?.text || (rows[i]?.error ? '?' : '') }] : []));
+  };
+  document.dispatchEvent(new CustomEvent('calc-change'));
   /** Open the calculator and add a line (used by the Help panel's "+ 9 · 8" buttons). */
   Calc.addLine = (text) => { if (panel.hidden) set(true); return ready().then((a) => a.append(text)); };
 })();

@@ -31,7 +31,8 @@
   const MARK_TEXT = { right: 'right', wrong: 'not yet right', answered: 'answered, not checked' };
 
   // Question ids: same rule as scripts/help-check.mjs questionIds().
-  const questions = [], qEls = {}, qLesson = {};
+  const questions = [], qEls = {}, qLesson = {}, works = {};
+  const study = window.StudyState = { current: null, labels, goto: (id) => (view === 'focus' ? go(id) : qEls[id]?.scrollIntoView({ block: 'center' })) };
   document.querySelectorAll('section.part').forEach((part, i) => {
     part.querySelectorAll('.q, .task').forEach((q) => {
       const n = q.querySelector(':scope > .n');
@@ -50,6 +51,11 @@
       host.prepend(meta);
       const box = answerBox(id, host, q.classList.contains('task'));
       host.append(box);
+      works[id] = el('div', 'q-work');
+      works[id].hidden = true;
+      host.append(works[id]);
+      // The question you're on: calculator lines written now are tagged with it (math/calc.js reads StudyState).
+      for (const ev of ['focusin', 'pointerdown']) q.addEventListener(ev, () => { study.current = id; });
       pickers(host, box.querySelector('input, textarea'));
       attach(host, id, entry);
     });
@@ -105,6 +111,7 @@
 
   function go(id) {
     cur = id;
+    study.current = id;
     try { localStorage.setItem(`focus:${page}`, id); } catch { /* storage blocked */ }
     updateFocus();
     if (view === 'focus') window.scrollTo(0, 0);
@@ -234,6 +241,7 @@
       if (off) a.addEventListener('click', () => showLesson(n)); // show it again, then the link jumps to it
       a.addEventListener('click', () => { if (view === 'focus') go(t.id); });
       li.append(a, ` · “${t.answer}” · `, el('b', '', t.correct ? 'Right' : 'Not yet'), ` · ${new Date(t.t).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}`);
+      if (t.work?.length) { const w = el('span', 'work-note', ` · ${t.work.length} calculation${t.work.length > 1 ? 's' : ''}`); w.title = t.work.join('\n'); li.append(w); }
       if (off) li.append(el('span', 'off-note', ` (Lesson ${n} hidden)`));
       return li;
     }) : [el('li', 'empty', 'No answers checked yet.')]));
@@ -277,7 +285,7 @@
             b.type = 'button';
             b.title = 'Add to the calculator';
             b.setAttribute('aria-label', `Add ${sum} to the calculator`);
-            b.addEventListener('click', () => window.Calc.addLine(sum));
+            b.addEventListener('click', () => { study.current = id; window.Calc.addLine(sum); });
             row.append(b);
           }
           li.append(row);
@@ -295,6 +303,21 @@
       reveal();
     });
   }
+
+  // Each question's calculator work (math/calc.js), shown under its answer box.
+  const workLines = (id) => (window.Calc?.workFor?.(id) || []).map((w) => `${w.expr}${w.result && !w.expr.includes('=') ? ` = ${w.result}` : w.result ? `  →  ${w.result}` : ''}`);
+  function renderWork() {
+    for (const id of questions) {
+      const lines = workLines(id);
+      works[id].hidden = !lines.length;
+      if (!lines.length) continue;
+      const list = el('ul');
+      for (const l of lines) list.append(el('li', '', l));
+      works[id].replaceChildren(el('div', 'q-work-head', `Calculator work (${lines.length})`), list);
+    }
+  }
+  document.addEventListener('calc-change', renderWork);
+  queueMicrotask(renderWork);
 
   // Tap-to-pick: multiple-choice letters and YES/NO options fill the answer box.
   function pickers(host, input) {
@@ -397,7 +420,7 @@
   // The question's own text, without the key, help or answer box, for the tutor.
   function questionText(host) {
     const copy = host.cloneNode(true);
-    copy.querySelectorAll('.ans, .help, .helpbtn, .answer, .q-meta').forEach((x) => x.remove());
+    copy.querySelectorAll('.ans, .help, .helpbtn, .answer, .q-meta, .q-work').forEach((x) => x.remove());
     return copy.textContent.replace(/\s+/g, ' ').trim();
   }
 
@@ -443,14 +466,15 @@
         let correct, feedback;
         if (key) ({ correct, feedback } = autoCheck(key, answer));
         else {
-          const r = await post('/api/check', { page, id, question: questionText(host), answer });
+          const r = await post('/api/check', { page, id, question: questionText(host), answer, work: workLines(id) });
           if (!r.ok) throw new Error();
           ({ correct, feedback } = await r.json());
         }
         const p = rec(id);
         p.status = correct ? 'right' : 'wrong';
         p.feedback = feedback;
-        p.tries.push({ answer, correct, t: Date.now() });
+        const work = workLines(id);
+        p.tries.push({ answer, correct, t: Date.now(), ...(work.length ? { work } : {}) });
         save(); render();
         showResult(correct, feedback);
       } catch {

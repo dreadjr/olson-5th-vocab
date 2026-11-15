@@ -9,7 +9,7 @@ import { hostname, tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { ROOT } from './lib.mjs';
 import { serveDist } from './static.mjs';
-import { validateAsk, validateCheck, loadHelp, loadKey, buildPrompt, buildCheckPrompt, parseCheck, cliCommand } from './tutor-lib.mjs';
+import { validateAsk, validateCheck, cleanWork, loadHelp, loadKey, buildPrompt, buildCheckPrompt, parseCheck, cliCommand } from './tutor-lib.mjs';
 
 const PORT = process.env.PORT === undefined ? 8080 : Number(process.env.PORT);
 const LOG_DIR = process.env.TUTOR_LOG_DIR || join(ROOT, 'logs');
@@ -68,15 +68,17 @@ async function ask(req, res) {
 }
 
 async function check(req, res) {
-  const a = validateCheck(await readJson(req));
+  const body = await readJson(req);
+  const a = validateCheck(body);
+  const work = cleanWork(body?.work);
   if (a.error) return send(res, 400, a.error);
   const key = loadKey(a.page, a.id); // from the page on disk, never from the browser
   if (!key) return send(res, 400, 'unknown question');
-  const reply = await runCli(buildCheckPrompt({ key, ...a }));
+  const reply = await runCli(buildCheckPrompt({ key, ...a, work }));
   const result = reply && parseCheck(reply);
   if (!result) return send(res, 503, UNAVAILABLE);
   send(res, 200, JSON.stringify(result));
-  log({ event: 'check', page: a.page, id: a.id, answer: a.answer, ...result });
+  log({ event: 'check', page: a.page, id: a.id, answer: a.answer, ...(work.length ? { work } : {}), ...result });
 }
 
 const server = createServer((req, res) => {
