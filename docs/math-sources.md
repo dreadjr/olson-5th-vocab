@@ -77,3 +77,16 @@ Related book practice:
 - **I-7:** Lesson 4.5 exercises #15–16, p.139 (ATM password), and Block 4 Review #38, p.166.
 
 The tags were added by a one-off script that prefixes each `<div class="ans">`. To tag another block, add `<span class="src">Lesson x.y · Ex. n, p. N</span>` at the start of each answer.
+
+## Block 5 ~ Direct Variation
+
+The Block 5 review forms (B, C, D) tag each answer with its lesson, example and page, checked against the lesson PDFs below. Every lesson's classroom links are also in `math/lessons.json`.
+
+| Lesson | Title | Page | Student text |
+|---|---|---|---|
+| 5.1 | The Coordinate Plane | 172 | [text](https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14648), [worksheet](https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14651) |
+| 5.2 | Making Sense of Graphs | 177 | [text](https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14660), [worksheet](https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14663) |
+| 5.3 | Direct Variation Tables and Graphs | 183 | [text](https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14672), [worksheet](https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14675) |
+| 5.4 | Direct Variation Equations | 190 | [text](https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14684), [worksheet](https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14687) |
+| 5.5 | Recognizing Direct Variation | 196 | [text](https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14696), [worksheet](https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14699) |
+| Review | Block 5 review | 203 | [text](https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14719), [worksheet](https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14720) |

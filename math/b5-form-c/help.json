@@ -1,0 +1,244 @@
+{
+  "entries": {
+    "I-1": {
+      "lesson": "5.1",
+      "tag": "Lesson 5.1 · Ex. 2, p. 172",
+      "skill": "Naming a point's ordered pair",
+      "hints": [
+        "An ordered pair is (x, y): first how far left or right of the origin, then how far up or down. Left and down are negative.",
+        "Example: a point sits 4 units right of the origin and 3 units down. Right is positive, down is negative, so the point is (4, −3).",
+        "Point K is 3 units left of the origin, so x = −3. It is 2 units up, so y = 2. The point is (−3, 2), answer C. Trap: D, (−2, 3), swaps the order; x always comes first."
+      ]
+    },
+    "I-2": {
+      "lesson": "5.2",
+      "tag": "Lesson 5.2 · Ex. 2, p. 178",
+      "skill": "Matching a story to a graph",
+      "hints": [
+        "Read each graph's y-axis label first. On a speed graph, a rising line means speeding up and a flat line means the speed stays the same.",
+        "Example: a bike's speed graph goes flat at a height of 10, then drops to 0. That means the bike rode at a steady 10 mph, then slowed down and stopped.",
+        "The car first speeds up (speed rises), then drives at a constant speed (speed stays flat). Graph A is a speed graph that rises, then goes flat, so the answer is A. Trap: B also rises then goes flat, but it is a distance graph, and flat distance means the car is stopped."
+      ]
+    },
+    "I-3": {
+      "lesson": "5.3",
+      "tag": "Lesson 5.3 · Ex. 1, p. 185",
+      "skill": "Rate from a table",
+      "hints": [
+        "For direct variation, divide y by x for each pair (skip (0, 0)). If every ratio is the same, that number is the rate.",
+        "Example: x = 1, 2, 3 and y = 4, 8, 12. 4 ÷ 1 = 4, 8 ÷ 2 = 4, 12 ÷ 3 = 4. Every ratio is 4, and (0, 0) fits, so the rate is 4.",
+        "7 ÷ 1 = 7, 14 ÷ 2 = 7, 21 ÷ 3 = 7, 28 ÷ 4 = 7. Every ratio is 7 and the table includes (0, 0), so it is direct variation with rate 7. The answer is C. Trap: 1/7 is x ÷ y, upside down."
+      ]
+    },
+    "I-4": {
+      "lesson": "5.4",
+      "tag": "Lesson 5.4 · Ex. 2, p. 192",
+      "skill": "Equation from a table",
+      "hints": [
+        "A direct variation equation is y = mx. Find m by dividing y by x for any pair other than (0, 0).",
+        "Example: x = 0, 3, 6 and y = 0, 12, 24. m = 12 ÷ 3 = 4, and 24 ÷ 6 = 4 checks. The equation is y = 4x.",
+        "Use (2, 10): m = 10 ÷ 2 = 5. Check another pair: 40 ÷ 8 = 5. So y = 5x, answer B. Trap: A uses the 10 from the table without dividing by x, and C is just the step between x-values."
+      ]
+    },
+    "I-5": {
+      "lesson": "5.5",
+      "tag": "Lesson 5.5 · Ex. 1, p. 198",
+      "skill": "Direct variation graphs",
+      "hints": [
+        "A direct variation graph must pass two tests: it is a straight line, and it goes through the origin (0, 0). Check each graph for both.",
+        "Example: a line through (0, 0) and (2, 6) passes both tests, so it is direct variation. A line through (0, 3) and (2, 7) is straight but misses the origin, so it is not.",
+        "A is a steep line through the origin: yes. B is a line that crosses the y-axis below the origin: no. C is two curves: no. D is a line falling gently through the origin: yes. E is a line rising gently through the origin: yes. F is an upside-down U-shaped curve: no. The answer is A, D, E. Trap: a falling line still counts if it is straight and goes through (0, 0)."
+      ]
+    },
+    "I-6": {
+      "lesson": "5.5",
+      "tag": "Lesson 5.5 · Ex. 2, p. 198",
+      "skill": "Direct variation equations",
+      "hints": [
+        "A direct variation equation can be written as y = mx: a number times x, with nothing added or subtracted, x not in the denominator, and x not an exponent or squared.",
+        "Example: y = −4x is direct variation (m = −4). y = 4x + 1 is not (it adds 1). y = 4/x is not (x in the denominator). y = x/2 is, because it equals 1/2 · x.",
+        "A, y = x − 5, subtracts 5: no. B, y = 9x: yes, m = 9. C, y = 10/x, has x in the denominator: no. D, y = −3/4 · x: yes, m = −3/4. E, y = 2 to the x power, has x as an exponent: no. F, y = x/3, is 1/3 · x: yes. The answer is B, D, F. Trap: x/3 and 10/x look alike, but only x on top is direct variation."
+      ]
+    },
+    "I-7": {
+      "lesson": "5.4",
+      "tag": "Lesson 5.4 · Ex. 1, p. 191",
+      "skill": "Slope from an equation",
+      "hints": [
+        "In y = mx, the slope is m, the number multiplying x. Then write that decimal as a fraction in lowest terms.",
+        "Example: y = 0.25x has slope 0.25 = 25/100. Divide top and bottom by 25 to get 1/4.",
+        "The number multiplying x is 0.6. 0.6 = 6/10, and dividing top and bottom by 2 gives 3/5. The answer is B. Trap: D, 5/3, is the fraction flipped over."
+      ]
+    },
+    "I-8": {
+      "lesson": "5.4",
+      "tag": "Lesson 5.4 · Ex. 2, p. 192",
+      "skill": "Equation from a graph",
+      "hints": [
+        "Find a point on the line where it crosses grid corners exactly. Since the line goes through the origin, m = y ÷ x for that point, and the equation is y = mx.",
+        "Example: a line through (0, 0) and (4, 3). m = 3 ÷ 4 = 3/4, so the equation is y = 3/4 · x.",
+        "The line goes through (0, 0) and (3, 2). m = 2 ÷ 3 = 2/3, and the line rises, so m is positive. The equation is y = 2/3 · x, answer D. Trap: A, 3/2, divides x by y instead of y by x; B has the wrong sign because the line goes up, not down."
+      ]
+    },
+    "II-1": {
+      "lesson": "5.1",
+      "tag": "Lesson 5.1 · Ex. 2, p. 172",
+      "skill": "Reading ordered pairs",
+      "hints": [
+        "Start at the origin, where the axes cross. How far left or right do you go to line up with point A? That is the first number (x). Then how far up or down? That is the second number (y).",
+        "Example: point Q is 3 units left of the origin and 2 units up. Left is negative and up is positive, so Q = (−3, 2). Always write x first, then y.",
+        "From the origin, go 2 right, then go 5 down. So A = (2, −5). A common mistake is swapping the numbers: across first, then up or down."
+      ]
+    },
+    "II-2": {
+      "lesson": "5.1",
+      "tag": "Lesson 5.1 · Ex. 2, p. 172",
+      "skill": "Reading ordered pairs",
+      "hints": [
+        "Start at the origin, where the axes cross. How far left or right do you go to line up with point B? That is the first number (x). Then how far up or down? That is the second number (y).",
+        "Example: point Q is 3 units left of the origin and 2 units up. Left is negative and up is positive, so Q = (−3, 2). Always write x first, then y.",
+        "From the origin, go 5 left, then go 3 down. So B = (−5, −3). A common mistake is swapping the numbers: across first, then up or down."
+      ]
+    },
+    "II-3": {
+      "lesson": "5.1",
+      "tag": "Lesson 5.1 · Ex. 2, p. 172",
+      "skill": "Reading ordered pairs",
+      "hints": [
+        "Start at the origin, where the axes cross. How far left or right do you go to line up with point C? That is the first number (x). Then how far up or down? That is the second number (y).",
+        "Example: point Q is 3 units left of the origin and 2 units up. Left is negative and up is positive, so Q = (−3, 2). Always write x first, then y.",
+        "From the origin, don’t move left or right (x is 0), then go 4 up. So C = (0, 4). It is on the y-axis, so it is in no quadrant. A common mistake is swapping the numbers: across first, then up or down."
+      ]
+    },
+    "II-4": {
+      "lesson": "5.1",
+      "tag": "Lesson 5.1 · Ex. 2, p. 172",
+      "skill": "Reading ordered pairs",
+      "hints": [
+        "Start at the origin, where the axes cross. How far left or right do you go to line up with point D? That is the first number (x). Then how far up or down? That is the second number (y).",
+        "Example: point Q is 3 units left of the origin and 2 units up. Left is negative and up is positive, so Q = (−3, 2). Always write x first, then y.",
+        "From the origin, go 4 right, then go 1 up. So D = (4, 1). A common mistake is swapping the numbers: across first, then up or down."
+      ]
+    },
+    "II-5": {
+      "lesson": "5.1",
+      "tag": "Lesson 5.1 · Ex. 1, p. 172",
+      "skill": "Plotting points to make shapes",
+      "hints": [
+        "Plot each point by moving along the x-axis first, then up or down. Then connect them in order and back to the first point, and count the sides.",
+        "Example: plot (0, 0), (4, 0), (4, 4), (0, 4) and connect them in order, then back to (0, 0). You get 4 equal sides with square corners: a square.",
+        "(−4, 3) is 4 left and 3 up. (4, 3) is 4 right and 3 up. (0, −3) is 3 down on the y-axis. Connecting them in order and back to the start makes 3 sides: a flat top side 8 units long from (−4, 3) to (4, 3), and two sides that meet at (0, −3). The shape is a triangle."
+      ]
+    },
+    "II-6": {
+      "lesson": "5.2",
+      "tag": "Lesson 5.2 · Ex. 1, p. 177",
+      "skill": "Reading a distance-time graph",
+      "hints": [
+        "On a distance-from-home graph, a flat part means the family is not moving (at the lake). Speed = distance ÷ time for each sloped part.",
+        "Example: a family drives 150 miles in the first 3 hours, stays put from hour 3 to hour 8, then drives home from hour 8 to hour 10. They stayed 8 − 3 = 5 hours. Speed there: 150 ÷ 3 = 50 mph. Speed home: 150 ÷ 2 = 75 mph.",
+        "The graph goes from (0, 0) up to (2, 120), stays flat to (6, 120), then drops to (9, 0). a. The flat part is at 120, so the lake is 120 miles away. b. Flat from hour 2 to hour 6: 6 − 2 = 4 hours. c. 120 miles in 2 hours: 120 ÷ 2 = 60 miles per hour. d. 120 miles from hour 6 to hour 9, which is 3 hours: 120 ÷ 3 = 40 miles per hour. Trap: for the drive home, use the time the drive took (3 hours), not the clock reading 9."
+      ]
+    },
+    "II-7": {
+      "lesson": "5.4",
+      "tag": "Lesson 5.4 · Ex. 1, p. 191",
+      "skill": "Input-output table and graph",
+      "hints": [
+        "Put each input into the rule y = 1/3 · x to get the output. Then plot each (x, y) pair. The slope is the number multiplying x.",
+        "Example: y = 1/2 · x. Inputs 0, 2, 4, 6 give outputs 0, 1, 2, 3. The points (0, 0), (2, 1), (4, 2), (6, 3) make a straight line through the origin, and the slope is 1/2.",
+        "1/3 · 0 = 0, 1/3 · 3 = 1, 1/3 · 6 = 2, 1/3 · 9 = 3, 1/3 · 12 = 4. Outputs: 0, 1, 2, 3, 4. Plot (0, 0), (3, 1), (6, 2), (9, 3), (12, 4) and connect them with a straight line through the origin. The slope is 1/3. Trap: 1/3 · 3 means 3 ÷ 3, not 3 · 3."
+      ]
+    },
+    "II-8": {
+      "lesson": "5.4",
+      "tag": "Lesson 5.4 · Ex. 1, p. 191",
+      "skill": "Input-output table and graph",
+      "hints": [
+        "Put each input into the rule y = 3/2 · x: divide by 2, then multiply by 3. Plot each (x, y) pair. The slope is the number multiplying x.",
+        "Example: y = 5/2 · x. Inputs 0, 2, 4 give 5/2 · 2 = 5 and 5/2 · 4 = 10, so outputs 0, 5, 10. The points make a straight line through the origin with slope 5/2.",
+        "3/2 · 0 = 0, 3/2 · 2 = 3, 3/2 · 4 = 6, 3/2 · 6 = 9, 3/2 · 8 = 12. Outputs: 0, 3, 6, 9, 12. Plot (0, 0), (2, 3), (4, 6), (6, 9), (8, 12) and connect them with a straight line through the origin. The slope is 3/2 (or 1.5)."
+      ]
+    },
+    "II-9": {
+      "lesson": "5.5",
+      "tag": "Lesson 5.5 · Ex. 3, pp. 198–199",
+      "skill": "Direct variation from a table",
+      "hints": [
+        "Divide y by x for every pair except (0, 0). A negative divided by a negative is positive. If every ratio is the same, it is direct variation and that ratio is the rate.",
+        "Example: (−3, −6), (−1, −2), (0, 0), (2, 4). −6 ÷ −3 = 2, −2 ÷ −1 = 2, 4 ÷ 2 = 2. All equal 2 and (0, 0) is there, so YES, rate 2.",
+        "−2 ÷ −4 = 1/2, −1 ÷ −2 = 1/2, 1 ÷ 2 = 1/2, 2 ÷ 4 = 1/2, and the table includes (0, 0). Every ratio is 1/2, so YES, it is direct variation with rate 1/2. Trap: dividing x by y gives 2, which is upside down."
+      ]
+    },
+    "II-10": {
+      "lesson": "5.5",
+      "tag": "Lesson 5.5 · Ex. 3, pp. 198–199",
+      "skill": "Direct variation from a table",
+      "hints": [
+        "Check y ÷ x for every pair, not just the first few. One pair that does not match is enough to say NO.",
+        "Example: (1, 3), (2, 6), (3, 10). 3 ÷ 1 = 3, 6 ÷ 2 = 3, but 10 ÷ 3 is not 3. The ratios are not all equal, so it is NOT direct variation.",
+        "−10 ÷ −2 = 5, −5 ÷ −1 = 5, 5 ÷ 1 = 5, but 12 ÷ 2 = 6. The ratios are not all the same, so NO, it is not direct variation. Trap: the first four rows look perfect; the last row breaks the pattern (it would need y = 10)."
+      ]
+    },
+    "II-11": {
+      "lesson": "5.5",
+      "tag": "Lesson 5.5 · Ex. 2, p. 198",
+      "skill": "Direct variation equations",
+      "hints": [
+        "Direct variation must look like y = mx with x by itself, to the first power. Look at what is happening to x here.",
+        "Example: y = 2x³ is NOT direct variation, because x is cubed, so the graph curves instead of making a straight line. y = 2x IS direct variation.",
+        "In y = 6x², the x is squared (it has an exponent of 2). That makes the graph a curve, not a straight line, so NO, it is not direct variation. Trap: the 6 in front makes it look like y = mx, but the exponent on x rules it out."
+      ]
+    },
+    "II-12": {
+      "lesson": "5.5",
+      "tag": "Lesson 5.5 · Ex. 2, p. 198",
+      "skill": "Direct variation equations",
+      "hints": [
+        "Dividing x by a number is the same as multiplying x by a fraction. Can you rewrite y = x/5 in the form y = mx?",
+        "Example: y = x/4 means y = 1/4 · x. That is y = mx with m = 1/4, so it is direct variation with rate 1/4.",
+        "y = x/5 is the same as y = 1/5 · x. That has the form y = mx with m = 1/5, so YES, it is direct variation with rate 1/5 (or 0.2). Trap: don't confuse it with y = 5/x, where x is in the denominator; that one is not direct variation."
+      ]
+    },
+    "II-13": {
+      "lesson": "5.3",
+      "tag": "Lesson 5.3 · Ex. 1 & 2, pp. 185–186",
+      "skill": "Direct variation graphs and rate",
+      "hints": [
+        "Being a straight line is not enough. A direct variation graph must also pass through the origin (0, 0). Check where each line starts, then find y ÷ x for the one that qualifies.",
+        "Example: a line through (0, 0), (2, 5) and (4, 10) is direct variation with rate 5 ÷ 2 = 5/2. A line through (0, 1) and (2, 3) is straight but starts at (0, 1), so it is not direct variation.",
+        "Graph A is straight but starts at (0, 2), not the origin, so it is not direct variation, and Ken is wrong. Graph B is a straight line from (0, 0) through (3, 1) and (6, 2): 1 ÷ 3 = 1/3 and 2 ÷ 6 = 1/3. Rosa is correct: Graph B is direct variation with rate 1/3. Trap: Graph A does go up 1 for each 1 across, but a constant slope alone does not make direct variation."
+      ]
+    },
+    "II-14": {
+      "lesson": "5.4",
+      "tag": "Lesson 5.4 · Ex. 2, p. 192",
+      "skill": "Equation from a table",
+      "hints": [
+        "Find the cost per ticket by dividing the total cost y by the number of tickets x. That number is m in y = mx.",
+        "Example: pizzas cost y = 0, 20, 40 for x = 0, 2, 4 pizzas. m = 20 ÷ 2 = 10, and 40 ÷ 4 = 10 checks. The equation is y = 10x.",
+        "18 ÷ 3 = 6, 36 ÷ 6 = 6, 54 ÷ 9 = 6, 72 ÷ 12 = 6. Each ticket costs $6, so the equation is y = 6x. Trap: write the rate in front of x (y = 6x), not x = 6y."
+      ]
+    },
+    "II-15": {
+      "lesson": "5.4",
+      "tag": "Lesson 5.4 · Ex. 1, p. 191",
+      "skill": "Graphing a direct variation equation",
+      "hints": [
+        "Make a small table: pick some x-values (include negatives and 0), multiply each by 3 to get y, then plot the points and draw a line through them.",
+        "Example: y = 2x. x = −2, −1, 0, 1, 2 gives y = −4, −2, 0, 2, 4. Plot (−2, −4), (−1, −2), (0, 0), (1, 2), (2, 4) and draw a straight line through them; it passes through the origin.",
+        "For y = 3x: x = −3, −2, −1, 0, 1, 2, 3 gives y = −9, −6, −3, 0, 3, 6, 9. Plot (−3, −9), (−2, −6), (−1, −3), (0, 0), (1, 3), (2, 6), (3, 9) and draw a straight line through them. It goes through the origin, rises 3 for every 1 to the right (slope 3), and runs through Quadrants III and I. Trap: a negative x gives a negative y, so the left half of the line is below the x-axis."
+      ]
+    },
+    "III": {
+      "lesson": "5.4",
+      "tag": "Lesson 5.4 · Ex. 2, p. 192",
+      "skill": "Solving with a direct variation equation",
+      "hints": [
+        "Find how much Marcus earns per hour (money ÷ hours). Write y = mx, put $161 in for y, and solve for x.",
+        "Example: Jade earns $30 for 4 hours of babysitting, so m = 30 ÷ 4 = $7.50 per hour and y = 7.5x. To earn $60: 60 = 7.5x, so x = 60 ÷ 7.5 = 8 hours.",
+        "Rate: 23.00 ÷ 2 = $11.50 per hour (and 46 ÷ 4 = 11.50 checks), so y = 11.5x. 161 = 11.5x, so x = 161 ÷ 11.5 = 14. Check: 14 · 11.50 = 161.00. Marcus needs to walk dogs for 14 hours. Trap: 161 ÷ 23 = 7 counts groups of 2 hours, not hours; multiply by 2 or use the per-hour rate."
+      ]
+    }
+  }
+}

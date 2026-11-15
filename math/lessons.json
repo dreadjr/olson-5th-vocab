@@ -206,5 +206,135 @@
         "url": "https://www.corefocusonmath.com/classrooms/mod/url/view.php?id=18149"
       }
     ]
+  },
+  "5.1": {
+    "title": "The Coordinate Plane",
+    "page": 172,
+    "links": [
+      {
+        "label": "Video",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14650"
+      },
+      {
+        "label": "Slides",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=17263"
+      },
+      {
+        "label": "Student text",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14648"
+      },
+      {
+        "label": "Worksheet",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14651"
+      },
+      {
+        "label": "IXL: Graph points on a coordinate plane",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/url/view.php?id=18150"
+      }
+    ]
+  },
+  "5.2": {
+    "title": "Making Sense of Graphs",
+    "page": 177,
+    "links": [
+      {
+        "label": "Video",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14662"
+      },
+      {
+        "label": "Slides",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=17265"
+      },
+      {
+        "label": "Student text",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14660"
+      },
+      {
+        "label": "Worksheet",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14663"
+      },
+      {
+        "label": "IXL: Interpret line graphs",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/url/view.php?id=18151"
+      }
+    ]
+  },
+  "5.3": {
+    "title": "Direct Variation Tables and Graphs",
+    "page": 183,
+    "links": [
+      {
+        "label": "Video",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14674"
+      },
+      {
+        "label": "Slides",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=17267"
+      },
+      {
+        "label": "Student text",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14672"
+      },
+      {
+        "label": "Worksheet",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14675"
+      },
+      {
+        "label": "IXL: Find the constant of variation",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/url/view.php?id=18152"
+      }
+    ]
+  },
+  "5.4": {
+    "title": "Direct Variation Equations",
+    "page": 190,
+    "links": [
+      {
+        "label": "Video",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14686"
+      },
+      {
+        "label": "Slides",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=17269"
+      },
+      {
+        "label": "Student text",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14684"
+      },
+      {
+        "label": "Worksheet",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14687"
+      },
+      {
+        "label": "IXL: Write an equation for a proportional relationship",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/url/view.php?id=18153"
+      }
+    ]
+  },
+  "5.5": {
+    "title": "Recognizing Direct Variation",
+    "page": 196,
+    "links": [
+      {
+        "label": "Video",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14698"
+      },
+      {
+        "label": "Slides",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=17271"
+      },
+      {
+        "label": "Student text",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14696"
+      },
+      {
+        "label": "Worksheet",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/resource/view.php?id=14699"
+      },
+      {
+        "label": "IXL: Identify direct variation and inverse variation",
+        "url": "https://www.corefocusonmath.com/classrooms/mod/url/view.php?id=18154"
+      }
+    ]
   }
 }
