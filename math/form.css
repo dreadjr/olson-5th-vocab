@@ -71,6 +71,22 @@ body.show .ans{display:block}
 /* textbook lesson the question comes from; shown with the answers only */
 .src{display:inline-block;font:700 11px/1.3 var(--display);color:var(--accent);border:1px solid var(--accent);border-radius:3px;padding:0 5px;margin-right:6px}
 body.show .work{min-height:0}
+/* Help panel (math/help.js); screen only */
+.helpbtn{display:inline-block;margin-top:6px;font:700 12px/1 var(--display);color:var(--accent);background:none;border:1.5px solid var(--accent);border-radius:4px;padding:7px 10px;min-height:32px;cursor:pointer}
+.helpbtn[aria-expanded="true"]{background:var(--accent);color:var(--paper)}
+.help{margin-top:8px;padding:10px 12px;background:var(--tint);border-left:3px solid var(--accent);border-radius:3px;font-size:14px}
+.help-src{font:600 13px var(--display);color:var(--muted)}
+.help-links{display:flex;flex-wrap:wrap;gap:4px 12px;margin:6px 0;font:600 13px var(--display)}
+.help-links a{color:var(--accent)}
+.help-steps{margin:8px 0;padding-left:1.3em;display:grid;gap:8px}
+.help-next,.help-ask button{font:700 13px/1 var(--display);color:var(--paper);background:var(--accent);border:0;border-radius:4px;padding:9px 12px;cursor:pointer}
+.help-ask{display:grid;grid-template-columns:1fr auto;gap:6px;margin-top:10px}
+.help-ask textarea{font:inherit;padding:6px;border:1px solid var(--rule);border-radius:3px;background:var(--paper);color:var(--ink);min-width:0}
+.help-ask button:disabled{opacity:.5;cursor:wait}
+.help-reply{grid-column:1/-1;white-space:pre-wrap}
+.help-reply:empty{display:none}
+.helpbtn:focus-visible,.help button:focus-visible,.help a:focus-visible{outline:3px solid var(--key);outline-offset:2px}
+@media print{.helpbtn,.help{display:none!important}}
 .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;border-top:1px solid var(--rule);margin-top:18px;padding-top:6px;font-size:11px;color:var(--muted)}
 
 @page{size:letter;margin:.5in}
