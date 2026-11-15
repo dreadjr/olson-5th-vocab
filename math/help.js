@@ -45,6 +45,9 @@
       marks[id] = el('span', 'mark');
       (n || q).prepend(marks[id]);
       const host = q.classList.contains('task') ? q : q.lastElementChild;
+      const meta = el('div', 'q-meta');
+      meta.append(lessonChip(entry.lesson));
+      host.prepend(meta);
       const box = answerBox(id, host, q.classList.contains('task'));
       host.append(box);
       pickers(host, box.querySelector('input, textarea'));
@@ -241,7 +244,7 @@
     const btn = el('button', 'helpbtn', 'Help');
     btn.type = 'button';
     btn.setAttribute('aria-expanded', 'false');
-    host.append(btn, lessonChip(entry.lesson));
+    host.append(btn);
     let panel = null, step = 0;
 
     btn.addEventListener('click', () => {
@@ -329,7 +332,7 @@
 
   // Answer choices: sibling elements whose text starts "A. ", "B. " … (a .ch list or a grid of spans), with their letters.
   function choices(host) {
-    const skip = '.ans, .help, .answer, .lesson-chip, .helpbtn';
+    const skip = '.ans, .help, .answer, .q-meta, .helpbtn';
     const letter = (e) => !e.closest(skip) && e.textContent.trim().match(/^([A-H])\.(\s|$)/)?.[1];
     const out = [];
     for (const e of host.querySelectorAll('li, span, div, p')) {
@@ -367,7 +370,7 @@
   // The question's own text, without the key, help or answer box, for the tutor.
   function questionText(host) {
     const copy = host.cloneNode(true);
-    copy.querySelectorAll('.ans, .help, .helpbtn, .answer').forEach((x) => x.remove());
+    copy.querySelectorAll('.ans, .help, .helpbtn, .answer, .q-meta').forEach((x) => x.remove());
     return copy.textContent.replace(/\s+/g, ' ').trim();
   }
 
