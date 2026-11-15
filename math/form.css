@@ -175,6 +175,33 @@ a.lesson-chip:hover{color:var(--accent);border-color:var(--accent)}
   .focus-bar .focus-pos{flex:1;text-align:center;font:600 13px var(--display);color:var(--muted)}
   .focus-bar button:focus-visible{outline:3px solid var(--key);outline-offset:2px}
 }
+/* Calculator (math/calc.js) */
+.toolbar .calc-btn{background:none;color:var(--accent);border:1.5px solid var(--accent)}
+.toolbar .calc-btn[aria-expanded="true"]{background:var(--accent);color:var(--paper)}
+.calc{position:fixed;z-index:7;display:flex;flex-direction:column;background:var(--paper);color:var(--ink);border:1px solid var(--rule);box-shadow:0 6px 24px rgba(0,0,0,.18);
+  right:16px;top:72px;bottom:16px;width:460px;border-radius:8px}
+.calc-head{display:flex;align-items:center;gap:8px;padding:8px 8px 8px 14px;border-bottom:1px solid var(--rule);font:600 13px var(--display)}
+.calc-tip{flex:1;color:var(--muted);font-weight:400}
+.calc-close{margin-left:auto}
+.calc-close{width:44px;height:44px;border:0;background:none;color:var(--ink);font:400 26px/1 var(--display);cursor:pointer;border-radius:6px}
+.calc-body{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}
+.calc-in,.calc-out{font:16px/26px ui-monospace,SFMono-Regular,Menlo,monospace;padding:10px 12px;margin:0;overflow:auto}
+.calc-in{border:0;resize:none;background:var(--paper);color:var(--ink);white-space:pre;min-width:0}
+.calc-in:focus{outline:none;box-shadow:inset 0 0 0 2px var(--accent)}
+.calc-out{background:var(--tint);border-left:1px solid var(--rule);overflow:hidden}
+.calc-row{height:26px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;gap:8px;align-items:center}
+.calc-row.err{color:var(--muted);font:italic 12px/26px var(--display)}
+.calc-val{border:0;background:none;padding:0;color:var(--accent);font:700 16px/26px ui-monospace,SFMono-Regular,Menlo,monospace;cursor:copy}
+.calc-hint{color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis}
+.calc-foot{padding:8px 12px;border-top:1px solid var(--rule);font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted);white-space:pre-wrap}
+.calc-close:focus-visible,.calc-val:focus-visible{outline:3px solid var(--key);outline-offset:2px}
+@media screen and (min-width:1180px){body.calc-open .sheet{margin-left:max(20px,calc((100vw - 8.5in - 500px) / 2));margin-right:auto}}
+@media (max-width:1179px){
+  .calc{left:0;right:0;top:auto;bottom:0;width:auto;height:min(46vh,420px);border-radius:12px 12px 0 0;border-width:1px 0 0;padding-bottom:env(safe-area-inset-bottom,0px)}
+  body.calc-open{padding-bottom:min(46vh,420px)}
+  body[data-view="focus"] .calc{bottom:70px}
+  .calc-tip{display:none}
+}
 @media (pointer:coarse){
   .helpbtn,.help-next,.help-ask button,.answer button,.lessons label,.progress summary{min-height:44px}
   .answer input{min-height:44px}
@@ -183,7 +210,7 @@ a.lesson-chip:hover{color:var(--accent);border-color:var(--accent)}
   .help-links a{position:relative}
   .help-links{gap:12px 8px}
 }
-@media print{.helpbtn,.help,.answer,.progress,.mark,.lessons,.q-meta,.views,.focus-strip,.focus-bar{display:none!important}}
+@media print{.calc,.calc-btn,.helpbtn,.help,.answer,.progress,.mark,.lessons,.q-meta,.views,.focus-strip,.focus-bar{display:none!important}}
 .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;border-top:1px solid var(--rule);margin-top:18px;padding-top:6px;font-size:11px;color:var(--muted)}
 
 @page{size:letter;margin:.5in}

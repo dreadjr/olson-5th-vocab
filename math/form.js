@@ -6,3 +6,5 @@ function set(on) {
 }
 set(location.hash === '#key');
 btn?.addEventListener('click', () => set(!document.body.classList.contains('show')));
+// The calculator panel (math/calc.js) on every form.
+document.body.append(Object.assign(document.createElement('script'), { src: '../calc.js' }));
