@@ -45,7 +45,9 @@
       marks[id] = el('span', 'mark');
       (n || q).prepend(marks[id]);
       const host = q.classList.contains('task') ? q : q.lastElementChild;
-      host.append(answerBox(id, host, q.classList.contains('task')));
+      const box = answerBox(id, host, q.classList.contains('task'));
+      host.append(box);
+      pickers(host, box.querySelector('input, textarea'));
       attach(host, id, entry);
     });
   });
@@ -60,6 +62,79 @@
     return chip;
   }
 
+  // Views: Worksheet (the printable page), Cards, Focus (one question at a time). Remembered per device.
+  const VIEWS = ['worksheet', 'cards', 'focus'];
+  let view = 'worksheet';
+  try { const v = localStorage.getItem('view'); if (VIEWS.includes(v)) view = v; } catch { /* storage blocked */ }
+  const viewBtns = {};
+  const switcher = el('div', 'views');
+  switcher.setAttribute('role', 'group');
+  switcher.setAttribute('aria-label', 'View');
+  for (const v of VIEWS) {
+    const b = viewBtns[v] = el('button', '', v[0].toUpperCase() + v.slice(1));
+    b.type = 'button';
+    b.addEventListener('click', () => setView(v));
+    switcher.append(b);
+  }
+  let cur = null;
+  try { cur = localStorage.getItem(`focus:${page}`); } catch { /* storage blocked */ }
+  const strip = el('div', 'focus-strip');
+  strip.setAttribute('aria-hidden', 'true'); // Prev/Next are the accessible way through
+  const fbar = el('div', 'focus-bar');
+  const prevB = el('button', '', '← Prev'), nextB = el('button', '', 'Next →'), checkB = el('button', 'focus-check', 'Check'), pos = el('span', 'focus-pos');
+  for (const b of [prevB, nextB, checkB]) b.type = 'button';
+  pos.setAttribute('aria-live', 'polite');
+  fbar.append(prevB, pos, checkB, nextB);
+  const shownQs = () => questions.filter((id) => !qEls[id].hidden);
+  prevB.addEventListener('click', () => step(-1));
+  nextB.addEventListener('click', () => step(1));
+  checkB.addEventListener('click', () => qEls[cur]?.querySelector('.answer')?.requestSubmit());
+  document.addEventListener('keydown', (e) => {
+    if (view !== 'focus' || e.altKey || e.metaKey || e.ctrlKey || e.target.closest?.('input, textarea, select, [contenteditable]')) return;
+    if (e.key === 'ArrowRight') step(1);
+    if (e.key === 'ArrowLeft') step(-1);
+  });
+
+  function step(d) {
+    const qs = shownQs(), i = qs.indexOf(cur) + d;
+    if (i >= 0 && i < qs.length) go(qs[i]);
+  }
+
+  function go(id) {
+    cur = id;
+    try { localStorage.setItem(`focus:${page}`, id); } catch { /* storage blocked */ }
+    updateFocus();
+    if (view === 'focus') window.scrollTo(0, 0);
+  }
+
+  function updateFocus() {
+    const qs = shownQs();
+    if (!qs.includes(cur)) cur = qs[0] || null;
+    document.querySelectorAll('.focus-path, .focus-cur').forEach((e) => e.classList.remove('focus-path', 'focus-cur'));
+    if (cur) {
+      qEls[cur].classList.add('focus-cur', 'focus-path');
+      for (let p = qEls[cur].parentElement; p && p.tagName !== 'MAIN'; p = p.parentElement) p.classList.add('focus-path');
+    }
+    const i = qs.indexOf(cur);
+    pos.textContent = cur ? `${labels[cur]} · ${i + 1} of ${qs.length}` : 'No questions showing';
+    prevB.disabled = i <= 0;
+    nextB.disabled = i < 0 || i >= qs.length - 1;
+    checkB.hidden = !qEls[cur]?.querySelector('.answer button');
+    strip.replaceChildren(...qs.map((id) => {
+      const seg = el('span', `seg ${progress[id]?.status || ''}${id === cur ? ' cur' : ''}`);
+      seg.addEventListener('click', () => go(id));
+      return seg;
+    }));
+  }
+
+  function setView(v) {
+    view = v;
+    document.body.dataset.view = v;
+    for (const k of VIEWS) viewBtns[k].setAttribute('aria-pressed', String(k === v));
+    try { localStorage.setItem('view', v); } catch { /* storage blocked */ }
+    updateFocus();
+  }
+
   // Summary and history at the top of the page.
   const panel = el('details', 'progress');
   const summary = el('summary');
@@ -70,7 +145,12 @@
   if (!local) panel.append(el('p', 'progress-note', 'Check and Ask work when the tutor is on: open your tutor link once on this device.'));
   panel.append(el('div', 'progress-head', 'Checked answers'), list);
   document.querySelector('section.part')?.before(panel);
+  panel.after(strip);
+  document.body.append(fbar);
+  const toggle = document.getElementById('toggle');
+  toggle ? toggle.before(switcher) : document.querySelector('.toolbar')?.append(switcher);
   render();
+  setView(view);
 
   // "4.1–4.3, 4.6" from the lessons that are showing.
   function lessonRange(ns) {
@@ -149,10 +229,12 @@
       const a = el('a', '', labels[t.id] || t.id);
       a.href = `#q-${t.id}`;
       if (off) a.addEventListener('click', () => showLesson(n)); // show it again, then the link jumps to it
+      a.addEventListener('click', () => { if (view === 'focus') go(t.id); });
       li.append(a, ` · “${t.answer}” · `, el('b', '', t.correct ? 'Right' : 'Not yet'), ` · ${new Date(t.t).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}`);
       if (off) li.append(el('span', 'off-note', ` (Lesson ${n} hidden)`));
       return li;
-    }) : [el('li', 'empty', local ? 'No answers checked yet.' : 'Checked answers show up here when the tutor is running.')]));
+    }) : [el('li', 'empty', 'No answers checked yet.')]));
+    updateFocus();
   }
 
   function attach(host, id, entry) {
@@ -198,6 +280,90 @@
     });
   }
 
+  // Tap-to-pick: multiple-choice letters and YES/NO options fill the answer box.
+  function pickers(host, input) {
+    const lis = choices(host);
+    const multi = /all that apply/i.test(questionText(host));
+    const rows = [];
+    host.querySelectorAll('.tf').forEach((tf) => {
+      const k = [...tf.children];
+      for (let i = 0; i + 2 < k.length; i += 3) {
+        const tag = k[i].textContent.trim().match(/^(\d+[a-z])/i)?.[1]?.toLowerCase();
+        if (tag) rows.push({ tag, opts: [k[i + 1], k[i + 2]] });
+      }
+    });
+    const inRows = new Set(rows.flatMap((r) => r.opts));
+    const lone = [...host.querySelectorAll('.opt')].filter((o) => !inRows.has(o));
+    const word = (o) => o.textContent.trim().toUpperCase();
+    const letters = () => new Set(input.value.toUpperCase().match(/\b[A-H]\b/g) || []);
+    const rowPicks = () => Object.fromEntries([...input.value.matchAll(/(\d+[a-z])\s*(YES|NO)/gi)].map((m) => [m[1].toLowerCase(), m[2].toUpperCase()]));
+    const set = (v) => { input.value = v; input.dispatchEvent(new Event('input')); };
+    const sync = () => {
+      const L = letters(), R = rowPicks(), lead = input.value.trim().match(/^(YES|NO)\b/i)?.[1]?.toUpperCase();
+      for (const [li, l] of lis) li.setAttribute('aria-pressed', String(L.has(l)));
+      for (const r of rows) for (const o of r.opts) o.setAttribute('aria-pressed', String(R[r.tag] === word(o)));
+      for (const o of lone) o.setAttribute('aria-pressed', String(lead === word(o)));
+    };
+    const tappable = (node, fn) => {
+      node.classList.add('pick');
+      node.tabIndex = 0;
+      node.setAttribute('role', 'button');
+      node.addEventListener('click', fn);
+      node.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } });
+    };
+    for (const [li] of lis) li.classList.add('choice');
+    for (const [li, l] of lis) tappable(li, () => {
+      const L = multi ? letters() : new Set();
+      multi && L.has(l) ? L.delete(l) : L.add(l);
+      set([...L].sort().join(', '));
+    });
+    for (const r of rows) for (const o of r.opts) tappable(o, () => {
+      const R = rowPicks();
+      R[r.tag] = word(o);
+      set(rows.filter((x) => R[x.tag]).map((x) => `${x.tag} ${R[x.tag]}`).join(', '));
+    });
+    for (const o of lone) tappable(o, () => set(`${word(o)} ${input.value.replace(/^\s*(YES|NO)\b[\s.,]*/i, '')}`.trim()));
+    input.addEventListener('input', sync);
+    sync();
+  }
+
+  // Answer choices: sibling elements whose text starts "A. ", "B. " … (a .ch list or a grid of spans), with their letters.
+  function choices(host) {
+    const skip = '.ans, .help, .answer, .lesson-chip, .helpbtn';
+    const letter = (e) => !e.closest(skip) && e.textContent.trim().match(/^([A-H])\.(\s|$)/)?.[1];
+    const out = [];
+    for (const e of host.querySelectorAll('li, span, div, p')) {
+      const l = letter(e);
+      if (l && e.parentElement && [...e.parentElement.children].filter(letter).length >= 2) out.push([e, l]);
+    }
+    return out;
+  }
+
+  // Multiple-choice and YES/NO keys are already on the page (Show answers), so those check without the tutor.
+  function autoKey(host) {
+    const text = [...host.querySelectorAll('.ans')].map((a) => { const c = a.cloneNode(true); c.querySelector('.src')?.remove(); return c.textContent; }).join(' ').trim();
+    if (choices(host).length) {
+      const m = text.match(/^([A-H](?:\s*(?:,|&|and)\s*[A-H])*)(?![a-z])/);
+      return m && { letters: new Set(m[1].match(/[A-H]/g)) };
+    }
+    if (host.querySelector('.tf')) {
+      const pairs = [...text.matchAll(/(\d+[a-z])\s+(YES|NO)/gi)];
+      return pairs.length ? { rows: Object.fromEntries(pairs.map((m) => [m[1].toLowerCase(), m[2].toUpperCase()])) } : null;
+    }
+    return null;
+  }
+
+  function autoCheck(key, answer) {
+    if (key.letters) {
+      const got = new Set(answer.toUpperCase().match(/\b[A-H]\b/g) || []);
+      const ok = got.size === key.letters.size && [...got].every((l) => key.letters.has(l));
+      return { correct: ok, feedback: ok ? '' : key.letters.size > 1 ? 'Look at each choice again: one of yours is off, or one is missing. Help has a hint.' : 'Try another choice, or open Help for a hint.' };
+    }
+    const got = Object.fromEntries([...answer.matchAll(/(\d+[a-z])\s*(YES|NO)/gi)].map((m) => [m[1].toLowerCase(), m[2].toUpperCase()]));
+    const wrong = Object.keys(key.rows).filter((k) => got[k] !== key.rows[k]);
+    return { correct: !wrong.length, feedback: wrong.length ? `Look again at ${wrong.join(', ')}.` : '' };
+  }
+
   // The question's own text, without the key, help or answer box, for the tutor.
   function questionText(host) {
     const copy = host.cloneNode(true);
@@ -210,7 +376,8 @@
     const input = el(big ? 'textarea' : 'input');
     if (big) input.rows = 3;
     input.maxLength = 500;
-    input.placeholder = local ? 'Your answer' : 'Your answer (Check needs the tutor)';
+    const key = autoKey(host);
+    input.placeholder = key ? 'Tap a choice or type it' : local ? 'Your answer' : 'Your answer (Check needs the tutor)';
     input.setAttribute('aria-label', `Your answer to ${id}`);
     const r0 = progress[id];
     input.value = r0?.answer || '';
@@ -231,7 +398,7 @@
       result.textContent = '';
     });
     box.append(input);
-    if (!local) { box.append(result); box.addEventListener('submit', (e) => e.preventDefault()); return box; }
+    if (!local && !key) { box.append(result); box.addEventListener('submit', (e) => e.preventDefault()); return box; }
     const check = el('button', '', 'Check');
     check.type = 'submit';
     box.append(check, result);
@@ -243,9 +410,13 @@
       box.classList.remove('right', 'wrong');
       result.textContent = 'Checking…';
       try {
-        const r = await post('/api/check', { page, id, question: questionText(host), answer });
-        if (!r.ok) throw new Error();
-        const { correct, feedback } = await r.json();
+        let correct, feedback;
+        if (key) ({ correct, feedback } = autoCheck(key, answer));
+        else {
+          const r = await post('/api/check', { page, id, question: questionText(host), answer });
+          if (!r.ok) throw new Error();
+          ({ correct, feedback } = await r.json());
+        }
         const p = rec(id);
         p.status = correct ? 'right' : 'wrong';
         p.feedback = feedback;

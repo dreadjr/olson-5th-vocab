@@ -126,6 +126,54 @@ body.show .work{min-height:0}
 .lesson-chip{position:relative;display:inline-block;vertical-align:middle;margin:6px 0 0 8px;padding:2px 8px;font:700 11px/1.4 var(--display);color:var(--muted);border:1px solid var(--rule);border-radius:10px;text-decoration:none;white-space:nowrap}
 a.lesson-chip:hover{color:var(--accent);border-color:var(--accent)}
 .lesson-chip:focus-visible{outline:3px solid var(--key);outline-offset:2px}
+/* Tap-to-pick choices and YES/NO (math/help.js) */
+.pick{cursor:pointer;border-radius:6px}
+.choice.pick{padding:1px 6px;margin-left:-6px}
+.pick:hover{background:var(--tint)}
+.pick[aria-pressed="true"]{background:var(--tint);box-shadow:inset 0 0 0 2px var(--accent)}
+.pick:focus-visible{outline:3px solid var(--key);outline-offset:2px}
+.tf .opt.pick{padding:2px 6px}
+/* View switch: Worksheet / Cards / Focus (math/help.js) */
+.views{display:inline-flex;border:1.5px solid var(--accent);border-radius:6px;overflow:hidden}
+.toolbar .views button{background:none;color:var(--accent);border-radius:0;padding:8px 12px;font:700 13px/1 var(--display)}
+.toolbar .views button+button{border-left:1.5px solid var(--accent)}
+.toolbar .views button[aria-pressed="true"]{background:var(--accent);color:var(--paper)}
+.focus-strip,.focus-bar{display:none}
+@media screen{
+  body[data-view="cards"] .sheet,body[data-view="focus"] .sheet{background:none;box-shadow:none;max-width:680px}
+  body[data-view="cards"] .cols,body[data-view="focus"] .cols{column-count:1}
+  body[data-view="cards"] .work,body[data-view="focus"] .work,
+  body[data-view="cards"] .hd .name,body[data-view="focus"] .hd{display:none}
+  body[data-view="cards"] .part+.part{border-top:0}
+  body[data-view="cards"] [id^="q-"]{background:var(--paper);border-radius:10px;padding:16px 16px 16px 10px;margin-bottom:12px;box-shadow:0 1px 2px rgba(0,0,0,.1)}
+  body[data-view="cards"] .ch,body[data-view="focus"] .ch,
+  body[data-view="cards"] .ch.row,body[data-view="focus"] .ch.row{grid-auto-flow:row;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-top:10px}
+  body[data-view="cards"] .choice.pick,body[data-view="focus"] .choice.pick{margin:0;min-height:48px;display:block;padding:11px 12px;border:1.5px solid var(--rule);background:var(--paper)}
+  body[data-view="cards"] .choice.pick[aria-pressed="true"],body[data-view="focus"] .choice.pick[aria-pressed="true"]{border-color:var(--accent);background:var(--tint);box-shadow:none}
+  body[data-view="cards"] .tf .opt.pick,body[data-view="focus"] .tf .opt.pick{min-height:40px;display:inline-flex;align-items:center;border:1.5px solid var(--rule);padding:0 12px}
+  /* Focus: only the current question (and anything it sits inside, like a shared graph) */
+  body[data-view="focus"] .part:not(.focus-path),
+  body[data-view="focus"] .part>:not(.focus-path),
+  body[data-view="focus"] .cols>:not(.focus-path),
+  body[data-view="focus"] [id^="q-"]:not(.focus-cur){display:none}
+  body[data-view="focus"] .part+.part{margin-top:0;border-top:0;padding-top:0}
+  body[data-view="focus"] .focus-cur{font-size:18px}
+  body[data-view="focus"] .answer button{display:none} /* the bottom bar has Check */
+  body[data-view="focus"] .answer{grid-template-columns:1fr}
+  body[data-view="focus"] .sheet{padding-bottom:110px}
+  body[data-view="focus"] .focus-strip{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:3px;margin:0 0 18px}
+  .focus-strip .seg{height:8px;border-radius:4px;background:var(--rule);opacity:.45;cursor:pointer}
+  .focus-strip .seg.right{background:var(--ok);opacity:1}
+  .focus-strip .seg.wrong{background:var(--warn);opacity:1}
+  .focus-strip .seg.answered{background:var(--muted);opacity:1}
+  .focus-strip .seg.cur{outline:2px solid var(--accent);outline-offset:2px;opacity:1}
+  body[data-view="focus"] .focus-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:6;gap:8px;align-items:center;background:var(--paper);border-top:1px solid var(--rule);padding:10px max(16px,env(safe-area-inset-right,0px)) max(10px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+  .focus-bar button{min-height:48px;padding:0 16px;border-radius:8px;border:1.5px solid var(--rule);background:var(--paper);color:var(--ink);font:700 15px var(--display);cursor:pointer}
+  .focus-bar button:disabled{opacity:.4;cursor:default}
+  .focus-bar .focus-check{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+  .focus-bar .focus-pos{flex:1;text-align:center;font:600 13px var(--display);color:var(--muted)}
+  .focus-bar button:focus-visible{outline:3px solid var(--key);outline-offset:2px}
+}
 @media (pointer:coarse){
   .helpbtn,.help-next,.help-ask button,.answer button,.lessons label,.progress summary{min-height:44px}
   .answer input{min-height:44px}
@@ -134,7 +182,7 @@ a.lesson-chip:hover{color:var(--accent);border-color:var(--accent)}
   .help-links a{position:relative}
   .help-links{gap:12px 8px}
 }
-@media print{.helpbtn,.help,.answer,.progress,.mark,.lessons,.lesson-chip{display:none!important}}
+@media print{.helpbtn,.help,.answer,.progress,.mark,.lessons,.lesson-chip,.views,.focus-strip,.focus-bar{display:none!important}}
 .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;border-top:1px solid var(--rule);margin-top:18px;padding-top:6px;font-size:11px;color:var(--muted)}
 
 @page{size:letter;margin:.5in}
