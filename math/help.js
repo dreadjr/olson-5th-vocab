@@ -1,7 +1,7 @@
 // Help panel for review forms: three hints in order (nudge, similar example, this problem) plus lesson links.
 // Reads ./help.json and ../lessons.json; does nothing on pages without them. When the local tutor
 // (bun run tutor) is serving the page, an Ask box sends questions to /api/ask, and each question's
-// answer box gets a Check button (/api/check). Typed answers are remembered in this browser.
+// answer box gets a Check button (/api/check). Answers, checks and a progress summary are kept in this browser.
 (async () => {
   const page = location.pathname.split('/').filter(Boolean).at(-1) || '';
   let help, lessons;
@@ -20,18 +20,62 @@
   const post = (url, body) => fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; };
 
+  // Progress in this browser: { [id]: { answer, status: 'answered'|'right'|'wrong', tries: [{ answer, correct, t }] } }
+  const KEY = `progress:${page}`;
+  let progress = {};
+  try { progress = JSON.parse(localStorage.getItem(KEY)) || {}; } catch { /* storage blocked or bad data */ }
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(progress)); } catch { /* storage blocked */ } };
+  const rec = (id) => (progress[id] ||= { answer: '', status: '', tries: [] });
+  const marks = {}, labels = {};
+  const MARK = { right: '✓', wrong: '✗', answered: '•' };
+  const MARK_TEXT = { right: 'right', wrong: 'not yet right', answered: 'answered, not checked' };
+
   // Question ids: same rule as scripts/help-check.mjs questionIds().
+  const questions = [];
   document.querySelectorAll('section.part').forEach((part, i) => {
     part.querySelectorAll('.q, .task').forEach((q) => {
       const n = q.querySelector(':scope > .n');
       const id = q.classList.contains('task') ? ROMAN[i] : n && `${ROMAN[i]}-${parseInt(n.textContent, 10)}`;
       const entry = id && help.entries?.[id];
       if (!entry) return;
+      questions.push(id);
+      q.id = `q-${id}`;
+      labels[id] = id.includes('-') ? `Part ${id.replace('-', ' #')}` : `Part ${id}`;
+      marks[id] = el('span', 'mark');
+      (n || q).prepend(marks[id]);
       const host = q.classList.contains('task') ? q : q.lastElementChild;
       host.append(answerBox(id, host, q.classList.contains('task')));
       attach(host, id, entry);
     });
   });
+
+  // Summary and history at the top of the page.
+  const panel = el('details', 'progress');
+  const summary = el('summary');
+  const list = el('ul', 'progress-list');
+  panel.append(summary, list);
+  document.querySelector('section.part')?.before(panel);
+  render();
+
+  function render() {
+    const by = (st) => questions.filter((id) => progress[id]?.status === st).length;
+    const done = questions.filter((id) => progress[id]?.status).length;
+    summary.textContent = `Progress: ${done} of ${questions.length} answered · ${by('right')} right · ${by('wrong')} to fix · ${by('answered')} not checked`;
+    for (const id of questions) {
+      const st = progress[id]?.status || '';
+      marks[id].textContent = MARK[st] || '';
+      marks[id].dataset.status = st;
+      marks[id].title = MARK_TEXT[st] || '';
+    }
+    const tries = Object.entries(progress).flatMap(([id, r]) => (r.tries || []).map((t) => ({ id, ...t }))).sort((a, b) => b.t - a.t);
+    list.replaceChildren(...(tries.length ? tries.map((t) => {
+      const li = el('li', t.correct ? 'right' : 'wrong');
+      const a = el('a', '', labels[t.id] || t.id);
+      a.href = `#q-${t.id}`;
+      li.append(a, ` · “${t.answer}” · `, el('b', '', t.correct ? 'Right' : 'Not yet'), ` · ${new Date(t.t).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}`);
+      return li;
+    }) : [el('li', 'empty', local ? 'No answers checked yet.' : 'Checked answers show up here when the tutor is running.')]));
+  }
 
   function attach(host, id, entry) {
     const btn = el('button', 'helpbtn', 'Help');
@@ -90,12 +134,16 @@
     input.maxLength = 500;
     input.placeholder = 'Your answer';
     input.setAttribute('aria-label', `Your answer to ${id}`);
-    const saved = `answer:${page}:${id}`;
-    try { input.value = localStorage.getItem(saved) || ''; } catch { /* storage blocked */ }
+    const r0 = progress[id];
+    input.value = r0?.answer || '';
+    if (r0?.status === 'right' || r0?.status === 'wrong') box.classList.add(r0.status);
     const result = el('div', 'answer-result');
     result.setAttribute('aria-live', 'polite');
     input.addEventListener('input', () => {
-      try { localStorage.setItem(saved, input.value); } catch { /* storage blocked */ }
+      const r = rec(id);
+      r.answer = input.value;
+      r.status = input.value.trim() ? 'answered' : '';
+      save(); render();
       box.classList.remove('right', 'wrong');
       result.textContent = '';
     });
@@ -115,6 +163,10 @@
         const r = await post('/api/check', { page, id, question: questionText(host), answer });
         if (!r.ok) throw new Error();
         const { correct, feedback } = await r.json();
+        const p = rec(id);
+        p.status = correct ? 'right' : 'wrong';
+        p.tries.push({ answer, correct, t: Date.now() });
+        save(); render();
         box.classList.add(correct ? 'right' : 'wrong');
         result.textContent = '';
         result.append(el('b', '', correct ? 'Right! ' : 'Not yet. '), feedback);

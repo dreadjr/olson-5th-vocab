@@ -98,7 +98,19 @@ body.show .work{min-height:0}
 .answer.right .answer-result b{color:var(--ok)}
 .answer.wrong .answer-result b{color:var(--key)}
 .answer :focus-visible{outline:3px solid var(--key);outline-offset:2px}
-@media print{.helpbtn,.help,.answer{display:none!important}}
+/* Progress summary and question marks (math/help.js) */
+.progress{margin:0 0 14px;padding:8px 12px;background:var(--tint);border-left:3px solid var(--accent);border-radius:3px;font:600 14px var(--display)}
+.progress summary{cursor:pointer;min-height:28px;display:list-item}
+.progress-list{margin:8px 0 2px;padding-left:1.3em;display:grid;gap:4px;font:400 14px var(--body);max-height:260px;overflow:auto}
+.progress-list a{color:var(--accent);font-weight:700}
+.progress-list .right b,.mark[data-status="right"]{color:var(--ok)}
+.progress-list .wrong b,.mark[data-status="wrong"]{color:var(--key)}
+.progress-list .empty{list-style:none;margin-left:-1.3em;color:var(--muted)}
+[id^="q-"]{scroll-margin-top:70px}
+.mark{display:inline-block;min-width:1em;font-weight:700;color:var(--muted)}
+.mark:empty{display:none}
+.task>.mark{font-size:20px}
+@media print{.helpbtn,.help,.answer,.progress,.mark{display:none!important}}
 .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;border-top:1px solid var(--rule);margin-top:18px;padding-top:6px;font-size:11px;color:var(--muted)}
 
 @page{size:letter;margin:.5in}
