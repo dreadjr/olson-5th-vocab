@@ -378,6 +378,29 @@
     return out;
   }
 
+  // Questions with one clean answer (help.json "answer") get a MathLive field on first tap: fractions stack as you type.
+  // The plain input stays (hidden) and holds the text, so saving, progress and Check work unchanged.
+  function mathAnswer(input, box) {
+    input.addEventListener('focus', async function upgrade() {
+      input.removeEventListener('focus', upgrade);
+      if (!(await window.Calc?.loadMathLive?.())) return; // no MathLive: the plain box keeps working
+      const mf = new window.MathfieldElement();
+      mf.className = 'answer-math';
+      mf.setAttribute('aria-label', input.getAttribute('aria-label') || 'Your answer');
+      mf.mathModeSpace = '\\:';
+      mf.smartFence = true;
+      mf.value = window.Calc.toLatex(input.value);
+      input.after(mf);
+      input.hidden = true;
+      mf.inlineShortcuts = {}; // needs the field on the page
+      mf.addEventListener('input', () => { input.value = window.Calc.fromAscii(mf.getValue('ascii-math')); input.dispatchEvent(new Event('input')); });
+      // Enter checks; caught on the form, before MathLive handles the key inside its field.
+      box.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.composedPath().includes(mf)) { e.preventDefault(); e.stopPropagation(); box.requestSubmit(); } }, true);
+      mf.addEventListener('beforeinput', (e) => { if (e.inputType === 'insertLineBreak') { e.preventDefault(); box.requestSubmit(); } });
+      mf.focus();
+    });
+  }
+
   // Multiple-choice and YES/NO keys are already on the page (Show answers), so those check without the tutor.
   function autoKey(host) {
     const text = [...host.querySelectorAll('.ans')].map((a) => { const c = a.cloneNode(true); c.querySelector('.src')?.remove(); return c.textContent; }).join(' ').trim();
@@ -429,8 +452,9 @@
     const input = el(big ? 'textarea' : 'input');
     if (big) input.rows = 3;
     input.maxLength = 500;
-    const key = autoKey(host);
-    input.placeholder = key ? 'Tap a choice or type it' : local ? 'Your answer' : 'Your answer (Check needs the tutor)';
+    const key = help.entries?.[id]?.answer ? { answer: help.entries[id].answer } : autoKey(host);
+    input.placeholder = key?.answer ? 'Your answer' : key ? 'Tap a choice or type it' : local ? 'Your answer' : 'Your answer (Check needs the tutor)';
+    if (key?.answer) mathAnswer(input, box);
     input.setAttribute('aria-label', `Your answer to ${id}`);
     const r0 = progress[id];
     input.value = r0?.answer || '';
@@ -464,7 +488,12 @@
       result.textContent = 'Checking…';
       try {
         let correct, feedback;
-        if (key) ({ correct, feedback } = autoCheck(key, answer));
+        if (key?.answer) {
+          const same = window.Calc?.equivalent?.(answer, key.answer);
+          if (same == null) { result.textContent = 'I can’t read that as a number yet. Try something like 3/10, 0.3, (2, −5) or y = 3x.'; return; }
+          correct = same;
+          feedback = same ? '' : 'Not the same value. Check each step, or open Help for a hint.';
+        } else if (key) ({ correct, feedback } = autoCheck(key, answer));
         else {
           const r = await post('/api/check', { page, id, question: questionText(host), answer, work: workLines(id) });
           if (!r.ok) throw new Error();

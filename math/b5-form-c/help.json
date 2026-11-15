@@ -88,7 +88,8 @@
         "Start at the origin, where the axes cross. How far left or right do you go to line up with point A? That is the first number (x). Then how far up or down? That is the second number (y).",
         "Example: point Q is 3 units left of the origin and 2 units up. Left is negative and up is positive, so Q = (−3, 2). Always write x first, then y.",
         "From the origin, go 2 right, then go 5 down. So A = (2, −5). A common mistake is swapping the numbers: across first, then up or down."
-      ]
+      ],
+      "answer": "(2, -5)"
     },
     "II-2": {
       "lesson": "5.1",
@@ -98,7 +99,8 @@
         "Start at the origin, where the axes cross. How far left or right do you go to line up with point B? That is the first number (x). Then how far up or down? That is the second number (y).",
         "Example: point Q is 3 units left of the origin and 2 units up. Left is negative and up is positive, so Q = (−3, 2). Always write x first, then y.",
         "From the origin, go 5 left, then go 3 down. So B = (−5, −3). A common mistake is swapping the numbers: across first, then up or down."
-      ]
+      ],
+      "answer": "(-5, -3)"
     },
     "II-3": {
       "lesson": "5.1",
@@ -108,7 +110,8 @@
         "Start at the origin, where the axes cross. How far left or right do you go to line up with point C? That is the first number (x). Then how far up or down? That is the second number (y).",
         "Example: point Q is 3 units left of the origin and 2 units up. Left is negative and up is positive, so Q = (−3, 2). Always write x first, then y.",
         "From the origin, don’t move left or right (x is 0), then go 4 up. So C = (0, 4). It is on the y-axis, so it is in no quadrant. A common mistake is swapping the numbers: across first, then up or down."
-      ]
+      ],
+      "answer": "(0, 4)"
     },
     "II-4": {
       "lesson": "5.1",
@@ -118,7 +121,8 @@
         "Start at the origin, where the axes cross. How far left or right do you go to line up with point D? That is the first number (x). Then how far up or down? That is the second number (y).",
         "Example: point Q is 3 units left of the origin and 2 units up. Left is negative and up is positive, so Q = (−3, 2). Always write x first, then y.",
         "From the origin, go 4 right, then go 1 up. So D = (4, 1). A common mistake is swapping the numbers: across first, then up or down."
-      ]
+      ],
+      "answer": "(4, 1)"
     },
     "II-5": {
       "lesson": "5.1",
@@ -218,7 +222,8 @@
         "Find the cost per ticket by dividing the total cost y by the number of tickets x. That number is m in y = mx.",
         "Example: pizzas cost y = 0, 20, 40 for x = 0, 2, 4 pizzas. m = 20 ÷ 2 = 10, and 40 ÷ 4 = 10 checks. The equation is y = 10x.",
         "18 ÷ 3 = 6, 36 ÷ 6 = 6, 54 ÷ 9 = 6, 72 ÷ 12 = 6. Each ticket costs $6, so the equation is y = 6x. Trap: write the rate in front of x (y = 6x), not x = 6y."
-      ]
+      ],
+      "answer": "y = 6x"
     },
     "II-15": {
       "lesson": "5.4",

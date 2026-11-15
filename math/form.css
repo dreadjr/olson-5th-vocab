@@ -98,6 +98,10 @@ body.show .work{min-height:0}
 /* Answer box (math/help.js) */
 .answer{display:grid;grid-template-columns:1fr auto;gap:6px;margin-top:8px;max-width:520px}
 .answer input,.answer textarea{font:inherit;padding:6px 8px;border:1.5px solid var(--rule);border-radius:3px;background:var(--paper);color:var(--ink);min-width:0;min-height:36px}
+.answer math-field{font-size:19px;padding:4px 8px;border:1.5px solid var(--rule);border-radius:3px;background:var(--paper);color:var(--ink);min-width:0;min-height:36px;--caret-color:var(--accent)}
+.answer math-field::part(menu-toggle){display:none}
+.answer.right math-field{border-color:var(--ok)}
+.answer.wrong math-field{border-color:var(--warn)}
 .answer.right input,.answer.right textarea{border-color:var(--ok)}
 .answer.wrong input,.answer.wrong textarea{border-color:var(--warn)}
 .answer button{font:700 13px/1 var(--display);color:var(--paper);background:var(--accent);border:0;border-radius:4px;padding:9px 12px;cursor:pointer}

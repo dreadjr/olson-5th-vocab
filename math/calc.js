@@ -214,7 +214,37 @@
       try { return evalLine(line, env) || {}; } catch (e) { return /\d/.test(line) ? { error: e.message } : {}; }
     });
   }
-  globalThis.Calc = { evalLines };
+  // ---- answer checking: does a student's answer mean the same as the key's clean answer?
+  // Numbers (2/6 = 1/3 = 0.333… no, 0.4 = 2/5 = 40%), ordered pairs (2, -5), and equations (y = 12x, 12x = y, y = 12·x).
+  // Returns true / false, or null when an answer can't be read as math (the caller then says so, or asks the tutor).
+  const norm = (t) => String(t).trim().replace(/[−–]/g, '-').replace(/[·×]/g, '*').replace(/÷/g, '/').replace(/\.$/, '').replace(/\s+/g, ' ');
+  const value = (t) => { const toks = tokenize(t); if (!toks.length || toks.some((k) => k.t === 'op' && k.v === '=')) return null; return parse(toks, {}); };
+  const sameValue = (a, b) => (isQ(a) && isQ(b) ? a.n === b.n && a.d === b.d : Math.abs(num(a) - num(b)) <= 1e-9 * Math.max(1, Math.abs(num(b))));
+  const pair = (t) => t.match(/^\(\s*([^,()]+?)\s*,\s*([^,()]+?)\s*\)$/);
+  // Two equations agree if every point on one is on the other: pick x = 1, 2, 3, solve each for the other letter, compare.
+  const sameEquation = (a, b) => {
+    const side = (t) => { const i = t.indexOf('='); return [tokenize(t.slice(0, i)), tokenize(t.slice(i + 1))]; };
+    const letters = (t) => [...new Set(tokenize(t).filter((k) => k.t === 'id' && !LIST[k.v] && !ONE[k.v] && !RESERVED.has(k.v)).map((k) => k.v))].sort();
+    const la = letters(a), lb = letters(b);
+    if (la.join() !== lb.join() || !la.length || la.length > 2) return false;
+    const [A, B] = [side(a), side(b)];
+    if (la.length === 1) return sameValue(solve(A[0], A[1], la[0], {}), solve(B[0], B[1], la[0], {}));
+    const [u, w] = la; // e.g. x and y: fix u, solve both for w
+    return [1n, 2n, 3n].every((k) => { const env = { [u]: Q(k) }; return sameValue(solve(A[0], A[1], w, env), solve(B[0], B[1], w, env)); });
+  };
+  function equivalent(student, key) {
+    const s = norm(student), k = norm(key);
+    if (!/\d/.test(s)) return null; // words, not math: say so instead of marking it wrong
+    try {
+      const ps = pair(s), pk = pair(k);
+      if (pk) return ps ? sameValue(value(ps[1]), value(pk[1])) && sameValue(value(ps[2]), value(pk[2])) : false;
+      if (k.includes('=')) return s.includes('=') ? sameEquation(s, k) : false;
+      const vs = value(s), vk = value(k);
+      return vs && vk ? sameValue(vs, vk) : null;
+    } catch { return null; }
+  }
+
+  globalThis.Calc = { evalLines, equivalent };
 
   // ---- the panel on the form pages
   if (typeof document === 'undefined') return;
@@ -330,6 +360,7 @@
   // Saved plain-text lines (the earlier notepad) into LaTeX for the math fields.
   const toLatex = (line) => line
     .replace(/[\\{}]/g, '').replace(/[#%&_$]/g, (c) => `\\${c}`)
+    .replace(/\(([^()]+)\)\s*\/\s*\(([^()]+)\)/g, '\\frac{$1}{$2}') // "(4)/(12)", what a math field's text looks like
     .replace(/(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)/g, '\\frac{$1}{$2}')
     .replace(/[*·×]/g, '\\cdot ').replace(/ /g, '\\:');
 
@@ -490,20 +521,40 @@
     };
   }
 
-  let api = null; // {focus, append} once the panel is built
+  // MathLive, loaded once for the calculator and the answer boxes; resolves false if it can't load (offline, filtered).
+  let mathLive = null;
+  const loadMathLive = () => mathLive || (mathLive = window.MathfieldElement ? Promise.resolve(true) : new Promise((res) => {
+    const s = document.createElement('script');
+    const timer = setTimeout(() => res(false), 8000);
+    s.src = MATHLIVE;
+    s.onload = () => { clearTimeout(timer); if (window.MathfieldElement) { setupKeyboard(); res(true); } else res(false); };
+    s.onerror = () => { clearTimeout(timer); res(false); };
+    document.head.append(s);
+  }));
+  // On-screen keyboard (phones/tablets): a "Stats" page with the words this calculator knows, then MathLive's own pages.
+  function setupKeyboard() {
+    const kb = window.mathVirtualKeyboard;
+    if (!kb) return;
+    window.MathfieldElement.soundsDirectory = null;
+    const k = (label, insert, cls) => ({ label, insert: insert ?? label, ...(cls ? { class: cls } : {}) });
+    kb.layouts = [{
+      label: 'Stats',
+      tooltip: 'Fractions, percents and statistics',
+      rows: [
+        [k('7'), k('8'), k('9'), k('a/b', '\\frac{#@}{#?}'), k('mean', 'mean(#?)', 'small'), k('median', 'median(#?)', 'small'), k('mad', 'mad(#?)', 'small')],
+        [k('4'), k('5'), k('6'), k('×', '\\cdot'), k('range', 'range(#?)', 'small'), k('q1', 'q1(#?)', 'small'), k('q3', 'q3(#?)', 'small')],
+        [k('1'), k('2'), k('3'), k('−', '-'), k('%', '\\%'), k('of', '\\:of\\:', 'small'), k('as %', '\\:as\\:\\%', 'small')],
+        [k('0'), k('.'), k('( )', '(#?)'), k('+'), k('='), k('x'), k(',')],
+        ['[left]', '[right]', { label: 'space', insert: '\\:' }, '[backspace]', '[return]'],
+      ],
+    }, 'numeric', 'symbols', 'alphabetic'];
+  }
+
+  let api = null; // {focus, append, clear} once the panel is built
   const ready = () => {
     if (api) return Promise.resolve(api);
-    if (window.MathfieldElement) return Promise.resolve(api = mathMode());
-    body.replaceChildren(el('div', 'calc-loading', 'Loading the calculator…'));
-    return new Promise((res) => {
-      const s = document.createElement('script');
-      const fail = () => res(api = plainMode());
-      const timer = setTimeout(fail, 8000);
-      s.src = MATHLIVE;
-      s.onload = () => { clearTimeout(timer); try { res(api = window.MathfieldElement ? mathMode() : plainMode()); } catch { fail(); } };
-      s.onerror = () => { clearTimeout(timer); fail(); };
-      document.head.append(s);
-    });
+    if (!window.MathfieldElement) body.replaceChildren(el('div', 'calc-loading', 'Loading the calculator…'));
+    return loadMathLive().then((ok) => { try { return (api = ok ? mathMode() : plainMode()); } catch { return (api = plainMode()); } });
   };
 
   const btn = el('button', 'calc-btn', 'Calculator');
@@ -522,6 +573,8 @@
   const toggle = document.getElementById('toggle');
   toggle ? toggle.before(btn) : document.querySelector('.toolbar')?.append(btn);
   document.body.append(panel);
+  // For math/help.js: math-field answer boxes share the loader and the text conversions.
+  Object.assign(Calc, { loadMathLive, toLatex, fromAscii });
   /** A question's calculator work, worked out from what's saved: [{expr, result}] (the plain-text box isn't tagged). */
   Calc.workFor = (id) => {
     let saved = [];

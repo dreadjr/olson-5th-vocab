@@ -4,6 +4,22 @@ import { join } from 'node:path';
 import { ROOT } from './lib.mjs';
 
 const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
+await import('../math/calc.js'); // globalThis.Calc: the same answer comparison the pages use
+const { equivalent } = globalThis.Calc;
+
+/** Does the answer key (HTML) mention a value equivalent to this clean answer? */
+export function keyMentions(answer, keyHtml) {
+  const text = keyHtml.replace(/<span class="src">[^<]*<\/span>/g, '')
+    .replace(/<span class="f"><span>([^<]*)<\/span><span>([^<]*)<\/span><\/span>/g, '($1)/($2)').replace(/<[^>]+>/g, ' ')
+    .replace(/&[a-z]+;/g, ' ').replace(/[−–]/g, '-');
+  const cands = [
+    ...text.matchAll(/\(\s*-?[\d./()]+\s*,\s*-?[\d./()]+\s*\)/g),
+    ...text.matchAll(/[a-z]\s*=\s*-?\(?[\d.]*\)?(?:\/\(?\d+\)?)?\s*[a-z]?/gi),
+    ...text.matchAll(/\(\d+(?:\.\d+)?\)\/\(\d+(?:\.\d+)?\)/g), // stacked fractions, written (a)/(b) above
+    ...text.matchAll(/-?\d+(?:\.\d+)?(?:\/\d+(?:\.\d+)?|%)?/g),
+  ].map((m) => m[0].trim());
+  return cands.some((c) => equivalent(answer, c) === true);
+}
 
 /** Question ids on a page: part numeral + "-" + question number, and "III" for a part's .task. Same rule as math/help.js. */
 export function questionIds(html) {
@@ -33,6 +49,11 @@ export function helpErrors(html, help, lessons) {
     if (!Array.isArray(e.hints) || e.hints.length !== 3 || e.hints.some((h) => typeof h !== 'string' || !h.trim())) errs.push(`${id}: needs exactly 3 hints`);
     if (!lessons[e.lesson]) errs.push(`${id}: lesson "${e.lesson}" is not in math/lessons.json`);
     if (!e.tag || !e.skill) errs.push(`${id}: needs a tag and a skill`);
+    if (e.answer !== undefined) {
+      if (typeof e.answer !== 'string' || !e.answer.trim() || e.answer.length > 40) errs.push(`${id}: "answer" must be a short string`);
+      else if (equivalent(e.answer, e.answer) !== true) errs.push(`${id}: "answer" ${e.answer} isn't math the checker can read`);
+      else if (keys[id] && !keyMentions(e.answer, keys[id])) errs.push(`${id}: "answer" ${e.answer} doesn't match anything in the answer key`);
+    }
   }
   return errs;
 }

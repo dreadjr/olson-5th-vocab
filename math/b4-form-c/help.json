@@ -118,7 +118,8 @@
         "Probability = (ways to get what you want) ÷ (all possible outcomes). How many sections show 9, and how many sections are there?",
         "Example: on a number cube, P(1 or 2) = 2/6 = 1/3, because 2 of the 6 numbers work.",
         "One section out of 12 is a 9, so P(9) = 1/12."
-      ]
+      ],
+      "answer": "1/12"
     },
     "II-2": {
       "lesson": "4.1",
@@ -128,7 +129,8 @@
         "List the numbers from 1 to 12 that are greater than 8. Careful: \"greater than 8\" does not include 8.",
         "Example: on a number cube, P(greater than 4) = 2/6 = 1/3, because only 5 and 6 work.",
         "9, 10, 11 and 12 are greater than 8. That's 4 of 12, so P = 4/12 = 1/3."
-      ]
+      ],
+      "answer": "1/3"
     },
     "II-3": {
       "lesson": "4.1",
@@ -138,7 +140,8 @@
         "Is there any section that is NOT less than 13? What does it mean when every outcome works?",
         "Example: on a number cube, P(less than 7) = 6/6 = 1, which means certain. P(7) = 0/6 = 0, which means impossible.",
         "All 12 sections are less than 13, so P = 12/12 = 1. It is certain."
-      ]
+      ],
+      "answer": "1"
     },
     "II-4": {
       "lesson": "4.1",
@@ -148,7 +151,8 @@
         "It's often easier to count the opposite. Which numbers ARE multiples of 4? Then P(not) = 1 − P(it is).",
         "Example: on a number cube, P(6) = 1/6, so P(not 6) = 1 − 1/6 = 5/6. The two are complements: together they make 1.",
         "The multiples of 4 are 4, 8 and 12: 3 of 12. P(not a multiple of 4) = 1 − 3/12 = 9/12 = 3/4."
-      ]
+      ],
+      "answer": "3/4"
     },
     "II-5": {
       "lesson": "4.1",
@@ -168,7 +172,8 @@
         "The fraction of marked fish in her second catch should match the fraction of marked fish in the whole pond. Write those two fractions as a proportion.",
         "Example: rangers tag 20 deer. Later they catch 300 deer and 15 are tagged. 15/300 = 20/n, so 15n = 6,000 and n = 400 deer.",
         "Second catch: 5 marked out of 25. Whole pond: 20 marked out of n. 5/25 = 20/n, so 5n = 500 and n = 100 fish. Check: 5/25 = 1/5 and 20/100 = 1/5."
-      ]
+      ],
+      "answer": "100"
     },
     "II-7": {
       "lesson": "4.2",
@@ -178,7 +183,8 @@
         "Find P(green) first. Then use it on the 64 spins: what part of them should land on green?",
         "Example: Lou hit 12 home runs in 40 pitches, so P = 12/40 = 3/10. With 30 pitches, predict 3/10 · 30 = 9 home runs.",
         "P(green) = 3/8. 3/8 · 64 = 64 ÷ 8 · 3 = 24 times."
-      ]
+      ],
+      "answer": "24"
     },
     "II-8": {
       "lesson": "4.3",
@@ -208,7 +214,8 @@
         "What is the chance of guessing one question right? Each question is separate, so multiply that chance once for each question.",
         "Example: a test has 5 questions with 4 choices each. P(all right) = 1/4 · 1/4 · 1/4 · 1/4 · 1/4 = 1/1,024.",
         "Each question: 1/5. Four questions: 1/5 · 1/5 · 1/5 · 1/5 = 1/625."
-      ]
+      ],
+      "answer": "1/625"
     },
     "II-11": {
       "lesson": "4.5",
@@ -218,7 +225,8 @@
         "Find each part separately: P(heads) and P(blue). The coin doesn't change the bag, so multiply them.",
         "Example: a bag has 3 red, 4 blue and 5 green marbles. Pick one, put it back, pick again. P(red then green) = 3/12 · 5/12 = 15/144 = 5/48.",
         "P(heads) = 1/2 and P(blue) = 7/10. 1/2 · 7/10 = 7/20."
-      ]
+      ],
+      "answer": "7/20"
     },
     "II-12": {
       "lesson": "4.6",

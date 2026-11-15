@@ -31,3 +31,18 @@ test('answerKeys pairs each question with its answer', () => {
   const page = '<section class="part"><div class="q"><span class="n">1.</span><div class="ans">x</div></div><div class="q"><span class="n">2.</span></div></section>';
   assert.ok(helpErrors(page, { entries: {} }, lessons).some((e) => e.includes('answer')));
 });
+
+test('clean answers must match the key', async () => {
+  const { keyMentions } = await import('./help-check.mjs');
+  assert.equal(keyMentions('72', 'C (9 choices for first · 8 left for second = 72)'), true);
+  assert.equal(keyMentions('1/3', '<span class="f"><span>4</span><span>12</span></span> = <span class="f"><span>1</span><span>3</span></span> (9, 10, 11, 12)'), true);
+  assert.equal(keyMentions('y = 12x', 'y = 12x (m = y ÷ x = 12 ÷ 1 = 12)'), true);
+  assert.equal(keyMentions('(2, -5)', '(2, −5)'), true);
+  assert.equal(keyMentions('90', 'P = 1/10. Prediction: 1/10 · 900 = 90 students.'), true);
+  assert.equal(keyMentions('81', 'C (9 · 8 = 72)'), false);
+  const page = '<section class="part"><div class="q"><span class="n">1.</span><div class="ans">C (= 72)</div></div></section>';
+  const base = { lesson: '4.5', tag: 't', skill: 's', hints: ['a', 'b', 'c'] };
+  assert.deepEqual(helpErrors(page, { entries: { 'I-1': { ...base, answer: '72' } } }, lessons), []);
+  assert.ok(helpErrors(page, { entries: { 'I-1': { ...base, answer: '81' } } }, lessons)[0].includes('answer key'));
+  assert.ok(helpErrors(page, { entries: { 'I-1': { ...base, answer: 'lots' } } }, lessons)[0].includes('can read'));
+});

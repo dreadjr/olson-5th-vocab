@@ -72,3 +72,15 @@ test('each equation solves fresh, even after its letter was found above', () => 
   assert.deepEqual(evalLines('18/45 = x/360\n45/18 = 360/x\n2x + 3 = 15\nx + 1').map((v) => v.text), ['x = 144', 'x = 144', 'x = 6', '7']);
   assert.match(evalLines('a = 2\nb = 3\na/b = 4/6')[2].error, /nothing to solve for/);
 });
+
+test('equivalent answers', () => {
+  const { equivalent: eq } = globalThis.Calc;
+  for (const [s, k] of [['1/3', '1/3'], ['2/6', '1/3'], ['0.4', '2/5'], ['40%', '2/5'], ['2/5', '40%'], ['72', '72'], ['72.0', '72'], ['−4', '-4'],
+    ['(2, -5)', '(2, −5)'], ['(4/2,-5)', '(2, -5)'], ['y = 12x', 'y = 12x'], ['y=12*x', 'y = 12x'], ['12x = y', 'y = 12x'], ['y = x·12', 'y = 12x'],
+    ['x = 144', 'x = 144'], ['144 = x', 'x = 144'], ['y = -2x', 'y = −2x'], ['y = 1/4x', 'y = 0.25x']]) assert.equal(eq(s, k), true, `${s} ~ ${k}`);
+  for (const [s, k] of [['0.333', '1/3'], ['81', '72'], ['(-5, 2)', '(2, -5)'], ['y = 12x + 1', 'y = 12x'], ['x = 12y', 'y = 12x'], ['72', 'y = 12x'], ['2', '(2, -5)']])
+    assert.equal(eq(s, k), false, `${s} !~ ${k}`);
+  assert.equal(eq('seventy two', '72'), null);
+  assert.equal(eq('zero, four', '(0, 4)'), null);
+  assert.equal(eq('', '72'), null);
+});
