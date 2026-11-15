@@ -185,13 +185,15 @@ a.lesson-chip:hover{color:var(--accent);border-color:var(--accent)}
 .calc-close{margin-left:auto}
 .calc-close{width:44px;height:44px;border:0;background:none;color:var(--ink);font:400 26px/1 var(--display);cursor:pointer;border-radius:6px}
 .calc-body{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}
-.calc-in,.calc-out{font:16px/26px ui-monospace,SFMono-Regular,Menlo,monospace;padding:10px 12px;margin:0;overflow:auto}
+.calc-in,.calc-out{font:16px/34px ui-monospace,SFMono-Regular,Menlo,monospace;padding:10px 12px;margin:0;overflow:auto}
 .calc-in{border:0;resize:none;background:var(--paper);color:var(--ink);white-space:pre;min-width:0}
 .calc-in:focus{outline:none;box-shadow:inset 0 0 0 2px var(--accent)}
 .calc-out{background:var(--tint);border-left:1px solid var(--rule);overflow:hidden}
-.calc-row{height:26px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;gap:8px;align-items:center}
-.calc-row.err{color:var(--muted);font:italic 12px/26px var(--display)}
-.calc-val{border:0;background:none;padding:0;color:var(--accent);font:700 16px/26px ui-monospace,SFMono-Regular,Menlo,monospace;cursor:copy}
+.calc-row{height:34px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;gap:8px;align-items:center}
+.calc-row.err{color:var(--muted);font:italic 12px/34px var(--display)}
+.calc-val{border:0;background:none;padding:0;color:var(--accent);font:700 16px/34px ui-monospace,SFMono-Regular,Menlo,monospace;cursor:copy;display:inline-flex;align-items:center;gap:1px;white-space:pre}
+.calc-val .f{font-size:13px;line-height:1.1;margin:0 1px}
+.calc-val .f>span:first-child{border-bottom-width:1.5px}
 .calc-hint{color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis}
 .calc-foot{padding:8px 12px;border-top:1px solid var(--rule);font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted);white-space:pre-wrap}
 .calc-close:focus-visible,.calc-val:focus-visible{outline:3px solid var(--key);outline-offset:2px}

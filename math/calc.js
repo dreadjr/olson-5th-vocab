@@ -243,16 +243,26 @@
   const foot = el('div', 'calc-foot', 'mean  median  range  mad  q1  q3  iqr  min  max  sum  sqrt  round  ·  “of”  “as %”  ans');
   panel.append(head, body, foot);
 
+  // "35/2" shown as a stacked fraction, the way the forms print them (the copy stays "35/2").
+  const stacked = (text) => text.split(/(\d+\/\d+)/).map((part) => {
+    const m = part.match(/^(\d+)\/(\d+)$/);
+    if (!m) return document.createTextNode(part);
+    const f = el('span', 'f');
+    f.setAttribute('aria-label', `${m[1]} over ${m[2]}`);
+    f.append(el('span', '', m[1]), el('span', '', m[2]));
+    return f;
+  });
   const render = () => {
     const rows = Calc.evalLines(input.value);
     out.replaceChildren(...rows.map((r) => {
       const row = el('div', `calc-row${r.error ? ' err' : ''}`);
       if (r.error) { row.textContent = r.error; row.title = r.error; return row; }
       if (!r.text) return row;
-      const b = el('button', 'calc-val', r.text);
+      const b = el('button', 'calc-val');
+      b.append(...stacked(r.text));
       b.type = 'button';
       b.title = 'Copy';
-      b.addEventListener('click', () => { navigator.clipboard?.writeText(r.text.replace(/^≈ /, '')).then(() => { b.textContent = 'copied'; setTimeout(() => { b.textContent = r.text; }, 900); }, () => {}); });
+      b.addEventListener('click', () => { navigator.clipboard?.writeText(r.text.replace(/^≈ /, '')).then(() => { b.textContent = 'copied'; setTimeout(() => b.replaceChildren(...stacked(r.text)), 900); }, () => {}); });
       row.append(b);
       if (r.hint) row.append(el('span', 'calc-hint', r.hint));
       return row;
