@@ -54,7 +54,13 @@ function install(host) {
     stop(label);
     writeFileSync(file(label), xml, { mode: 0o600 }); // holds the key
     chmodSync(file(label), 0o600);
-    execFileSync('launchctl', ['bootstrap', `gui/${UID}`, file(label)]);
+    // bootout returns before the old copy is gone; bootstrap fails with "5: Input/output error" until it is.
+    for (let i = 0; ; i++) {
+      const r = spawnSync('launchctl', ['bootstrap', `gui/${UID}`, file(label)], { encoding: 'utf8' });
+      if (r.status === 0) break;
+      if (i === 20) throw new Error(`launchctl bootstrap ${label}: ${r.stderr.trim()}`);
+      execFileSync('/bin/sleep', ['0.5']);
+    }
     console.log(`started ${label}`);
   }
   console.log(`\nOpen once on each device (it saves the key, then the plain address works):\n  https://${host || '<your tunnel hostname>'}/math/?key=${key}\nAt home also: http://localhost:8080/math/?key=${key}\nLog: logs/com.kok5th.tutor.log`);
