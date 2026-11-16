@@ -3,14 +3,15 @@
 // Check, Hint, Step by step and Watch it. The seed is the form's number: the same seed gives the same form, so it can be
 // printed or redone. Answers given are kept in this browser per form.
 (() => {
-  const TOPICS = { 4: 'Probability and Random Sampling', 5: 'Direct Variation' };
+  const TOPICS = { 1: 'Ratios and Rates', 2: 'Proportions and Similarity', 3: 'Percents', 4: 'Probability and Random Sampling', 5: 'Direct Variation', rne: 'Rational Numbers and Equations' };
+  const groupOf = (lesson) => (lesson.startsWith('RNE') ? 'rne' : lesson.split('.')[0]); // RNE: the class's earlier unit, its own book
   const N = 12;
   const P = globalThis.Practice;
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
   const params = new URLSearchParams(location.search);
-  const block = String(parseInt(params.get('block'), 10) || 4);
+  const block = params.get('block') === 'rne' ? 'rne' : String(parseInt(params.get('block'), 10) || 4);
   const byLesson = {};
-  for (const [kind, v] of Object.entries(P.kinds)) if (v.lesson.split('.')[0] === block) (byLesson[v.lesson] ||= []).push(kind);
+  for (const [kind, v] of Object.entries(P.kinds)) if (groupOf(v.lesson) === block) (byLesson[v.lesson] ||= []).push(kind);
   const allLessons = Object.keys(byLesson).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
   let seed = parseInt(params.get('seed'), 10) || 10000 + Math.floor(Math.random() * 90000);
   let lessons = (params.get('lessons') || '').split(',').filter((l) => byLesson[l]);
@@ -98,15 +99,15 @@
   function render() {
     load();
     const ps = problems();
-    const name = `Block ${block} Practice · Form ${seed}`;
+    const name = `${block === 'rne' ? 'Rational Numbers' : `Block ${block}`} Practice · Form ${seed}`;
     document.title = name;
     document.getElementById('formName').textContent = `Form ${seed}`;
     document.getElementById('formTag').textContent = `Form ${seed}`;
-    document.getElementById('title').textContent = `Block ${block} Practice ~ ${TOPICS[block] || ''}${lessons.length < allLessons.length ? ` (Lessons ${lessons.join(', ')})` : ''}`;
+    document.getElementById('title').textContent = `${block === 'rne' ? 'Rational Numbers & Equations' : `Block ${block}`} Practice ~ ${TOPICS[block] || ''}${lessons.length < allLessons.length ? ` (Lessons ${lessons.join(', ')})` : ''}`;
     document.getElementById('qs').replaceChildren(...ps.map(problemEl));
     const key = document.getElementById('key');
     const ol = el('ol');
-    for (const p of ps) { const li = el('li'); li.append(stack(p.answer ?? p.choice)); ol.append(li); }
+    for (const p of ps) { const li = el('li'); li.append(stack(p.word ? `${p.word} ${p.answer}` : p.answer ?? p.choice)); ol.append(li); }
     key.replaceChildren(el('h2', '', `Answer key · Form ${seed}`), ol);
     showScore();
     history.replaceState(null, '', `?block=${block}&seed=${seed}${lessons.length < allLessons.length ? `&lessons=${lessons.join(',')}` : ''}`);

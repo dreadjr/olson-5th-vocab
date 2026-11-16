@@ -94,10 +94,11 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   // grades: schoology-<student>-<date>.json; class materials: schoology-materials-<student>-<date>.json
   for (const f of readdirSync(dl).filter((f) => /^schoology-[a-z-]+-\d{4}-\d{2}-\d{2}\.json$/.test(f))) {
     const d = JSON.parse(readFileSync(join(dl, f), 'utf8'));
-    const materials = f.startsWith('schoology-materials-');
-    if (!d.student || !Array.isArray(materials ? d.courses : d.items)) { console.log(`skipped ${f}: not a Schoology export`); continue; }
-    const slug = f.replace(/^schoology-(materials-)?|-\d{4}-\d{2}-\d{2}\.json$/g, ''), date = f.match(/\d{4}-\d{2}-\d{2}/)[0];
-    const to = `${materials ? 'materials-' : ''}${date}.json`;
+    // kind: grades (schoology-<student>-<date>), materials (schoology-materials-…), quizzes (schoology-quizzes-…: exit quiz attempts)
+    const kind = (f.match(/^schoology-(materials|quizzes)-/) || [])[1] || '';
+    if (!d.student || !Array.isArray(kind === 'materials' ? d.courses : kind === 'quizzes' ? d.quizzes : d.items)) { console.log(`skipped ${f}: not a Schoology export`); continue; }
+    const slug = f.replace(/^schoology-((materials|quizzes)-)?|-\d{4}-\d{2}-\d{2}\.json$/g, ''), date = f.match(/\d{4}-\d{2}-\d{2}/)[0];
+    const to = `${kind ? `${kind}-` : ''}${date}.json`;
     mkdirSync(join(DIR, slug), { recursive: true });
     renameSync(join(dl, f), join(DIR, slug, to));
     console.log(`moved ${f} -> data/schoology/${slug}/${to}`);

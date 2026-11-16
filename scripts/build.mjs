@@ -93,7 +93,7 @@ if (reviews.length) {
   // Blocks with practice templates (math/practice.js) get a "New practice form" link (math/gen/).
   await import('../math/calc.js');
   await import('../math/practice.js');
-  const genBlocks = new Set(Object.values(globalThis.Practice.kinds).map((k) => k.lesson.split('.')[0]));
+  const genBlocks = new Set(Object.values(globalThis.Practice.kinds).map((k) => (k.lesson.startsWith('RNE') ? 'rne' : k.lesson.split('.')[0])));
   const groups = [...new Set(reviews.map(r => r.block))].map(block => {
     const rs = reviews.filter(r => r.block === block);
     const lis = rs.map(r => {
@@ -105,7 +105,9 @@ if (reviews.length) {
     const gen = genBlocks.has(String(block)) ? `<a class="gen-link" href="gen/?block=${block}">New practice form →</a>` : '';
     return `<h2>Block ${block}<small>${esc(rs[0].topic)}</small>${gen}</h2><ul>${lis}</ul>`;
   }).join('\n  ');
-  writeFileSync(join(DIST, 'math', 'index.html'), fill(MATH_INDEX, { '{{REVIEW_GROUPS}}': groups }));
+  // Rational Numbers & Equations (the class's unit before this book): practice forms only, no reviews.
+  const rne = genBlocks.has('rne') ? `\n  <h2>Rational Numbers and Equations<small>Integers, multiplying and dividing rational numbers, solving equations</small><a class="gen-link" href="gen/?block=rne">New practice form →</a></h2>` : '';
+  writeFileSync(join(DIST, 'math', 'index.html'), fill(MATH_INDEX, { '{{REVIEW_GROUPS}}': groups + rne }));
 }
 
 // Writing practice: writing/ copied as-is, plus every set's words for "use this week's words".
