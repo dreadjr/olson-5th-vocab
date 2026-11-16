@@ -925,39 +925,36 @@
     };
   }
 
-  // "Draw and label a pie chart": the pie tool in draw mode (math/pie.js), checked slice by slice against the data.
+  // "Draw and label a pie chart": draw it freehand (math/pie.js Pie.freehand), then Check says which sectors are
+  // close enough (within 5°) and which are too big or too small.
   function drawBox(id, data) {
     const box = el('form', 'answer draw');
     const r0 = progress[id];
-    const T = data.reduce((s, [, n]) => s + n, 0);
-    const text = (c) => data.map(([label], i) => `${label} ${Math.round((c[i] / T) * 3600) / 10}°`).join(', ');
-    let ready = false;
-    const pie = window.Pie?.make(data, { draw: true, start: r0?.cells, onChange: (c) => {
-      if (!ready) return;
-      const r = rec(id);
-      r.cells = c; r.answer = text(c); r.status = 'answered'; delete r.feedback;
-      save(); render();
-      box.classList.remove('right', 'wrong'); result.textContent = '';
-    } });
     const check = el('button', '', 'Check');
     check.type = 'submit';
     const result = el('div', 'answer-result');
     result.setAttribute('aria-live', 'polite');
+    const text = (st) => window.Pie.slices(st.lines).map((x) => `${st.labels[x.id] || '?'} ${Math.round(x.size)}°`).join(', ');
+    const pie = window.Pie?.freehand(data, { start: r0?.cells?.lines ? r0.cells : null, onChange: (st) => {
+      const r = rec(id);
+      r.cells = st; r.answer = text(st); r.status = st.lines.length ? 'answered' : ''; delete r.feedback;
+      save(); render();
+      box.classList.remove('right', 'wrong'); result.textContent = '';
+    } });
     if (!pie) { box.append(el('p', '', 'The pie tool didn’t load. Draw it on paper.')); return box; }
     box.append(pie, check, result);
-    ready = true;
-    const show = (ok, feedback) => { box.classList.add(ok ? 'right' : 'wrong'); result.replaceChildren(el('b', '', ok ? '✓ Right! ' : '✗ Not yet. '), feedback || ''); };
+    const show = (ok, feedback) => { box.classList.add(ok ? 'right' : 'wrong'); result.replaceChildren(el('b', '', ok ? '✓ Close enough! ' : '✗ Not yet. '), feedback || ''); };
     if (r0?.status === 'right' || r0?.status === 'wrong') show(r0.status === 'right', r0.feedback);
     box.addEventListener('submit', (e) => {
       e.preventDefault();
-      const c = pie.counts(), off = data.filter(([, n], i) => c[i] !== n).map(([label]) => label);
-      const ok = !off.length;
-      const feedback = ok ? 'Every sector matches the data.' : `${off.length > 1 ? `${off.slice(0, -1).join(', ')} and ${off.at(-1)}` : off[0]} ${off.length > 1 ? 'aren’t' : 'isn’t'} the right size yet. Use your degrees from #1.`;
+      const g = pie.grade(5);
+      const feedback = g.msg || (g.ok ? 'Every sector is within 5° of the right size.' : `${g.rows.map((x) => x.msg).join('\n')}\nUse your degrees from #1.`);
+      if (g.msg) { result.textContent = g.msg; return; } // not finished drawing: no try counted
       const p = rec(id);
-      p.status = ok ? 'right' : 'wrong'; p.feedback = feedback; p.cells = c;
-      p.tries.push({ answer: text(c), correct: ok, t: Date.now() });
+      p.status = g.ok ? 'right' : 'wrong'; p.feedback = feedback; p.cells = pie.state();
+      p.tries.push({ answer: text(p.cells), correct: g.ok, t: Date.now() });
       save(); render();
-      show(ok, feedback);
+      show(g.ok, feedback);
     });
     return box;
   }
