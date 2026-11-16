@@ -54,7 +54,7 @@
       (n || q).prepend(marks[id]);
       const host = q.classList.contains('task') ? q : q.lastElementChild;
       const meta = el('div', 'q-meta');
-      meta.append(lessonChip(entry.lesson), readButton(host), keyInfoButton(host), solveButton(host, id, entry), practiceButton(host, entry));
+      meta.append(lessonChip(entry.lesson), readButton(host), keyInfoButton(host), watchButton(() => ({ title: `Watch it: ${entry.skill}`, question: boardQuestion(host), steps: walkSteps(entry) || [] }), !!walkSteps(entry), id), solveButton(host, id, entry), practiceButton(host, entry));
       host.prepend(meta);
       answerSteps(host, id, entry);
       const box = answerBox(id, host, q.classList.contains('task'));
@@ -527,6 +527,29 @@
       } catch { out.textContent = 'The tutor isn’t available right now.'; } finally { btn.disabled = false; }
     };
   }
+  // The question for the whiteboard: its words without graphs (their axis labels read as noise), parts spaced out.
+  function boardQuestion(host) {
+    const copy = host.cloneNode(true);
+    copy.querySelectorAll('.ans, .help, .helpbtn, .answer, .q-meta, .q-work, .solve-steps, .ans-steps, .practice, svg, figure').forEach((x) => x.remove());
+    copy.querySelectorAll('.f').forEach((f) => { const [a, b] = [...f.children].map((c) => c.textContent); f.replaceWith(`${a}/${b}`); });
+    copy.querySelectorAll('li, p, tr, div').forEach((n) => n.append(' '));
+    const text = copy.textContent.replace(/\s+/g, ' ').trim();
+    const graph = host.querySelector('svg, figure') ? ' (See the graph on the page.)' : '';
+    return (text.length > 300 ? `${text.slice(0, 297)}…` : text) + graph;
+  }
+
+  // "Watch it": the whiteboard walkthrough (math/board.js) for a question or a practice problem.
+  function watchButton(get, show = true, id = null) {
+    const b = el('button', 'q-tool', 'Watch it');
+    b.type = 'button';
+    if (!show) { b.hidden = true; return b; }
+    b.addEventListener('click', () => {
+      if (!window.Board) return;
+      window.Board.play(get());
+      if (local && id) post('/api/log', { page, id, step: 3 }).catch(() => {});
+    });
+    return b;
+  }
   function solveButton(host, id, entry) {
     const b = el('button', 'q-tool', 'Step by step');
     b.type = 'button';
@@ -618,6 +641,7 @@
       const steps = el('button', 'q-tool', 'Step by step');
       const again = el('button', 'practice-next', 'New problem');
       for (const x of [hint, steps, again]) x.type = 'button';
+      const watch = watchButton(() => { helped = true; return { title: `Watch it: ${window.Practice.kinds[kind].label}`, question: p.q, steps: p.steps }; });
       const extra = el('div');
       hint.addEventListener('click', () => { helped = true; const h = el('p', 'step-help', p.hint); stackFractions(h); extra.replaceChildren(h); });
       steps.addEventListener('click', () => {
@@ -627,7 +651,7 @@
         st.next();
       });
       again.addEventListener('click', next);
-      tools.append(hint, steps, again);
+      tools.append(hint, steps, watch, again);
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         const ok = window.Practice.check(p, input.value);
