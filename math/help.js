@@ -125,6 +125,7 @@
     study.current = id;
     try { localStorage.setItem(`focus:${page}`, id); } catch { /* storage blocked */ }
     updateFocus();
+    document.dispatchEvent(new Event('study-change')); // the calculator shows only this question's lines in Focus
     if (view === 'focus') window.scrollTo(0, 0);
   }
 
@@ -157,6 +158,7 @@
     for (const k of VIEWS) viewBtns[k].setAttribute('aria-pressed', String(k === v));
     try { localStorage.setItem('view', v); } catch { /* storage blocked */ }
     updateFocus();
+    document.dispatchEvent(new Event('study-change')); // the calculator shows only this question's lines in Focus
   }
 
   // Summary and history at the top of the page.

@@ -404,7 +404,8 @@
     ME.soundsDirectory = null;
     body.className = 'calc-body rows';
     const list = el('div', 'calc-lines');
-    body.replaceChildren(list);
+    const only = el('div', 'calc-only');
+    body.replaceChildren(only, list);
     let lines = null;
     try { lines = JSON.parse(load(KEY2)); } catch { /* bad data */ }
     if (!Array.isArray(lines)) lines = (load(KEY) || '').split('\n').filter((l, i, a) => l.trim() || i < a.length - 1).map(toLatex);
@@ -499,15 +500,33 @@
     window.mathVirtualKeyboard?.addEventListener('geometrychange', () => {
       panel.style.setProperty('--kb', `${window.mathVirtualKeyboard.visible ? window.mathVirtualKeyboard.boundingRect.height : 0}px`);
     });
+    // Focus view: just the lines for the question on screen. The rest stay saved and come back in the other views.
+    const focusQ = () => (document.body.dataset.view === 'focus' ? currentQ() : null);
+    const shows = (f, q) => !q || (f.dataset.q ? f.dataset.q === q : !f.value);
+    const filter = () => {
+      const q = focusQ();
+      for (const f of fields) f.closest('.calc-line').hidden = !shows(f, q);
+      if (q && !fields.some((f) => shows(f, q))) { add('', null, q); save(); render(); }
+      only.hidden = !q;
+      only.textContent = q ? `${questionLabel(q)} only` : '';
+    };
+    document.addEventListener('study-change', filter);
+    filter();
     const reset = (values) => {
       fields.splice(0).forEach((f) => f.closest('.calc-line').remove());
       for (const l of values.length ? values : [{ v: '', q: null }]) add(l.v, null, l.q);
       save(); render();
-      fields.at(-1).focus();
+      filter();
+      (fields.findLast((f) => !f.closest('.calc-line').hidden) || fields.at(-1)).focus();
     };
     return {
-      clear: () => { const was = fields.map((f) => ({ v: f.value, q: f.dataset.q || null })); reset([]); return () => reset(was); },
-      focus: () => fields.at(-1).focus(),
+      // In Focus view, Clear empties only this question's lines.
+      clear: () => {
+        const was = fields.map((f) => ({ v: f.value, q: f.dataset.q || null })), q = focusQ();
+        reset(q ? was.filter((l, i) => !shows(fields[i], q)) : []);
+        return () => reset(was);
+      },
+      focus: () => (fields.findLast((f) => !f.closest('.calc-line').hidden) || fields.at(-1)).focus(),
       append: (text) => {
         const last = fields.at(-1);
         const mf = last && !last.value ? last : add('');
