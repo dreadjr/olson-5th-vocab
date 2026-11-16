@@ -721,7 +721,10 @@
     }
     const got = Object.fromEntries([...answer.matchAll(/(\d+[a-z])\s*(YES|NO)/gi)].map((m) => [m[1].toLowerCase(), m[2].toUpperCase()]));
     const wrong = Object.keys(key.rows).filter((k) => got[k] !== key.rows[k]);
-    return { correct: !wrong.length, feedback: wrong.length ? `Look again at ${wrong.join(', ')}.` : '' };
+    const missing = wrong.filter((k) => !got[k]);
+    const feedback = !wrong.length ? '' : missing.length === wrong.length ? `Answer ${missing.join(', ')} too.`
+      : `${wrong.length === 1 ? 'One row isn’t' : `${wrong.length} rows aren’t`} right yet:\n${wrong.map((k) => `${k}: ${got[k] ? key.why?.[k] || 'Work this one out again.' : 'not answered yet.'}`).join('\n')}`;
+    return { correct: !wrong.length, feedback, rows: got };
   }
 
   // "3/10" in hints and feedback shown as a stacked fraction, like the printed tests (.f in form.css).
@@ -884,6 +887,7 @@
       rec(id).status = st.every((x) => x === 'right') ? 'right' : st.includes('wrong') ? 'wrong' : st.some(Boolean) ? 'answered' : '';
     };
     if (key?.letters) key.notes = help.entries?.[id]?.wrong || {};
+    if (key?.rows) key.why = help.entries?.[id]?.why || {};
     input.placeholder = key?.answer ? 'Your answer' : key ? 'Tap a choice or type it' : local ? 'Your answer' : 'Your answer (Check needs the tutor)';
     if (key?.answer) mathAnswer(input, box);
     input.setAttribute('aria-label', `Your answer to ${name}`);
@@ -892,7 +896,17 @@
     input.value = r0?.answer || '';
     const result = el('div', 'answer-result');
     result.setAttribute('aria-live', 'polite');
+    // YES/NO rows: a ✓ or ✗ on each row's statement, so it's clear which one to fix.
+    const markRows = (answer) => {
+      const got = key?.rows ? autoCheck(key, answer).rows : null;
+      host.querySelectorAll('.tf > *').forEach((n) => {
+        const tag = n.textContent.trim().match(/^(\d+[a-z])\./i)?.[1]?.toLowerCase();
+        n.classList.remove('tf-right', 'tf-wrong');
+        if (got && tag && key.rows[tag] && got[tag]) n.classList.add(got[tag] === key.rows[tag] ? 'tf-right' : 'tf-wrong');
+      });
+    };
     const showResult = (correct, feedback) => {
+      if (key?.rows) markRows(input.value);
       box.classList.add(correct ? 'right' : 'wrong');
       result.replaceChildren(el('b', '', correct ? '✓ Right! ' : '✗ Not yet. '), feedback || '');
       stackFractions(result);
@@ -904,6 +918,7 @@
       r.status = input.value.trim() ? 'answered' : '';
       delete r.feedback;
       combine();
+      if (key?.rows) markRows('');
       save(); render();
       box.classList.remove('right', 'wrong');
       result.textContent = '';

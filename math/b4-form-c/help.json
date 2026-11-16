@@ -23,7 +23,12 @@
         "First find each color's probability: marbles of that color ÷ all the marbles. Then ask: what part of the 50 draws should be that color?",
         "Example: a spinner is 1/4 red. Spin it 40 times and you expect about 1/4 · 40 = 10 reds. Expected count = probability · number of tries.",
         "There are 10 marbles. Red: 6/10 · 50 = 30, so 2a is YES. White: 3/10 · 50 = 15, not 10, so 2b is NO. Blue: 1/10 · 50 = 5, so 2c is YES."
-      ]
+      ],
+      "why": {
+        "2a": "Expected = P(red) · draws. Red is 6 of the 10 marbles, so find 6/10 of 50 and compare it with 30.",
+        "2b": "White is 3 of the 10 marbles. Find 3/10 of 50 and compare it with 10.",
+        "2c": "Blue is 1 of the 10 marbles. Find 1/10 of 50 and compare it with 5."
+      }
     },
     "I-3": {
       "lesson": "4.3",

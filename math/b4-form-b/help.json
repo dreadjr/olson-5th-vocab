@@ -23,7 +23,12 @@
         "First count all the sections. Each color's probability is its sections ÷ all the sections. Then ask: what part of the 36 spins should be that color?",
         "Example: a bag has 2 red and 8 blue chips. Draw (and replace) 30 times and you expect about 2/10 · 30 = 6 reds. Expected count = probability · number of tries.",
         "There are 3 + 5 + 4 = 12 sections. Yellow: 3/12 · 36 = 9, not 12, so 2a is NO. Purple: 5/12 · 36 = 15, so 2b is YES. Orange: 4/12 · 36 = 12, so 2c is YES."
-      ]
+      ],
+      "why": {
+        "2a": "Expected = P(yellow) · spins. Yellow is 3 of the 12 sections, so find 3/12 of 36 and compare it with 12.",
+        "2b": "Purple is 5 of the 12 sections. Find 5/12 of 36 and compare it with 15.",
+        "2c": "Orange is 4 of the 12 sections. Find 4/12 of 36 and compare it with 12."
+      }
     },
     "I-3": {
       "lesson": "4.3",

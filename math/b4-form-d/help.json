@@ -23,7 +23,12 @@
         "First find each color's probability: sections of that color ÷ all 8 sections. Then ask: what part of the 40 spins should be that color? Is an expected number ever a sure thing?",
         "Example: a bag has 2 red and 3 white marbles. Draw (and replace) 50 times and you expect about 2/5 · 50 = 20 reds. Expected count = probability · number of tries, but the real count can be a little more or less.",
         "Blue: 3/8 · 40 = 15, so 2a is YES. Green: 1/8 · 40 = 5, not 10, so 2b is NO. Red: 4/8 · 40 = 20 is only what you expect, and nothing makes it certain, so 2c is NO."
-      ]
+      ],
+      "why": {
+        "2a": "Expected = P(blue) · spins. Blue is 3 of the 8 sections, so find 3/8 of 40 and compare it with 15.",
+        "2b": "Green is 1 of the 8 sections. Find 1/8 of 40 and compare it with 10.",
+        "2c": "Look at the word \"certain.\" 20 is the number you would expect, but does the spinner have to land on red exactly 20 times, or could it come out 18 or 23?"
+      }
     },
     "I-3": {
       "lesson": "4.3",

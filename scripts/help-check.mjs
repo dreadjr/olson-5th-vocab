@@ -57,6 +57,13 @@ export function helpErrors(html, help, lessons) {
         if (typeof note !== 'string' || !note.trim() || note.length > 220) errs.push(`${id}: "wrong" note for ${l} must be 1 to 220 characters`);
       }
     }
+    if (e.why !== undefined) { // YES/NO rows: how to work out each row ("2c": "..."), shown when that row is wrong
+      for (const [row, note] of Object.entries(e.why || {})) {
+        if (!/^\d+[a-z]$/.test(row) || !keys[id]?.includes(`${row} `)) errs.push(`${id}: "why" row ${row} isn't a YES/NO row in the key`);
+        if (typeof note !== 'string' || !note.trim() || note.length > 220) errs.push(`${id}: "why" ${row} must be a sentence under 220 characters`);
+        else if (/\b(YES|NO)\b/.test(note)) errs.push(`${id}: "why" ${row} gives away YES or NO`);
+      }
+    }
     if (e.fields !== undefined) { // a grid of boxes: rows × cols, each with its value ("none" etc. for words)
       const f = e.fields, ok = f && Array.isArray(f.rows) && Array.isArray(f.cols) && Array.isArray(f.answers) && f.answers.length === f.rows.length && f.answers.every((r) => Array.isArray(r) && r.length === f.cols.length);
       if (!ok) errs.push(`${id}: "fields" needs rows, cols and an answers row per row with a value per col`);
