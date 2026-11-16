@@ -9,9 +9,9 @@ const entry = { lesson: '4.5', tag: 't', skill: 's', hints: ['a', 'b', 'c'] };
 
 test('questionIds reads Form C', () => {
   const ids = questionIds(html);
-  assert.equal(ids.length, 32);
+  assert.equal(ids.length, 34);
   assert.deepEqual(ids.slice(0, 12), [...Array.from({ length: 11 }, (_, i) => `I-${i + 1}`), 'II-1']);
-  assert.equal(ids.at(-1), 'III');
+  assert.equal(ids.at(-1), 'IV-2'); // Part IV: pie charts
 });
 
 test('helpErrors', () => {
@@ -24,7 +24,7 @@ test('helpErrors', () => {
 
 test('answerKeys pairs each question with its answer', () => {
   const keys = answerKeys(html);
-  assert.equal(Object.keys(keys).length, 32);
+  assert.equal(Object.keys(keys).length, 34);
   assert.match(keys['I-6'], /72/);
   assert.match(keys.III, /90 students/);
   assert.match(Object.values(keys).find((k) => k.includes('40 plants')), /40 plants \/ .*7/);

@@ -496,6 +496,74 @@
         "Example: in a sample, P(soccer) = 1/4 and P(water) = 2/5. P(both) = 1/4 · 2/5 = 2/20 = 1/10. In a school of 800, predict 1/10 · 800 = 80 students.",
         "P(basketball) = 48/120 = 2/5. P(juice) = 36/120 = 3/10. P(both) = 2/5 · 3/10 = 6/50 = 3/25. Prediction: 3/25 · 500 = 60 students. (Don't add 2/5 + 3/10; \"both\" means multiply.)"
       ]
+    },
+    "IV-1": {
+      "lesson": "4.3",
+      "tag": "Lesson 4.3 · Ex. 1, p. 123",
+      "skill": "Pie chart sector angles",
+      "hints": [
+        "The probability of a choice is the fraction of the circle it gets. Summer is 8 out of 20, so P(summer) = 8/20. The whole circle is 360°, so Summer gets 8/20 of 360°.",
+        "Example: 4 of 10 students chose soccer. P(soccer) = 4/10, and 4/10 of 360° is 4/10 · 360 = 144°. Degrees = probability · 360.",
+        "Summer: P = 8/20, and 8/20 · 360 = 144°. Do the same for each choice, then check that the degrees add up to 360°."
+      ],
+      "fields": {
+        "rows": [
+          "Summer",
+          "Fall",
+          "Spring",
+          "Winter"
+        ],
+        "cols": [
+          "Probability",
+          "Degrees"
+        ],
+        "answers": [
+          [
+            "8/20",
+            "144"
+          ],
+          [
+            "5/20",
+            "90"
+          ],
+          [
+            "4/20",
+            "72"
+          ],
+          [
+            "3/20",
+            "54"
+          ]
+        ]
+      }
+    },
+    "IV-2": {
+      "lesson": "4.3",
+      "tag": "Lesson 4.3 · Ex. 1, p. 123",
+      "skill": "Drawing a pie chart",
+      "hints": [
+        "Use your degrees from #1. Start at the top of the circle and mark off each sector in turn.",
+        "Example: sectors of 180°, 120° and 60°: half the circle, then a third, then a sixth.",
+        "Summer is 144°, about 40% of the circle. Label each sector with its first letter."
+      ],
+      "draw": [
+        [
+          "Summer",
+          8
+        ],
+        [
+          "Fall",
+          5
+        ],
+        [
+          "Spring",
+          4
+        ],
+        [
+          "Winter",
+          3
+        ]
+      ]
     }
   }
 }

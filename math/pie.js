@@ -12,8 +12,12 @@
   // The count a boundary at this angle stands for (angle in degrees from the top, clockwise).
   const countAt = (angle, total) => Math.round((((angle % 360) + 360) % 360) / 360 * total);
 
-  function make(data) {
-    const start = data.map(([label, n]) => [label, n]);
+  // opts.draw: "draw the pie" for a question: the slices start equal (or at opts.start) and only degrees are shown,
+  // so the student sets each one from their own work; opts.onChange(counts) after every move. wrap.counts() reads them.
+  function make(data, opts = {}) {
+    const T0 = data.reduce((s, [, n]) => s + n, 0), k = data.length;
+    const even = data.map((_, i) => Math.floor(T0 / k) + (i < T0 % k ? 1 : 0));
+    const start = data.map(([label, n], i) => [label, opts.draw ? opts.start?.[i] ?? even[i] : n]);
     let rows = start.map(([label, n]) => ({ label, n }));
     const wrap = el('div', 'pie');
     const R = 90, C = 110;
@@ -21,7 +25,10 @@
     const legend = el('table', 'pie-legend');
     const total = () => rows.reduce((s, r) => s + r.n, 0);
     const pt = (a, r = R) => [C + r * Math.sin((a * Math.PI) / 180), C - r * Math.cos((a * Math.PI) / 180)];
-    let handles = [], dragging = null;
+    let handles = [], dragging = null, focus = 0;
+    // From probability to degrees, worked for the slice last moved: "Bus: 12/30 of the circle · 360° = 144°".
+    const explain = el('p', 'pie-explain');
+    explain.setAttribute('aria-live', 'polite');
     // Dragging is handled on the chart, which stays while the slices and dots are redrawn.
     svg.addEventListener('pointermove', (e) => {
       if (dragging == null) return;
@@ -67,6 +74,9 @@
       });
       svg.setAttribute('aria-label', `Pie chart: ${rows.map((r) => `${r.label} ${r.n}, ${fmt(deg(r.n, T))} degrees`).join('; ')}`);
       table(T);
+      const r = rows[focus], g = r.n ? gcd(r.n, T) : 1;
+      explain.replaceChildren(el('b', '', `${r.label}: `), `P = ${r.n}/${T}${g > 1 ? ` = ${r.n / g}/${T / g}` : ''}, so it gets ${r.n}/${T} of the circle. ${r.n}/${T} · 360° = ${fmt(deg(r.n, T))}°.`);
+      opts.onChange?.(rows.map((r) => r.n));
     }
 
     // Edge i sits after slice i: moving it to running count c moves counts between slice i and slice i+1 only.
@@ -74,6 +84,7 @@
       const before = rows.slice(0, i).reduce((s, r) => s + r.n, 0), pair = rows[i].n + rows[i + 1].n;
       const n = Math.max(0, Math.min(pair, c - before));
       if (n === rows[i].n) return;
+      focus = i;
       rows[i].n = n;
       rows[i + 1].n = pair - n;
       const keep = handles[i] && document.activeElement === handles[i];
@@ -83,7 +94,18 @@
 
     function table(T) {
       const head = el('tr');
-      for (const t of ['', 'Count', 'Degrees', 'Fraction', 'Percent']) head.append(el('th', '', t));
+      if (opts.draw) {
+        head.append(el('th', '', ''), el('th', '', 'Fraction of circle'), el('th', '', 'Degrees'));
+        legend.replaceChildren(head, ...rows.map((r, i) => {
+          const tr = el('tr'), sw = el('td'), dot = el('span', 'pie-swatch');
+          dot.style.background = COLORS[i % COLORS.length];
+          sw.append(dot, r.label);
+          tr.append(sw, el('td', '', `${r.n}/${T}`), el('td', 'pie-d', `${fmt(deg(r.n, T))}°`));
+          return tr;
+        }));
+        return;
+      }
+      for (const t of ['', 'Count', 'Probability', '· 360° =', 'Percent']) head.append(el('th', '', t));
       const body = rows.map((r, i) => {
         const tr = el('tr');
         const sw = el('td');
@@ -93,28 +115,30 @@
         const cnt = el('td');
         const input = Object.assign(el('input'), { type: 'number', min: 0, value: r.n, inputMode: 'numeric' });
         input.setAttribute('aria-label', `${r.label} count`);
-        input.addEventListener('change', () => { r.n = Math.max(0, Math.round(+input.value || 0)); draw(); });
+        input.addEventListener('change', () => { r.n = Math.max(0, Math.round(+input.value || 0)); focus = i; draw(); });
         cnt.append(input);
         const g = r.n ? gcd(r.n, T) : 1;
-        tr.append(sw, cnt, el('td', 'pie-d', `${fmt(deg(r.n, T))}°`), el('td', '', T ? `${r.n}/${T}${g > 1 ? ` = ${r.n / g}/${T / g}` : ''}` : '–'),
+        tr.append(sw, cnt, el('td', '', T ? `${r.n}/${T}${g > 1 ? ` = ${r.n / g}/${T / g}` : ''}` : '–'), el('td', 'pie-d', `${fmt(deg(r.n, T))}°`),
           el('td', '', T ? `${fmt((r.n / T) * 100)}%` : '–'));
         return tr;
       });
       const foot = el('tr', 'pie-total');
-      foot.append(el('td', '', 'Total'), el('td', '', String(T)), el('td', 'pie-d', T ? '360°' : '0°'), el('td', '', T ? `${T}/${T}` : '–'), el('td', '', T ? '100%' : '–'));
+      foot.append(el('td', '', 'Total'), el('td', '', String(T)), el('td', '', T ? `${T}/${T}` : '–'), el('td', 'pie-d', T ? '360°' : '0°'), el('td', '', T ? '100%' : '–'));
       legend.replaceChildren(head, ...body, foot);
     }
 
     const tools = el('div', 'pie-tools');
     const reset = el('button', 'q-tool', 'Reset to the data');
     reset.type = 'button';
-    reset.addEventListener('click', () => { rows = start.map(([label, n]) => ({ label, n })); draw(); });
+    if (opts.draw) reset.textContent = 'Start over';
+    reset.addEventListener('click', () => { rows = (opts.draw ? data.map(([label], i) => [label, even[i]]) : start).map(([label, n]) => ({ label, n })); draw(); });
     tools.append(el('span', 'pie-tip', 'Drag a white dot (or use the arrow keys on it) to move an edge.'), reset);
     const row = el('div', 'pie-row');
     const scroll = el('div', 'pie-scroll');
     scroll.append(legend);
     row.append(svg, scroll);
-    wrap.append(row, tools);
+    wrap.append(row, explain, tools);
+    wrap.counts = () => rows.map((r) => r.n);
     draw();
     return wrap;
   }

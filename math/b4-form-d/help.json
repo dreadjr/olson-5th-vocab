@@ -539,6 +539,74 @@
           16
         ]
       ]
+    },
+    "IV-1": {
+      "lesson": "4.3",
+      "tag": "Lesson 4.3 · Ex. 1, p. 123",
+      "skill": "Pie chart sector angles",
+      "hints": [
+        "The probability of a choice is the fraction of the circle it gets. Bus is 12 out of 30, so P(bus) = 12/30. The whole circle is 360°, so Bus gets 12/30 of 360°.",
+        "Example: 4 of 10 students chose soccer. P(soccer) = 4/10, and 4/10 of 360° is 4/10 · 360 = 144°. Degrees = probability · 360.",
+        "Bus: P = 12/30, and 12/30 · 360 = 144°. Do the same for each choice, then check that the degrees add up to 360°."
+      ],
+      "fields": {
+        "rows": [
+          "Bus",
+          "Walk",
+          "Car",
+          "Bike"
+        ],
+        "cols": [
+          "Probability",
+          "Degrees"
+        ],
+        "answers": [
+          [
+            "12/30",
+            "144"
+          ],
+          [
+            "9/30",
+            "108"
+          ],
+          [
+            "6/30",
+            "72"
+          ],
+          [
+            "3/30",
+            "36"
+          ]
+        ]
+      }
+    },
+    "IV-2": {
+      "lesson": "4.3",
+      "tag": "Lesson 4.3 · Ex. 1, p. 123",
+      "skill": "Drawing a pie chart",
+      "hints": [
+        "Use your degrees from #1. Start at the top of the circle and mark off each sector in turn.",
+        "Example: sectors of 180°, 120° and 60°: half the circle, then a third, then a sixth.",
+        "Bus is 144°, about 40% of the circle. Label each sector with its first letter."
+      ],
+      "draw": [
+        [
+          "Bus",
+          12
+        ],
+        [
+          "Walk",
+          9
+        ],
+        [
+          "Car",
+          6
+        ],
+        [
+          "Bike",
+          3
+        ]
+      ]
     }
   }
 }

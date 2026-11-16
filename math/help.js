@@ -60,10 +60,10 @@
       host.prepend(meta);
       answerSteps(host, id, entry);
       // Questions with parts a, b, … get a box under each part; the question's mark combines them.
-      const parts = choices(host).length || entry.fields ? [] : partsOf(host, entry);
+      const parts = choices(host).length || entry.fields || entry.draw ? [] : partsOf(host, entry);
       let box;
       if (parts.length > 1) parts.forEach((part) => { const b = answerBox(id, host, false, part); (part.li || host).append(b); box ||= b; });
-      else { box = entry.fields ? fieldsBox(id, entry.fields, host) : answerBox(id, host, q.classList.contains('task')); host.append(box); }
+      else { box = entry.draw ? drawBox(id, entry.draw) : entry.fields ? fieldsBox(id, entry.fields, host) : answerBox(id, host, q.classList.contains('task')); host.append(box); }
       works[id] = el('div', 'q-work');
       works[id].hidden = true;
       host.append(works[id]);
@@ -390,6 +390,7 @@
 
   // Tap-to-pick: multiple-choice letters and YES/NO options fill the answer box.
   function pickers(host, input) {
+    if (!input) return; // e.g. the draw-a-pie box has no text box
     const lis = choices(host);
     const multi = /all that apply/i.test(questionText(host));
     const rows = [];
@@ -922,6 +923,43 @@
       }
       svg.setAttribute('aria-label', said.length ? `Spinner with ${n} sections: ${said.join(', ')}${k < n ? `, ${n - k} blank` : ''}` : label);
     };
+  }
+
+  // "Draw and label a pie chart": the pie tool in draw mode (math/pie.js), checked slice by slice against the data.
+  function drawBox(id, data) {
+    const box = el('form', 'answer draw');
+    const r0 = progress[id];
+    const T = data.reduce((s, [, n]) => s + n, 0);
+    const text = (c) => data.map(([label], i) => `${label} ${Math.round((c[i] / T) * 3600) / 10}°`).join(', ');
+    let ready = false;
+    const pie = window.Pie?.make(data, { draw: true, start: r0?.cells, onChange: (c) => {
+      if (!ready) return;
+      const r = rec(id);
+      r.cells = c; r.answer = text(c); r.status = 'answered'; delete r.feedback;
+      save(); render();
+      box.classList.remove('right', 'wrong'); result.textContent = '';
+    } });
+    const check = el('button', '', 'Check');
+    check.type = 'submit';
+    const result = el('div', 'answer-result');
+    result.setAttribute('aria-live', 'polite');
+    if (!pie) { box.append(el('p', '', 'The pie tool didn’t load. Draw it on paper.')); return box; }
+    box.append(pie, check, result);
+    ready = true;
+    const show = (ok, feedback) => { box.classList.add(ok ? 'right' : 'wrong'); result.replaceChildren(el('b', '', ok ? '✓ Right! ' : '✗ Not yet. '), feedback || ''); };
+    if (r0?.status === 'right' || r0?.status === 'wrong') show(r0.status === 'right', r0.feedback);
+    box.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const c = pie.counts(), off = data.filter(([, n], i) => c[i] !== n).map(([label]) => label);
+      const ok = !off.length;
+      const feedback = ok ? 'Every sector matches the data.' : `${off.length > 1 ? `${off.slice(0, -1).join(', ')} and ${off.at(-1)}` : off[0]} ${off.length > 1 ? 'aren’t' : 'isn’t'} the right size yet. Use your degrees from #1.`;
+      const p = rec(id);
+      p.status = ok ? 'right' : 'wrong'; p.feedback = feedback; p.cells = c;
+      p.tries.push({ answer: text(c), correct: ok, t: Date.now() });
+      save(); render();
+      show(ok, feedback);
+    });
+    return box;
   }
 
   function fieldsBox(id, f, host) {

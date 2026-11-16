@@ -66,6 +66,8 @@ export function helpErrors(html, help, lessons) {
     }
     if (e.parts !== undefined && !(Array.isArray(e.parts) && e.parts.length > 1 && e.parts.every((x) => typeof x === 'string' && x.trim() && x.length <= 120)))
       errs.push(`${id}: "parts" must list 2 or more short labels, one box each`);
+    if (e.draw !== undefined && !(Array.isArray(e.draw) && e.draw.length > 1 && e.draw.length <= 6 && e.draw.every((r) => Array.isArray(r) && typeof r[0] === 'string' && Number.isInteger(r[1]) && r[1] > 0)))
+      errs.push(`${id}: "draw" must be 2-6 ["label", whole count] pairs`);
     if (e.pie !== undefined && !(Array.isArray(e.pie) && e.pie.length > 1 && e.pie.length <= 6 && e.pie.every((r) => Array.isArray(r) && typeof r[0] === 'string' && Number.isInteger(r[1]) && r[1] >= 0)))
       errs.push(`${id}: "pie" must be 2-6 ["label", whole count] pairs`);
     if (e.fields !== undefined) { // a grid of boxes: rows × cols, each with its value ("none" etc. for words)
