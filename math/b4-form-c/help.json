@@ -296,6 +296,10 @@
         "Turn the counts into percents so the two samples (90 and 100 students) can be compared. What is true in BOTH samples?",
         "Example: two samples of 100: tablet 60 and 69, computer 30 and 16, textbook 10 and 15. Strong: \"Most students prefer tablets\" (true in both). Weak: \"More students prefer textbooks than computers\" (true in only one).",
         "Sports is the most popular: 45/90 = 50% and 40/100 = 40%. Art is the least popular: about 11% and 10%. Games is second in both (about 22% and 30%)."
+      ],
+      "parts": [
+        "Inference 1",
+        "Inference 2"
       ]
     },
     "II-14": {

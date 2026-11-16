@@ -296,6 +296,10 @@
         "The samples have different totals (60 and 70), so compare percents, not raw counts. Look for what is true in BOTH samples.",
         "Example: Sample 1: 20 of 50 chose red (40%). Sample 2: 30 of 60 chose red (50%). Red was the top pick in both, so a strong inference is \"Red is the most popular color.\"",
         "Pizza: 24/60 = 40% and 35/70 = 50%, the most in both, so pizza is the most popular lunch. Salad: 6/60 = 10% and 10/70 ≈ 14%, so salad is one of the least popular. Tacos: 30% and about 21%, second in both samples."
+      ],
+      "parts": [
+        "Inference 1",
+        "Inference 2"
       ]
     },
     "II-14": {

@@ -58,9 +58,9 @@
       host.prepend(meta);
       answerSteps(host, id, entry);
       // Questions with parts a, b, … get a box under each part; the question's mark combines them.
-      const parts = choices(host).length ? [] : [...host.querySelectorAll('ol.sub > li')];
+      const parts = choices(host).length || entry.fields ? [] : partsOf(host, entry);
       let box;
-      if (parts.length > 1) parts.forEach((li, k) => { const b = answerBox(id, host, false, { letter: 'abcdefgh'[k], li }); li.append(b); box ||= b; });
+      if (parts.length > 1) parts.forEach((part) => { const b = answerBox(id, host, false, part); (part.li || host).append(b); box ||= b; });
       else { box = entry.fields ? fieldsBox(id, entry.fields, host) : answerBox(id, host, q.classList.contains('task')); host.append(box); }
       works[id] = el('div', 'q-work');
       works[id].hidden = true;
@@ -783,19 +783,37 @@
   // A part's key read straight off the answer key when it's one number: "40 plants" -> 40, "3,000 feet. The flat…" -> 3000,
   // "… = 14/40 = 7/20" -> 7/20. Anything else (ratios, sentences) is left to the tutor.
   function plainNum(s) { return s.replace(/(\d),(?=\d{3}\b)/g, '$1'); }
-  function partKey(li) {
-    const c = li.querySelector(':scope > .ans')?.cloneNode(true);
-    if (!c) return null;
+  // The answer key's text, fractions written a/b ('?' when one side isn't a plain number).
+  function ansText(node) {
+    const c = node.querySelector(':scope > .ans')?.cloneNode(true);
+    if (!c) return '';
     c.querySelector('.src')?.remove();
     c.querySelectorAll('.f').forEach((f) => { const [a, b] = [...f.children].map((x) => x.textContent.trim()); f.replaceWith(/^\d+$/.test(a) && /^\d+$/.test(b) ? `${a}/${b}` : '?'); });
-    const t = plainNum(c.textContent.replace(/\s+/g, ' ').trim());
+    return plainNum(c.textContent.replace(/\s+/g, ' ').trim());
+  }
+  function partKey(text) {
+    const t = text.replace(/\s*\([^()]*\)\.?$/, ''); // drop a closing aside: "= 1/15 (only 2 yellow are left)."
     const n = '(-?\\d+(?:\\.\\d+)?(?:/\\d+)?)';
     const m = t.match(new RegExp(`^${n}\\s*(?:[a-z²]+(?:\\s+per\\s+[a-z]+)?)?\\s*(?:[.(]|$)`, 'i')) || t.match(new RegExp(`=\\s*${n}\\s*[a-z²]*\\.?$`, 'i'));
     return m ? { answer: m[1], units: true } : null;
   }
+  // A question's parts: a list (ol.sub) under it, or "(a) … (b) … (c) …" inside the question when the key is split the same way.
+  function partsOf(host, entry) {
+    // help.json "parts": labeled boxes for answers the question asks for in words ("Make at least two inferences"); the tutor checks each.
+    if (entry?.parts) return entry.parts.map((label, k) => ({ letter: 'abcdefgh'[k], prompt: label, label, keyText: '', count: entry.parts.length }));
+    const lis = [...host.querySelectorAll('ol.sub > li')];
+    if (lis.length > 1) return lis.map((li, k) => ({ letter: 'abcdefgh'[k], li, count: lis.length, keyText: ansText(li), prompt: questionText(li) }));
+    const q = questionText(host).split(/\(([a-h])\)\s*/), key = ansText(host).split(/\(([a-h])\)\s*/);
+    if (q.length < 5 || key.length !== q.length) return [];
+    const out = [];
+    for (let k = 1; k < q.length; k += 2) {
+      if (q[k] !== key[k] || q[k] !== 'abcdefgh'[out.length]) return [];
+      out.push({ letter: q[k], prompt: q[k + 1].trim(), keyText: key[k + 1].trim() });
+    }
+    out.forEach((p) => { p.count = out.length; });
+    return out;
+  }
 
-  // Questions asking for several values ("the five-number summary of each data set"): a labeled box per value
-  // (help.json "fields"), each checked on its own, so it's clear which number is off.
   // "Color the spinner": while the "Red sections" / "Blue sections" / … boxes are typed in, the blank spinner on the
   // question fills in with those colors, in order around the circle (on screen only; the printed test stays blank).
   function spinnerPainter(host, f, cells) {
@@ -914,13 +932,13 @@
     const input = el(big ? 'textarea' : 'input');
     if (big) input.rows = 3;
     input.maxLength = 500;
-    const key = part ? partKey(part.li) : help.entries?.[id]?.answer ? { answer: help.entries[id].answer } : autoKey(host);
+    const key = part ? partKey(part.keyText) : help.entries?.[id]?.answer ? { answer: help.entries[id].answer } : autoKey(host);
     // A part keeps its own answer in progress["II-8.a"]; checks and history go on the question.
     const rid = part ? `${id}.${part.letter}` : id;
     const name = part ? `${id} part ${part.letter}` : id;
     const combine = () => {
       if (!part) return;
-      const st = [...host.querySelectorAll('ol.sub > li')].map((_, k) => progress[`${id}.${'abcdefgh'[k]}`]?.status || '');
+      const st = [...'abcdefgh'.slice(0, part.count)].map((l) => progress[`${id}.${l}`]?.status || '');
       rec(id).status = st.every((x) => x === 'right') ? 'right' : st.includes('wrong') ? 'wrong' : st.some(Boolean) ? 'answered' : '';
     };
     if (key?.letters) key.notes = help.entries?.[id]?.wrong || {};
@@ -929,6 +947,8 @@
     if (key?.answer) mathAnswer(input, box);
     input.setAttribute('aria-label', `Your answer to ${name}`);
     if (part) input.placeholder = `Part ${part.letter}: ${input.placeholder.toLowerCase()}`;
+    if (part && !part.li) { const short = part.prompt.length > 70 ? `${part.prompt.slice(0, 67)}…` : part.prompt; box.prepend(el('div', 'part-label', part.label || `(${part.letter}) ${short}`)); }
+    if (part?.label) input.placeholder = local ? 'Your answer' : 'Your answer (Check needs the tutor)';
     const r0 = progress[rid];
     input.value = r0?.answer || '';
     const result = el('div', 'answer-result');
@@ -983,7 +1003,7 @@
           feedback = same ? '' : 'Not the same value. Check each step, or open Help for a hint.';
         } else if (key) ({ correct, feedback } = autoCheck(key, answer));
         else {
-          const question = questionText(host) + (part ? ` (Check only part ${part.letter}: ${questionText(part.li)})` : '');
+          const question = questionText(host) + (part ? ` (Check only part ${part.letter}: ${part.prompt})` : '');
           const r = await post('/api/check', { page, id, question, answer, work: workLines(id) });
           if (!r.ok) throw new Error();
           ({ correct, feedback } = await r.json());

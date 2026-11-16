@@ -318,6 +318,11 @@
         "Turn the counts into percents so the two samples (60 and 80 students) can be compared. What is true in BOTH samples? Does \"most\" mean more than half?",
         "Example: two samples of 50: soccer 20 and 22, swimming 15 and 14, tennis 15 and 14. Strong: \"Soccer is the favorite\" (40% and 44%). Weak: \"Most students prefer soccer\" (less than half in both).",
         "PE: 24/60 = 40% and 32/80 = 40%, the favorite in both. English: 10% and 12.5%, the least favorite. Math is second (30% and 27.5%). \"Most students prefer PE\" is weak, because 40% is less than half."
+      ],
+      "parts": [
+        "Inference 1",
+        "Inference 2",
+        "Is \"Most students prefer PE\" a strong or weak inference? Why?"
       ]
     },
     "II-14": {

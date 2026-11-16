@@ -99,6 +99,7 @@ body.show .work{min-height:0}
 .answer{display:grid;grid-template-columns:1fr auto;gap:6px;margin-top:8px;max-width:520px}
 .answer input,.answer textarea{font:inherit;padding:6px 8px;border:1.5px solid var(--rule);border-radius:3px;background:var(--paper);color:var(--ink);min-width:0;min-height:36px}
 .answer-result{white-space:pre-line}
+.part-label{grid-column:1/-1;font:600 13px var(--display);color:var(--muted)}
 .tf-right::after,.tf-wrong::after{margin-left:6px;font-weight:700}
 .tf-right::after{content:"✓";color:var(--ok)}
 .tf-wrong::after{content:"✗ fix this one";color:var(--warn);font:700 13px var(--display)}
