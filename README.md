@@ -147,3 +147,12 @@ bun run service uninstall
 The tunnel runs as its own system service (installed once with `sudo cloudflared service install <token>` from the Cloudflare dashboard, Zero Trust → Networks → Tunnels). In the dashboard, give the tunnel a public hostname that points at `http://localhost:8080`. The tutor rebuilds the site each time it starts, so run `bun run service install` again after changing forms or hints. Because the address is public, the service sets a private key (kept in `~/.config/kok-tutor/key`): `install` prints a link with `?key=…` to open once on each device. Without the key, the pages and hints still work but Ask and Check are hidden. The log is `logs/com.kok5th.tutor.log`.
 
 The tutor runs `claude` with no tools, in an empty folder, without your own settings, hooks, plugins or memory, and tells it not to give away more than the step the student is on. If the CLI fails, times out (60 s) or is signed out, the panel says the tutor isn't available. Codex isn't offered because `codex exec` can still run shell commands. With the tutor running, the answer box also gets a **Check** button: the AI compares the answer with the key on the page (so 2/6 counts for 1/3) and says right or not yet, with a nudge that doesn't give the answer away. Every hint opened, question asked and answer checked is added to `logs/tutor.jsonl` (not committed). On the public site, the hints and links still work, and the Ask box is hidden.
+
+## School data from Schoology (local only)
+
+NSD doesn't let a parent's API key read the kids' classes (403), so grades come from the parent site in Chrome:
+Grades page, viewing as each student, saved as `schoology-<student>-<date>.json` in Downloads. Then
+`node scripts/schoology.mjs` moves them into `data/schoology/` (gitignored, never deployed) and writes
+`data/schoology/report.html`: grades by course and category, missing work, scores under 85%, math by textbook
+lesson (from titles like "P&P 4.6 & 4.7 Exit Quiz"), work waiting for a grade and teacher comments.
+`scripts/schoology-lib.mjs` is the API client (SCHOOLOGY_CONSUMER_KEY / _SECRET in `.env`), kept for data the key can read.
