@@ -564,6 +564,94 @@
           3
         ]
       ]
+    },
+    "V-1": {
+      "lesson": "4.2",
+      "tag": "Lesson 4.2 · Exit quiz review",
+      "skill": "Capture-recapture from a table",
+      "answer": "640",
+      "hints": [
+        "Use only the week 3 column. The fraction tagged in the sample should match the fraction tagged in the whole population: tagged/sample = 40/n.",
+        "Example: 4 of 60 in the week 1 sample were tagged, so 4/60 = 40/n and n = 40 · 60 ÷ 4 = 600.",
+        "Week 3: 6/96 = 40/n. Cross-multiply: 6n = 3840, so n = 640."
+      ]
+    },
+    "V-2": {
+      "lesson": "4.6",
+      "tag": "Lesson 4.6 · Exit quiz review",
+      "skill": "Biased samples",
+      "hints": [
+        "A sample is representative when everyone in the group has an equal chance to be picked. It is biased when the way people are picked makes some answers more likely.",
+        "Example: asking only people at a soccer game whether the town needs more soccer fields is biased; drawing names from a list of everyone is representative.",
+        "Ask about each one: who could be picked? Would those people answer differently from everyone else?"
+      ],
+      "fields": {
+        "rows": [
+          "(a)",
+          "(b)"
+        ],
+        "cols": [
+          "Representative or biased?"
+        ],
+        "answers": [
+          [
+            "biased"
+          ],
+          [
+            "representative"
+          ]
+        ]
+      }
+    },
+    "V-3": {
+      "lesson": "4.7",
+      "tag": "Lesson 4.7 · Exit quiz review",
+      "skill": "Percent from a survey table",
+      "answer": "37.5%",
+      "hints": [
+        "Use only the Survey 2 row. Percent = the number who chose white ÷ everyone in Survey 2.",
+        "Example: if 9 of 60 people chose blue, 9/60 = 0.15 = 15%.",
+        "Survey 2: 30 of 80 chose white. 30/80 = 0.375 = 37.5%."
+      ]
+    },
+    "V-4": {
+      "lesson": "4.8",
+      "tag": "Lesson 4.8 · Exit quiz review",
+      "skill": "Center and spread of two data sets",
+      "hints": [
+        "Put each person's 5 numbers in order first. Mean = add and divide by 5; median = the middle one; mode = the one that appears most; range = biggest − smallest.",
+        "IQR = Q3 − Q1. With 5 numbers, leave out the middle one: Q1 is the median of the lowest 2, Q3 of the highest 2.",
+        "Maya in order: 90, 100, 100, 100, 110. Mean 500 ÷ 5 = 100; median 100; Q1 95, Q3 105."
+      ],
+      "fields": {
+        "rows": [
+          "Maya",
+          "Jon"
+        ],
+        "cols": [
+          "Mean",
+          "Median",
+          "Mode",
+          "Range",
+          "IQR"
+        ],
+        "answers": [
+          [
+            "100",
+            "100",
+            "100",
+            "20",
+            "10"
+          ],
+          [
+            "102",
+            "90",
+            "90",
+            "70",
+            "40"
+          ]
+        ]
+      }
     }
   }
 }

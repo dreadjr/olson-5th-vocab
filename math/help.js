@@ -1166,7 +1166,8 @@
         if (key?.answer) {
           // a part's key may have units ("40 plants"): read "40 plants" or "3,000 feet" as the number
           const typed = key.units ? plainNum(answer).replace(/^(-?[\d.\/\s]+?)\s*[a-z²][a-z²\s]*\.?$/i, '$1') : answer;
-          const same = window.Calc?.equivalent?.(typed, key.answer);
+          const typedPct = /%\s*$/.test(key.answer) && /^\s*-?[\d.]+\s*$/.test(typed) ? `${typed.trim()}%` : typed; // "37.5" for 37.5%
+          const same = window.Calc?.equivalent?.(typedPct, key.answer);
           if (same == null) { result.textContent = 'I can’t read that as a number yet. Try something like 3/10, 0.3, (2, −5) or y = 3x.'; return; }
           correct = same;
           feedback = same ? '' : 'Not the same value. Check each step, or open Help for a hint.';
