@@ -1,0 +1,281 @@
+{
+  "entries": {
+    "I-1": {
+      "lesson": "3.1",
+      "tag": "Lesson 3.1",
+      "skill": "Converting fractions, decimals, percents",
+      "hints": [
+        "To check each pair, change the left number into a percent. For a decimal, move the decimal point 2 places right. For a fraction, divide top by bottom first, then move the point 2 places right.",
+        "Example: Is 0.6 = 6%? Move the decimal point 2 places right: 0.6 = 0.60 = 60%. That is not 6%, so it is NOT equal. Is 1/4 = 25%? 1 ÷ 4 = 0.25 = 25%. Yes, equal.",
+        "A: 0.07 = 7%, yes. B: 2.4 = 240%, no. C: 0.009 = 0.9%, no. D: 3/4 = 0.75 = 75%, yes. E: 2/5 = 0.4 = 40%, no. F: 1/3 = 0.333... = 33 1/3%, yes. The answer is A, D, F."
+      ]
+    },
+    "I-2": {
+      "lesson": "3.3",
+      "tag": "Lesson 3.3",
+      "skill": "Finding a percent of a number",
+      "hints": [
+        "Percent means out of 100. Change 20% into a decimal or fraction first. Then multiply it by 75, because \"of\" means times.",
+        "Example: What is 30% of 60? Change 30% to 0.30. Multiply: 0.30 · 60 = 18. So 30% of 60 is 18.",
+        "Change 20% to 0.2. Multiply: 0.2 · 75 = 15. Check: 10% of 75 is 7.5, so 20% is double, 15. The answer is B."
+      ]
+    },
+    "I-3": {
+      "lesson": "3.3",
+      "tag": "Lesson 3.3",
+      "skill": "Finding the whole from a percent",
+      "hints": [
+        "Twelve is the part and 4% is the percent. You need the whole number. Turn 4% into a decimal, then write an equation: part = percent · whole.",
+        "Example: 15 is 5% of what number? Write 15 = 0.05 · x. Divide both sides by 0.05: x = 15 ÷ 0.05 = 300. So 15 is 5% of 300.",
+        "Write 4% as 0.04. Equation: 12 = 0.04 · x. Divide both sides by 0.04: x = 12 ÷ 0.04 = 300. Check: 0.04 · 300 = 12. The answer is C."
+      ],
+      "wrong": {
+        "A": "You multiplied 12 by 0.04 instead of figuring out what number 4% of it makes 12, so you went the wrong way.",
+        "B": "You may have divided 12 by 4 and stopped, forgetting that 4% means 4 out of every 100, not 4 whole parts.",
+        "D": "You likely moved the decimal the wrong way, treating 4% as 0.4 or 4/10 instead of 4/100, so the answer came out too big."
+      }
+    },
+    "I-4": {
+      "lesson": "3.2",
+      "tag": "Lesson 3.2",
+      "skill": "Finding percent with a proportion",
+      "hints": [
+        "Think: 40 is the part and 25 is the whole. Set up part/whole = percent/100. Since 40 is bigger than 25, the percent should be more than 100%.",
+        "Example: What percent of 20 is 30? Write 30/20 = n/100. Cross multiply: 20·n = 30·100 = 3000. Divide: n = 3000 ÷ 20 = 150. So 30 is 150% of 20.",
+        "Write 40/25 = n/100. Cross multiply: 25·n = 40·100 = 4000. Divide: n = 4000 ÷ 25 = 160. So 40 is 160% of 25. The answer is D."
+      ],
+      "wrong": {
+        "A": "You subtracted 25 from 40 and used the difference as the percent, instead of comparing the two numbers by dividing.",
+        "B": "You may have divided 25 by 40 and got a percent, but that flips which number is being compared to which.",
+        "C": "You divided 25 by 40 and wrote it as a percent, so the numbers ended up in the wrong spots."
+      }
+    },
+    "I-5": {
+      "lesson": "3.4",
+      "tag": "Lesson 3.4",
+      "skill": "Finding percent decrease",
+      "hints": [
+        "Percent decrease compares how much it dropped to the ORIGINAL number. First find the change by subtracting the two numbers. Then think: change divided by what?",
+        "Example: A game goes from 80 points to 60 points. Change = 80 - 60 = 20. Divide by the original: 20/80 = 0.25 = 25%. That is a 25% decrease.",
+        "Change = 50 - 35 = 15. Divide by the original 50: 15 ÷ 50 = 0.30. Turn it into a percent: 0.30 = 30%. The answer is B."
+      ],
+      "wrong": {
+        "A": "You found how much it dropped, 15, and stopped there, but a percent needs you to compare that change to the starting number.",
+        "C": "You took the new amount, 35, and compared it to the start, which gives what's left, not how much it dropped.",
+        "D": "You added the 15 change onto the 100% instead of taking it away, or mixed up what to compare the change to."
+      }
+    },
+    "I-6": {
+      "lesson": "3.4",
+      "tag": "Lesson 3.4",
+      "skill": "Finding percent of increase",
+      "hints": [
+        "Percent increase compares how much it changed to where it STARTED. First find the change (new minus old). Then think: change divided by the original number.",
+        "Example: A club grew from 10 to 15 members. Change = 15 - 10 = 5. Divide by the original: 5 ÷ 10 = 0.5. Then 0.5 = 50%. So it's a 50% increase.",
+        "Change = 14 - 8 = 6. Divide by the original (last year): 6 ÷ 8 = 0.75. Write as a percent: 0.75 = 75%. The answer is C."
+      ],
+      "wrong": {
+        "A": "You just wrote down how many more students joined and called that the percent, but you forgot to compare it to where the club started.",
+        "B": "You divided the change by the new number of students instead of the starting number, so you compared to the wrong amount.",
+        "D": "You divided the new number of students by the starting number and called that the percent, but you forgot to take away the original whole."
+      }
+    },
+    "I-7": {
+      "lesson": "3.5",
+      "tag": "Lesson 3.5",
+      "skill": "Finding sales tax",
+      "hints": [
+        "Sales tax is a percent of the price. Change 6% into a decimal or a fraction, then find 6% of $40. The question asks for the tax only, not the total.",
+        "Example: A book costs $30 and the tax is 5%. Change 5% to 0.05. Multiply: 0.05 · 30 = 1.50. The tax is $1.50.",
+        "Change 6% to 0.06. Multiply by the price: 0.06 · 40 = 2.40. Omar paid $2.40 in tax. That matches choice B. The answer is B."
+      ],
+      "wrong": {
+        "A": "You may have changed 6% to 0.6 or 0.06 in the wrong place when multiplying, so the decimal point ended up one spot too far left.",
+        "C": "You may have used the 6 from 6% as dollars, instead of finding 6 out of every 100 of the $40.",
+        "D": "You may have changed 6% to 0.6 instead of 0.06, so the decimal point was one place off when multiplying."
+      }
+    },
+    "I-8": {
+      "lesson": "3.5",
+      "tag": "Lesson 3.5",
+      "skill": "Finding sale price after discount",
+      "hints": [
+        "Find the discount first: 25% of $60. Then subtract it from $60 to get what Dev paid. Use that to check each statement. A sale price should be less than the original.",
+        "Example: A $80 jacket is 10% off. Discount: 0.10 · 80 = $8. Price paid: 80 - 8 = $72. So the discount is $8, not $10, and $72 is less than $80.",
+        "Discount: 0.25 · 60 = $15. Paid: 60 - 15 = $45. 8a TRUE (45 is less than 60). 8b FALSE (discount is $15). 8c TRUE ($45). 8d FALSE ($75 adds the discount). The answer is TRUE, FALSE, TRUE, FALSE."
+      ]
+    },
+    "II-1": {
+      "lesson": "3.1",
+      "tag": "Lesson 3.1",
+      "skill": "Convert decimal to percent",
+      "hints": [
+        "The question 0.35 is a decimal, and the answer key shows a percent. Percent means 'out of 100', so think about how to change a decimal into a percent. What do you do with the decimal point?",
+        "Example: Change 0.6 to a percent. Multiply by 100: 0.6 · 100 = 60. So 0.6 = 60%. Moving the decimal point 2 places to the right does the same thing.",
+        "Write 0.35. Multiply by 100: 0.35 · 100 = 35. Move the decimal point 2 places right to check. Put a % sign after the number. The answer is 35%."
+      ]
+    },
+    "II-2": {
+      "lesson": "3.1",
+      "tag": "Lesson 3.1",
+      "skill": "Write a fraction as a percent",
+      "hints": [
+        "Percent means 'out of 100.' Try to change 2/5 into a fraction with 100 on the bottom. Ask yourself: what do I multiply 5 by to get 100? Then look at the top number.",
+        "Example: Write 3/20 as a percent. 20 · 5 = 100, so multiply the top and bottom by 5. 3 · 5 = 15, so 3/20 = 15/100. That is 15 out of 100, or 15%.",
+        "5 · 20 = 100, so multiply the top and bottom of 2/5 by 20. 2 · 20 = 40, so 2/5 = 40/100. That means 40 out of 100, which is 40%. The answer is 40%."
+      ]
+    },
+    "II-3": {
+      "lesson": "3.3",
+      "tag": "Lesson 3.3",
+      "skill": "Finding a percent of a number",
+      "hints": [
+        "Percent means 'out of 100'. Change 30% into a decimal first by moving the decimal point two places left. Then think about what operation 'of' means in math.",
+        "Example: What is 40% of 150? Change 40% to 0.40. 'Of' means multiply, so 0.40 · 150 = 60. So 40% of 150 is 60.",
+        "Change 30% to 0.3. 'Of' means multiply, so x = 0.3 · 270. 3 · 27 = 81, and 0.3 · 270 has one decimal place moved, giving 81. The answer is 81."
+      ],
+      "answer": "81"
+    },
+    "II-5": {
+      "lesson": "3.2",
+      "tag": "Lesson 3.2",
+      "skill": "Finding the percent using a proportion",
+      "hints": [
+        "Think: 10 is the part and 40 is the whole. Percent means out of 100, so set up part/whole = percent/100 and find the missing number.",
+        "Example: What percent of 50 is 20? Set 20/50 = x/100. Cross multiply: 50 · x = 20 · 100 = 2000. Divide by 50: x = 40. So 40%.",
+        "Set 10/40 = x/100. Cross multiply: 40 · x = 10 · 100 = 1000. Divide both sides by 40: x = 25. So 10 is 25% of 40. The answer is 25%."
+      ]
+    },
+    "II-4": {
+      "lesson": "3.3",
+      "tag": "Lesson 3.3",
+      "skill": "Finding the whole from a percent",
+      "hints": [
+        "The word 'of' tells you 12% is taken of the unknown number. Call that number x. Write the sentence as an equation: 9 is the same as 12% times x. Change 12% to a decimal first.",
+        "Example: 15 is 20% of what number? Write 15 = 0.20 · x. Divide both sides by 0.20: x = 15 ÷ 0.20 = 75. So 15 is 20% of 75.",
+        "Let x be the number. 12% = 0.12, so 9 = 0.12 · x. Divide both sides by 0.12: x = 9 ÷ 0.12 = 75. Check: 0.12 · 75 = 9. The answer is 75."
+      ],
+      "answer": "75"
+    },
+    "II-6": {
+      "lesson": "3.4",
+      "tag": "Lesson 3.4",
+      "skill": "Finding percent of decrease",
+      "hints": [
+        "A decrease means the number went down. First subtract to find how much it changed. Then compare that change to the starting number, which is 45 (not 36). Change ÷ original gives a decimal you can turn into a percent.",
+        "Example: A game goes from 80 to 60. Change: 80 - 60 = 20. Divide by the original: 20 ÷ 80 = 0.25. Move the decimal two places: 0.25 = 25%. So it is a 25% decrease.",
+        "Step 1: 45 - 36 = 9. Step 2: divide by the original: 9 ÷ 45 = 0.2. Step 3: 0.2 = 20%. Check: 20% of 45 is 9, and 45 - 9 = 36. The answer is a 20% decrease."
+      ]
+    },
+    "II-7": {
+      "lesson": "3.5",
+      "tag": "Lesson 3.5",
+      "skill": "Finding price with percent markup",
+      "hints": [
+        "Markup is extra money added to the original price. First find 25% of $48. Then add that amount to $48 to get the new price.",
+        "Example: Original price $40, markup 10%. Change 10% to 0.10. Markup = 0.10 · 40 = $4. New price = 40 + 4 = $44.",
+        "Change 25% to 0.25. Markup = 0.25 · 48 = $12. Add it to the original price: 48 + 12 = 60. The new price is $60.00."
+      ],
+      "answer": "60"
+    },
+    "II-8": {
+      "lesson": "3.5",
+      "tag": "Lesson 3.5",
+      "skill": "Finding a sale price after discount",
+      "hints": [
+        "Find how many dollars the discount is first. Change 15% to a decimal, then multiply it by the original price. Then think: does the sale price go up or down?",
+        "Example: A shirt costs $20 and is 10% off. Discount = 0.10 · 20 = $2. Sale price = $20 − $2 = $18.",
+        "Change 15% to 0.15. Discount = 0.15 · 40 = $6. The sale price is the original minus the discount: $40 − $6 = $34. The answer is $34.00."
+      ],
+      "answer": "34"
+    },
+    "II-9": {
+      "lesson": "3.3",
+      "tag": "Lesson 3.3",
+      "skill": "Finding percent of a number",
+      "hints": [
+        "The question asks how much money you SAVE, so you need 25% of the $240 price. Change 25% to a decimal first, then think about what operation links the percent and the price.",
+        "Example: A $80 jacket is 10% off. Change 10% to 0.10. Multiply 0.10 · 80 = 8. The person saves $8.",
+        "Change 25% to 0.25. Multiply by the original price: 0.25 · 240 = 60. The person saves $60 by buying the tablet on sale."
+      ],
+      "answer": "60"
+    },
+    "II-10": {
+      "lesson": "3.4",
+      "tag": "Lesson 3.4",
+      "skill": "Finding percent increase amount",
+      "hints": [
+        "Notice the words '15% more.' That means you find 15% of last year's $800, then add it on to $800. Change 15% to a decimal first by moving the decimal point two places left.",
+        "Example: A shop sold $400 of cookies and hopes to sell 10% more. 10% = 0.10. 0.10 · 400 = 40 more. Then 400 + 40 = 440. They hope to sell $440.",
+        "Change 15% to 0.15. Find the increase: 0.15 · 800 = 120. Add it to last year: 800 + 120 = 920. The library hopes to raise $920 this year."
+      ],
+      "answer": "920"
+    },
+    "II-11": {
+      "lesson": "3.5",
+      "tag": "Lesson 3.5",
+      "skill": "Finding total cost with sales tax",
+      "hints": [
+        "Jamal found the tax first, then added it. Another way is to do it in one step. The TV is 100% of the price, and tax adds 8.5% more. What percent of $400 does he pay in all?",
+        "Example: A $50 game has 6% tax. Total is 100% + 6% = 106% = 1.06. Then 1.06 · 50 = 53. Or use a proportion: 106/100 = x/50, so x = 53. The game costs $53 in all.",
+        "Jamal pays 100% + 8.5% = 108.5% of $400. Change to a decimal: 1.085. Multiply: 1.085 · 400 = 434. Or use 108.5/100 = x/400, so x = 434. Jamal pays $434.00 in all."
+      ],
+      "answer": "434"
+    },
+    "III": {
+      "lesson": "3.4",
+      "tag": "Lesson 3.4",
+      "skill": "Percent of change with two discounts",
+      "hints": [
+        "Don't just add 20% and 25%. The second discount is taken off the new sale price, not the original. Find the sale price first, then the price after the 2nd discount, then compare to $120.",
+        "Example: A $50 game is 10% off, then 50% off that price. 10% off: 0.9 · 50 = $45. 50% off: 0.5 · 45 = $22.50. Saved: 50 − 22.50 = $27.50. 27.50 ÷ 50 = 0.55, so 55% off overall.",
+        "20% off $120: 0.8 · 120 = $96. Then 25% off $96: 0.75 · 96 = $72. Amount saved: 120 − 72 = $48. Percent: 48 ÷ 120 = 0.40 = 40%. The answer is 40."
+      ],
+      "answer": "40%"
+    },
+    "IV-1": {
+      "lesson": "3.4",
+      "tag": "Lesson 3.4 · Exit quiz review",
+      "skill": "Percent of increase",
+      "hints": [
+        "Percent of change = amount of change ÷ ORIGINAL amount. The original is last year.",
+        "Example: 10 to 12 is a change of 2; 2/10 = 0.2 = 20% increase.",
+        "20 − 16 = 4. 4 ÷ 16 = 0.25 = 25%."
+      ],
+      "answer": "25%"
+    },
+    "IV-2": {
+      "lesson": "3.5",
+      "tag": "Lesson 3.5 · Exit quiz review",
+      "skill": "Discounts",
+      "hints": [
+        "The amount saved is the discount: 30% of the original price.",
+        "Example: 20% off $50: 0.2 · 50 = $10 saved.",
+        "30% = 0.3. 0.3 · 150 = 45, so they save $45.00."
+      ],
+      "answer": "45"
+    },
+    "IV-3": {
+      "lesson": "3.5",
+      "tag": "Lesson 3.5 · Exit quiz review",
+      "skill": "Percent increase in a story",
+      "hints": [
+        "Find 25% of last year's amount, then add it on.",
+        "Example: $200 and 10% more: 0.1 · 200 = 20, so $220.",
+        "0.25 · 700 = 175. 700 + 175 = 875."
+      ],
+      "answer": "875"
+    },
+    "IV-4": {
+      "lesson": "3.5",
+      "tag": "Lesson 3.5 · Exit quiz review",
+      "skill": "Sales tax",
+      "hints": [
+        "Sales tax = tax rate · price. Change the percent to a decimal first.",
+        "Example: 5% tax on $40: 0.05 · 40 = $2.",
+        "7% = 0.07. 0.07 · 30 = $2.10 in tax."
+      ],
+      "answer": "2.1"
+    }
+  }
+}

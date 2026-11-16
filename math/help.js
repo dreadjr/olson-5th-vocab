@@ -912,6 +912,8 @@
 
   // A part's key read straight off the answer key when it's one number: "40 plants" -> 40, "3,000 feet. The flat…" -> 3000,
   // "… = 14/40 = 7/20" -> 7/20. Anything else (ratios, sentences) is left to the tutor.
+  // "$45", "1,800", "1 1/2", "-2 3/4" as people write them, for the engine
+  function tidyAnswer(s) { return String(s).trim().replace(/^\$\s*/, '').replace(/(\d),(?=\d{3}\b)/g, '$1').replace(/^([-−]?)(\d+)\s+(\d+)\s*\/\s*(\d+)$/, (m, sg, w, n, d) => `${sg ? '-' : ''}(${w}+${n}/${d})`); }
   function plainNum(s) { return s.replace(/(\d),(?=\d{3}\b)/g, '$1'); }
   // The answer key's text, fractions written a/b ('?' when one side isn't a plain number).
   function ansText(node) {
@@ -1056,7 +1058,7 @@
       let right = 0;
       cells.forEach((row, i) => row.forEach((c, j) => {
         const want = f.answers[i][j], typed = c.value.trim();
-        const ok = /\d/.test(want) ? window.Calc?.equivalent?.(typed, want) === true : want.toLowerCase().split('|').includes(typed.toLowerCase().replace(/\.$/, ''));
+        const ok = /\d/.test(want) ? window.Calc?.equivalent?.(tidyAnswer(typed), tidyAnswer(want)) === true : want.toLowerCase().split('|').includes(typed.toLowerCase().replace(/\.$/, ''));
         c.classList.toggle('right', ok); c.classList.toggle('wrong', !ok);
         right += ok;
       }));
@@ -1166,7 +1168,9 @@
         if (key?.answer) {
           // a part's key may have units ("40 plants"): read "40 plants" or "3,000 feet" as the number
           const typed = key.units ? plainNum(answer).replace(/^(-?[\d.\/\s]+?)\s*[a-z²][a-z²\s]*\.?$/i, '$1') : answer;
-          const typedPct = /%\s*$/.test(key.answer) && /^\s*-?[\d.]+\s*$/.test(typed) ? `${typed.trim()}%` : typed; // "37.5" for 37.5%
+          // "$45", "1,800", "1 1/2" as people write them
+          const tidy = tidyAnswer(typed);
+          const typedPct = /%\s*$/.test(key.answer) && /^\s*-?[\d.]+\s*$/.test(tidy) ? `${tidy}%` : tidy; // "37.5" for 37.5%
           const same = window.Calc?.equivalent?.(typedPct, key.answer);
           if (same == null) { result.textContent = 'I can’t read that as a number yet. Try something like 3/10, 0.3, (2, −5) or y = 3x.'; return; }
           correct = same;

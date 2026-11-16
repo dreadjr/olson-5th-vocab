@@ -1,0 +1,367 @@
+{
+  "entries": {
+    "I-1": {
+      "lesson": "1.1",
+      "tag": "Lesson 1.1",
+      "skill": "Converting metric length units",
+      "hints": [
+        "Kilometers are big and meters are small, so 3 kilometers will be a lot of meters. Think: how many meters are in 1 kilometer? Then use that for all 3.",
+        "Example: 5 kilometers = ? meters. 1 km = 1,000 m, so multiply 5 · 1,000 = 5,000. So 5 kilometers = 5,000 meters.",
+        "1 km = 1,000 m. Multiply 3 · 1,000 = 3,000. So 3 kilometers = 3,000 meters. Choice D says 3,000. The answer is D."
+      ],
+      "wrong": {
+        "A": "You divided by 10 or moved the decimal the wrong way, so you made the number smaller instead of bigger when changing to a smaller unit.",
+        "B": "You multiplied by 10, but meters are much smaller than kilometers, so you need a way bigger multiplier than that.",
+        "C": "You multiplied by 100, maybe thinking of centimeters in a meter, but kilometers to meters uses a bigger number than that."
+      }
+    },
+    "I-2": {
+      "lesson": "1.2",
+      "tag": "Lesson 1.2",
+      "skill": "Equivalent fractions, mixed numbers, decimals",
+      "hints": [
+        "The number is 3 and 1/3, a mixed number. Rewrite it two ways: as a fraction (turn the whole 3 into thirds) and as a decimal (divide 1 by 3). Then check each choice to see which ones match.",
+        "Example: Which equals 2 1/4? Fraction: 2·4+1 = 9, so 9/4. Decimal: 1 ÷ 4 = 0.25, so 2.25. Also 2 2/8 works, because 2/8 = 1/4. But 2.14 and 5/4 don't match.",
+        "1 ÷ 3 = 0.333..., so 3 1/3 = 3.333... (the 3 repeats). That's B. 3·3+1 = 10, so 10/3 is C. 3 2/6 has 2/6 = 1/3, so D matches. 3.13, 3.3 that stops, and 13/3 don't. The answer is B, C, and D."
+      ]
+    },
+    "I-3": {
+      "lesson": "1.3",
+      "tag": "Lesson 1.3",
+      "skill": "Part-to-part ratios",
+      "hints": [
+        "Careful: 18 of 24 is adopted out of ALL the dogs. The question wants adopted compared to NOT adopted. First find how many dogs were not adopted.",
+        "Example: 20 of 30 fish are red. Not red: 30 − 20 = 10. Ratio red to not red is 20 : 10. Divide both by 10 to get 2 : 1.",
+        "Not adopted: 24 − 18 = 6. Ratio adopted to not adopted is 18 : 6. Divide both numbers by 6 to get 3 : 1. The answer is B."
+      ],
+      "wrong": {
+        "A": "You compared adopted dogs to all the dogs, 18 out of 24, instead of comparing adopted dogs to the ones not adopted.",
+        "C": "You flipped the order, putting the not adopted dogs first, but the question asks for adopted dogs first.",
+        "D": "You added the numbers wrongly, mixing up the 3 and 4 parts, so the second part doesn't match the dogs left over."
+      }
+    },
+    "I-4": {
+      "lesson": "1.3",
+      "tag": "Lesson 1.3",
+      "skill": "Part-to-whole ratios",
+      "hints": [
+        "Boys : girls = 3 : 5 compares two parts. The question asks for girls to TOTAL students. First find the total number of parts, then compare the girls' part to it.",
+        "Example: Cats to dogs is 2 : 7. Cats to total pets? Total parts = 2 + 7 = 9. So cats : total = 2 : 9. The total is always both parts added together.",
+        "Girls are 5 parts. Total parts = 3 + 5 = 8. Girls : total = 5 : 8. Check choices: 5 : 8 matches. The answer is C."
+      ],
+      "wrong": {
+        "A": "You gave the ratio of girls to boys, flipping it around, and forgot the question asks about girls compared to everyone in the class.",
+        "B": "You used the boys' part, 3, with the total, but the question asks about the girls, not the boys.",
+        "D": "You put the total first and the girls second, so the order is backwards from what the question asked."
+      }
+    },
+    "I-5": {
+      "lesson": "1.4",
+      "tag": "Lesson 1.4",
+      "skill": "Finding a unit rate (speed)",
+      "hints": [
+        "Speed in miles per hour means how many miles she bikes in ONE hour. You know the miles and the hours, so think about which operation splits the miles into equal hours.",
+        "Example: A car drove 45 miles in 1.5 hours. Divide miles by hours: 45 ÷ 1.5 = 30. The car went 30 miles per hour. Tip: 1.5 fits into 45 thirty times.",
+        "Divide miles by hours: 27 ÷ 1.5. Multiply both by 10 to get 270 ÷ 15 = 18. Check: 18 · 1.5 = 27. Maya's speed is 18 miles per hour. The answer is B."
+      ],
+      "wrong": {
+        "A": "You may have subtracted or estimated instead of dividing the miles by the hours, so your answer ended up too small.",
+        "C": "You may have divided but made a small slip in the decimal work, like mixing up the .5 part while dividing.",
+        "D": "You multiplied the miles by the hours instead of dividing, but speed means how far you go in one hour, so you divide."
+      }
+    },
+    "I-6": {
+      "lesson": "1.5",
+      "tag": "Lesson 1.5",
+      "skill": "Choosing a conversion rate",
+      "hints": [
+        "Look at the units you start with and the unit you want. You have inches and want feet. Pick the rate that cancels inches, so inches must end up on the bottom of the fraction.",
+        "Example: To change 30 feet/second to yards/second, use 1 yard/3 feet. The feet are on the bottom, so they cancel: 30 · (1/3) = 10 yards/second.",
+        "You start with 48 inches/minute and want feet. Inches must cancel, so put inches on the bottom: 1 foot/12 inches. Then 48 · (1/12) = 4 feet/minute. The answer is B."
+      ],
+      "wrong": {
+        "A": "You flipped the unit fraction, so inches ended up on top and didn't cancel; you need inches on the bottom to cancel them.",
+        "C": "You picked a rate about seconds and minutes, but this problem is about changing inches to feet, not time.",
+        "D": "You picked a rate about minutes and seconds, but the time is already in minutes; the length unit is what needs changing."
+      }
+    },
+    "I-7": {
+      "lesson": "1.5",
+      "tag": "Lesson 1.5",
+      "skill": "Converting rates between time units",
+      "hints": [
+        "Walking 2,400 meters per hour means 2,400 meters in 60 minutes. Ask: does the new rate use minutes, seconds, or days? Is an hour split into smaller parts or put together into more?",
+        "Example: 600 meters per hour. Per minute: 600 ÷ 60 = 10 meters per minute. Per day: 600 · 24 = 14,400 meters per day. Smaller time unit means a smaller number of meters.",
+        "7a: 2,400 ÷ 60 = 40 per minute, YES. 7b: 144,000 is 2,400 · 60, NO. 7c: 2,400 · 24 = 57,600 per day, YES. 7d: 2,400 ÷ 3,600 = 2/3 per second, not 40, NO. YES, NO, YES, NO."
+      ]
+    },
+    "I-8": {
+      "lesson": "1.6",
+      "tag": "Lesson 1.6",
+      "skill": "Unit rate with fractions",
+      "hints": [
+        "A unit rate tells how much for 1 minute. The distance is 3/4 mile and the time is 6 minutes. Think: what do you divide to find the miles for just 1 minute?",
+        "Example: 2/3 mile in 4 minutes. Divide the miles by the minutes: 2/3 ÷ 4 = 2/3 · 1/4 = 2/12 = 1/6. So 1/6 mile per minute.",
+        "Divide miles by minutes: 3/4 ÷ 6. Dividing by 6 is the same as times 1/6. So 3/4 · 1/6 = 3/24. Simplify by dividing by 3: 1/8 mile per minute. The answer is C."
+      ],
+      "wrong": {
+        "A": "You multiplied 3/4 by 6 and turned it into a mixed number, instead of splitting the distance into 6 equal parts.",
+        "B": "You flipped the problem and divided 6 by 3/4, so you found minutes per mile instead of miles per minute.",
+        "D": "You just kept the distance and ignored the 6 minutes, so you never shared the distance across the time."
+      }
+    },
+    "I-9": {
+      "lesson": "1.6",
+      "tag": "Lesson 1.6",
+      "skill": "Dividing mixed numbers for unit rate",
+      "hints": [
+        "Speed is miles ÷ hours. First turn the mixed numbers into fractions: 2 1/4 miles and 1 1/2 hours. Then divide the distance by the time. Remember, dividing by a fraction means flipping it and multiplying.",
+        "Example: A bike goes 3 1/2 miles in 1 3/4 hours. Change to fractions: 7/2 ÷ 7/4. Flip and multiply: 7/2 · 4/7 = 28/14 = 2. So the speed is 2 miles per hour.",
+        "2 1/4 = 9/4 and 1 1/2 = 3/2. Speed = 9/4 ÷ 3/2. Flip and multiply: 9/4 · 2/3 = 18/12 = 3/2 = 1 1/2 miles per hour. That matches choice B. The answer is B."
+      ],
+      "wrong": {
+        "A": "You likely divided the hours by the miles instead of the miles by the hours, so the division is flipped.",
+        "C": "You likely multiplied the miles and the hours, but speed means dividing the distance by the time.",
+        "D": "You likely turned the mixed number 2 1/4 into an improper fraction the wrong way, so the numbers were off before you divided."
+      }
+    },
+    "II-1": {
+      "lesson": "1.5",
+      "tag": "Lesson 1.5",
+      "skill": "Converting feet to inches",
+      "hints": [
+        "You are changing from a bigger unit (feet) to a smaller unit (inches). Think: how many inches are in 1 foot? Then ask yourself if you need to multiply or divide.",
+        "Example: Change 5 feet to inches. 1 foot = 12 inches, so 5 feet is 5 groups of 12 inches. Multiply: 5 · 12 = 60. So 5 feet = 60 inches.",
+        "1 foot = 12 inches. We have 9 feet, so multiply 9 · 12. 9 · 10 = 90 and 9 · 2 = 18. Add: 90 + 18 = 108. So 9 feet = 108 inches. The answer is 108."
+      ],
+      "answer": "108"
+    },
+    "II-2": {
+      "lesson": "1.1",
+      "tag": "Lesson 1.1",
+      "skill": "Convert metric units of length",
+      "hints": [
+        "You are changing meters into centimeters. Think: how many centimeters are in just 1 meter? Centimeters are smaller units, so you will need more of them than meters. Which operation fits, times or divide?",
+        "Example: 5 meters = __ centimeters. There are 100 centimeters in 1 meter, so multiply 5 · 100. That equals 500, so 5 meters = 500 centimeters. Moving to a smaller unit gives a bigger number.",
+        "1 meter = 100 centimeters. We have 3 meters, so multiply 3 · 100 = 300. Centimeters are smaller, so the number gets bigger. 3 meters = 300 centimeters. The answer is 300."
+      ],
+      "answer": "300"
+    },
+    "II-3": {
+      "lesson": "1.5",
+      "tag": "Lesson 1.5",
+      "skill": "Converting ounces to pounds",
+      "hints": [
+        "You are changing a small unit (ounces) into a bigger unit (pounds). Remember how many ounces make 1 pound. Since pounds are bigger, you will end up with fewer pounds than ounces.",
+        "Example: Change 48 ounces to pounds. 1 pound = 16 ounces, so divide: 48 ÷ 16 = 3. So 48 ounces = 3 pounds.",
+        "We know 1 pound = 16 ounces. Divide the ounces by 16: 40 ÷ 16 = 2.5. So 40 ounces = 2.5 pounds. The answer is 2.5."
+      ],
+      "answer": "2.5"
+    },
+    "II-4": {
+      "lesson": "1.5",
+      "tag": "Lesson 1.5",
+      "skill": "Converting inches to feet",
+      "hints": [
+        "Inches and feet are two units for length. Think: how many inches make 1 foot? Since inches are smaller than feet, you will end up with fewer feet than inches. Which operation turns small units into big units?",
+        "Example: Convert 30 inches to feet. There are 12 inches in 1 foot, so divide: 30 ÷ 12 = 2.5. So 30 inches = 2.5 feet. (You can also write 30/12 = 2 6/12 = 2 1/2 = 2.5.)",
+        "There are 12 inches in 1 foot. Divide 18 by 12. 18/12 = 1 6/12 = 1 1/2. Change 1/2 to a decimal: 0.5. So 18 inches = 1.5 feet. The answer is 1.5."
+      ],
+      "answer": "1.5"
+    },
+    "II-5": {
+      "lesson": "1.2",
+      "tag": "Lesson 1.2",
+      "skill": "Converting fractions to decimals",
+      "hints": [
+        "A fraction bar means divide. 3/8 means 3 ÷ 8. The top number goes inside the division box and the bottom number is what you divide by. Add a decimal point and zeros to 3 so you can keep dividing.",
+        "Example: Change 3/4 to a decimal. Divide 3 ÷ 4. 4 doesn't go into 3, so write 3.00. 4 goes into 30 seven times (28), leaving 2. Bring down 0: 20 ÷ 4 = 5. So 3/4 = 0.75.",
+        "Divide 3 ÷ 8 using 3.000. 8 into 30 is 3 (24), remainder 6. Bring down 0: 8 into 60 is 7 (56), remainder 4. Bring down 0: 8 into 40 is 5. So 3/8 = 0.375. The answer is 0.375."
+      ],
+      "answer": "0.375"
+    },
+    "II-6": {
+      "lesson": "1.2",
+      "tag": "Lesson 1.2",
+      "skill": "Fractions to repeating decimals",
+      "hints": [
+        "A fraction bar means divide. In 5/9, divide the top number 5 by the bottom number 9. Use long division, add zeros after the decimal point, and watch for a digit that keeps coming back again and again.",
+        "Example: Change 2/3 to a decimal. Divide 2 ÷ 3. 3 goes into 20 six times (18), leaving 2. Add a 0 and you get 20 again, so the 6 repeats forever. 2/3 = 0.666..., which is 0.6 with a bar over the 6.",
+        "Divide 5 ÷ 9. 9 goes into 50 five times (9·5 = 45), leaving 5. Add a 0 and you get 50 again, so the 5 repeats forever. 5/9 = 0.555..., which is 0.5 with a bar over the 5. The answer is 0.5 repeating."
+      ]
+    },
+    "II-7": {
+      "lesson": "1.2",
+      "tag": "Lesson 1.2",
+      "skill": "Write decimals as fractions",
+      "hints": [
+        "Look at the decimal 0.6. The digit 6 is in the tenths place, so say it out loud as '6 tenths.' Write that as a fraction, then see if you can make it simpler.",
+        "Example: Write 0.4 as a fraction. 4 is in the tenths place, so it is 4/10. Both 4 and 10 can be divided by 2, so 4/10 = 2/5. The answer is 2/5.",
+        "0.6 is 6 tenths, so write 6/10. The biggest number that divides both 6 and 10 is 2. 6 ÷ 2 = 3 and 10 ÷ 2 = 5. So 6/10 = 3/5. The answer is 3/5."
+      ],
+      "answer": "3/5"
+    },
+    "II-8": {
+      "lesson": "1.2",
+      "tag": "Lesson 1.2",
+      "skill": "Convert decimal to fraction",
+      "hints": [
+        "Look at the last digit of 0.35. It is in the hundredths place, so 0.35 is read as 35 hundredths. Write it as a fraction over 100, then simplify by dividing top and bottom by the same number.",
+        "Example: Write 0.45 as a fraction. 0.45 is 45 hundredths, so it is 45/100. Both 45 and 100 can be divided by 5. 45 ÷ 5 = 9 and 100 ÷ 5 = 20. So 0.45 = 9/20.",
+        "0.35 is 35 hundredths, so write 35/100. Both numbers can be divided by 5. 35 ÷ 5 = 7 and 100 ÷ 5 = 20. Now 7/20 can't be simplified more. The answer is 7/20."
+      ],
+      "answer": "7/20"
+    },
+    "II-9": {
+      "lesson": "1.3",
+      "tag": "Lesson 1.3",
+      "skill": "Simplify a ratio",
+      "hints": [
+        "A ratio can be simplified like a fraction. Look for a number that divides evenly into BOTH numbers. Find the biggest one you can, then divide both sides by it.",
+        "Example: Simplify 12 : 18. Both numbers can be divided by 6. 12 ÷ 6 = 2 and 18 ÷ 6 = 3. So 12 : 18 simplifies to 2 : 3.",
+        "Find a number that goes into both 16 and 24. The biggest is 8. Divide: 16 ÷ 8 = 2 and 24 ÷ 8 = 3. Now 2 and 3 share no more factors. The answer is 2 : 3."
+      ]
+    },
+    "II-10": {
+      "lesson": "1.3",
+      "tag": "Lesson 1.3",
+      "skill": "Writing simplified ratios",
+      "hints": [
+        "Find the groups: 15 practiced, 20 in all, so 20 - 15 = 5 did not practice. A ratio compares two of these numbers. Write each as a:b, then divide both by the same number to simplify.",
+        "Example: 12 of 16 kids ride the bus. Walkers = 4. Riders to all: 12:16 = 3:4. Walkers to all: 4:16 = 1:4. Riders to walkers: 12:4 = 3:1. Divide both numbers by the same factor.",
+        "Practiced: 15, not practiced: 5, all: 20. Practiced to all: 15:20 = 3:4. Not practiced to all: 5:20 = 1:4. Practiced to not practiced: 15:5 = 3:1. Each says what is compared. Answers: 3:4, 1:4, 3:1."
+      ]
+    },
+    "II-11": {
+      "lesson": "1.4",
+      "tag": "Lesson 1.4",
+      "skill": "Finding a unit rate",
+      "hints": [
+        "A unit rate tells how much for just 1 unit. Here you want kilometers for 1 hour. Think: what do you do to split 96 kilometers evenly into 4 hours?",
+        "Example: 60 miles in 3 hours. Divide the miles by the hours: 60 ÷ 3 = 20. So the rate is 20 miles per hour.",
+        "You want kilometers for 1 hour. Divide the distance by the time: 96 ÷ 4 = 24. The unit rate is 24 kilometers per hour. The answer is 24."
+      ],
+      "answer": "24"
+    },
+    "II-12": {
+      "lesson": "1.6",
+      "tag": "Lesson 1.6",
+      "skill": "Unit rate with complex fractions",
+      "hints": [
+        "You want meters in 1 second. The rate is (5/8 meter) per (3/4 second). Divide the distance by the time: 5/8 ÷ 3/4. Remember, dividing by a fraction means multiplying by its flip.",
+        "Example: 1/2 meter in 2/3 second. Divide: 1/2 ÷ 2/3. Flip 2/3 to 3/2 and multiply: 1/2 · 3/2 = 3/4. So the rate is 3/4 meter per second.",
+        "Divide distance by time: 5/8 ÷ 3/4. Flip 3/4 to 4/3 and multiply: 5/8 · 4/3 = 20/24. Simplify by dividing top and bottom by 4: 5/6. The answer is 5/6 meter per second."
+      ],
+      "answer": "5/6"
+    },
+    "II-13": {
+      "lesson": "1.4",
+      "tag": "Lesson 1.4",
+      "skill": "Comparing unit rates",
+      "hints": [
+        "You need the price for just ONE ticket for each person. Think about how to split the total cost evenly among the tickets. Then compare the two prices.",
+        "Example: Mia paid $30 for 5 snacks. Sam paid $28 for 4 snacks. Mia: 30 ÷ 5 = $6 each. Sam: 28 ÷ 4 = $7 each. $6 is less than $7, so Mia paid less per snack.",
+        "Rosa: 54 ÷ 6 = $9.00 per ticket. Dev: 44 ÷ 4 = $11.00 per ticket. Compare: 9 is less than 11. Rosa paid less per ticket. The answer is Rosa."
+      ]
+    },
+    "II-14": {
+      "lesson": "1.5",
+      "tag": "Lesson 1.5",
+      "skill": "Converting miles to feet",
+      "hints": [
+        "You want to change miles into feet but keep 'per hour' the same. Think about how many feet are in 1 mile (5,280). Write a fraction that cancels miles and leaves feet.",
+        "Example: Change 4 miles per hour to feet per hour. Multiply 4 mi/1 hr · 5,280 ft/1 mi. The miles cancel. 4 · 5,280 = 21,120. So it is 21,120 feet per hour.",
+        "Write 15 mi/1 hr · 5,280 ft/1 mi. The miles cancel, leaving ft/hr. Multiply 15 · 5,280 = 79,200. The cyclist rides 79,200 feet per hour."
+      ]
+    },
+    "II-15": {
+      "lesson": "1.5",
+      "tag": "Lesson 1.5",
+      "skill": "Converting rates with unit fractions",
+      "hints": [
+        "You need to change kilometers to meters AND hours to minutes. Remember 1 km = 1,000 m and 1 hr = 60 min. Multiply by conversion fractions so the old units cancel out.",
+        "Example: Convert 12 km per hour to meters per hour... no, to meters per minute with 6 km/hr: 6 km/1 hr · 1,000 m/1 km · 1 hr/60 min = 6,000 m/60 min = 100 m per min.",
+        "Write 18 km/1 hr · 1,000 m/1 km · 1 hr/60 min. The km and hr cancel. Top: 18 · 1,000 = 18,000 m. Bottom: 60 min. 18,000 ÷ 60 = 300. The answer is 300 meters per minute."
+      ],
+      "answer": "300"
+    },
+    "II-16": {
+      "lesson": "1.6",
+      "tag": "Lesson 1.6",
+      "skill": "Dividing fractions by whole numbers",
+      "hints": [
+        "Look at what Nora divided by. There are 6 cars, which is the whole number 6, not 1/6. Does 41/2 hours for one car make sense when all 6 cars took only 3/4 hour?",
+        "Example: 2/3 hour for 4 pizzas. Rate = 2/3 ÷ 4 = 2/3 · 1/4 = 2/12 = 1/6 hour per pizza. Dividing by 4 means multiplying by 1/4.",
+        "Nora used 1/6 instead of 6, so her answer was too big. Correct: 3/4 ÷ 6 = 3/4 · 1/6 = 3/24 = 1/8. The rate is 1/8 hour per car."
+      ]
+    },
+    "III": {
+      "lesson": "1.3",
+      "tag": "Lesson 1.3",
+      "skill": "Finding ratios of rates",
+      "hints": [
+        "First find how many laps each boy swims in one hour. Then work out the money for all the girls and for all the boys in one hour. Last, write girls : boys and make it simpler.",
+        "Example: 4 kids make $5 per lap and swim 6 laps an hour. 6 other kids make $2 per lap and swim 3 laps every 30 min. Kids 1: 4·6·5 = $120. Kids 2: 6 laps an hour, so 6·6·2 = $72. Ratio 120:72 = 5:3.",
+        "Girls: 10·12·6 = $720 an hour. Boys: 2 laps per 15 min, 60 ÷ 15 = 4, so 2·4 = 8 laps an hour. 15·8·4 = $480. Ratio 720:480. Divide both by 240 to get 3:2. The answer is 3:2."
+      ]
+    },
+    "IV-1": {
+      "lesson": "1.2",
+      "tag": "Lesson 1.2 · Exit quiz review",
+      "skill": "Repeating decimals",
+      "hints": [
+        "A fraction bar means divide: 2 ÷ 3. Keep dividing; if the same remainder keeps coming back, the decimal repeats.",
+        "Example: 1/3 = 1 ÷ 3 = 0.333…, which is written 0.3 with a bar over the 3.",
+        "2 ÷ 3 = 0.666…. The same remainder keeps coming back, so put a bar over the repeating digit."
+      ]
+    },
+    "IV-2": {
+      "lesson": "1.3",
+      "tag": "Lesson 1.3 · Exit quiz review",
+      "skill": "Part-to-part ratios",
+      "hints": [
+        "First find how many did NOT: total − those who did. Then write did : did not and simplify.",
+        "Example: 6 of 10 friends like pizza. 10 − 6 = 4 do not, so the ratio is 6 : 4 = 3 : 2.",
+        "18 − 12 = 6 did not. 12 : 6, divide both by 6: 2 : 1."
+      ]
+    },
+    "IV-3": {
+      "lesson": "1.4",
+      "tag": "Lesson 1.4 · Exit quiz review",
+      "skill": "Comparing unit rates",
+      "hints": [
+        "Find a unit rate for each person: dollars ÷ tickets. Then compare.",
+        "Example: $20 for 4 tickets is $5 each; $18 for 3 tickets is $6 each, so the first is cheaper per ticket.",
+        "Paddy: 63 ÷ 3 = 21. Javier: 80 ÷ 4 = 20. Javier paid less per ticket."
+      ],
+      "fields": {
+        "rows": [
+          "Paddy",
+          "Javier"
+        ],
+        "cols": [
+          "Cost per ticket ($)"
+        ],
+        "answers": [
+          [
+            "21"
+          ],
+          [
+            "20"
+          ]
+        ]
+      }
+    },
+    "IV-4": {
+      "lesson": "1.6",
+      "tag": "Lesson 1.6 · Exit quiz review",
+      "skill": "Rates with fractions",
+      "hints": [
+        "A unit rate is distance ÷ time. Change mixed numbers to improper fractions, then divide (multiply by the flip).",
+        "Example: 2 1/2 miles in 1/2 hour: 5/2 ÷ 1/2 = 5/2 · 2/1 = 5 miles per hour.",
+        "3 1/2 = 7/2 and 2 1/3 = 7/3. 7/2 ÷ 7/3 = 7/2 · 3/7 = 1 1/2 laps per minute."
+      ],
+      "answer": "3/2"
+    }
+  }
+}

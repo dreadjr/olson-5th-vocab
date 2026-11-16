@@ -1,0 +1,337 @@
+{
+  "entries": {
+    "I-1": {
+      "lesson": "2.1",
+      "tag": "Lesson 2.1",
+      "skill": "Solving proportions with cross products",
+      "hints": [
+        "A proportion says two fractions are equal. Here 8/10 = 12/x. Multiply across the equal sign (cross multiply): the top of one fraction times the bottom of the other. Then solve for x.",
+        "Example: Solve 3/5 = 9/x. Cross multiply: 3 · x = 5 · 9, so 3x = 45. Divide both sides by 3: x = 15. Check: 3/5 and 9/15 both simplify to 3/5.",
+        "Cross multiply 8/10 = 12/x: 8 · x = 10 · 12, so 8x = 120. Divide both sides by 8: x = 120 ÷ 8 = 15. Check: 8/10 = 4/5 and 12/15 = 4/5. The answer is B."
+      ],
+      "wrong": {
+        "A": "You probably added the same amount to both sides, like going from 8 to 12 and adding that jump to 10, but proportions work by multiplying.",
+        "C": "You probably added a gap between two numbers to 12 instead of finding the number you multiply by, so the ratio stayed unequal.",
+        "D": "You probably added 8 and 10 or just guessed a sum, but a proportion needs cross-multiplying, not adding the top and bottom."
+      }
+    },
+    "I-2": {
+      "lesson": "2.2",
+      "tag": "Lesson 2.2",
+      "skill": "Solving unit rate proportion problems",
+      "hints": [
+        "Notice that the price depends on how many notebooks you buy. Find out how much 1 notebook costs first, then use that to find the price of 7 notebooks.",
+        "Example: 3 pens cost $4.50. How much do 5 pens cost? First, $4.50 ÷ 3 = $1.50 for 1 pen. Then 5 · $1.50 = $7.50. So 5 pens cost $7.50.",
+        "Step 1: $9.80 ÷ 4 = $2.45 for 1 notebook. Step 2: 7 · $2.45 = $17.15. Check: 4/9.80 = 7/17.15 works. 7 notebooks cost $17.15. The answer is C."
+      ],
+      "wrong": {
+        "A": "You added a small amount onto $9.80 instead of finding what one notebook costs and multiplying by 7.",
+        "B": "Your price for one notebook was a bit off, probably a division slip, so multiplying by 7 came out too small.",
+        "D": "You doubled $9.80, but 7 notebooks is not twice as many as 4, so the price can't just double."
+      }
+    },
+    "I-3": {
+      "lesson": "2.2",
+      "tag": "Lesson 2.2",
+      "skill": "Solve rate problems with proportions",
+      "hints": [
+        "Marcus bikes at a steady pace, so miles and minutes stay in the same ratio. Set up two equal fractions: miles/minutes = miles/minutes. Use x for the unknown minutes.",
+        "Example: A car goes 3 miles in 8 minutes. How long for 12 miles? 3/8 = 12/x. Cross multiply: 3·x = 8·12 = 96. Divide by 3: x = 32 minutes.",
+        "Set up 4/18 = 10/x. Cross multiply: 4·x = 18·10 = 180. Divide both sides by 4: x = 45. It takes 45 minutes. The answer is B."
+      ],
+      "wrong": {
+        "A": "You may have thought each mile takes 4 minutes, or added the same amount to both numbers, instead of finding how long one mile takes.",
+        "C": "You may have divided 4 by 18 and then flipped it, finding miles per minute instead of the time needed for 10 miles.",
+        "D": "You may have multiplied 18 by 4 instead of figuring out how many minutes each mile takes and then using 10 miles."
+      }
+    },
+    "I-4": {
+      "lesson": "2.4",
+      "tag": "Lesson 2.4",
+      "skill": "Matching corresponding sides of similar triangles",
+      "hints": [
+        "In similar triangles, the order of the letters matters. The first letter of one triangle matches the first letter of the other, and so on. Figure out which letters in JOY match B and N.",
+        "Example: △CAT is similar to △DOG. Which side of △DOG matches CT? C ↔ D and T ↔ G, so CT matches DG.",
+        "△BEN ~ △JOY, so B ↔ J, E ↔ O, N ↔ Y. Side BN uses B and N, so it matches J and Y, which is side JY. The answer is D."
+      ],
+      "wrong": {
+        "A": "You matched the first letter B to J but then picked the side that starts at J and ends at O, instead of checking where N goes.",
+        "B": "You may have matched the middle letters E and O, or just picked a side by position, instead of matching B and N to their partners.",
+        "C": "You used the right two letters but flipped them, or picked this one because it seemed to match the letters in a different order."
+      }
+    },
+    "I-5": {
+      "lesson": "2.5",
+      "tag": "Lesson 2.5",
+      "skill": "Finding scale factor of similar figures",
+      "hints": [
+        "Look at each pair. Match up the sides that go together, write them as a ratio, and simplify. A scale factor of 2 : 5 means the simplified ratio must be exactly 2 to 5.",
+        "Example: A pair has matching sides 6 and 15. Write 6 : 15. Divide both by 3 to get 2 : 5. A pair with sides 9 and 15 gives 9 : 15 = 3 : 5, so it does not match.",
+        "Simplify each pair's ratio. 6 : 15 = 2 : 5 (yes). 8 : 20 = 2 : 5 (yes). 1/2 : 1 1/4 = 2 : 5 (yes). 12 : 20 = 3 : 5, 10 : 20 = 1 : 2, 4 : 14 = 2 : 7 (no). The answer is B, C, and E."
+      ]
+    },
+    "I-6": {
+      "lesson": "2.4",
+      "tag": "Lesson 2.4",
+      "skill": "Solving similar figure proportions",
+      "hints": [
+        "Similar figures have matching sides in the same ratio. Find the side that matches y, then set up a proportion with two sides from one figure on top and their matching sides from the other figure on the bottom.",
+        "Example: Two similar triangles have matching sides 6 and 9, and 8 and x. Write 6/9 = 8/x. Cross multiply: 6·x = 9·8 = 72. Divide by 6: x = 12.",
+        "Match the sides: 24/16 = 18/y. Cross multiply: 24·y = 16·18 = 288. Divide both sides by 24: y = 288/24 = 12. The answer is B."
+      ],
+      "wrong": {
+        "A": "You found how much bigger one side is by subtracting (24-16=8) and then subtracted 8 from 18, but similar figures grow by multiplying, not subtracting.",
+        "C": "You probably guessed from the picture or made an adding/subtracting slip instead of setting up a proportion and using the scale factor between the matching sides.",
+        "D": "You probably added to a side or used the scale factor the wrong way, instead of matching up corresponding sides in a proportion and solving."
+      }
+    },
+    "I-7": {
+      "lesson": "2.5",
+      "tag": "Lesson 2.5",
+      "skill": "Ratios of perimeter and area",
+      "hints": [
+        "Scale factor 3 : 5 tells you the side lengths. Perimeter is made of sides, so it uses the same ratio. Area uses square units, so think about what happens to the ratio when you multiply two lengths.",
+        "Example: Scale factor 2 : 7. Perimeters are in ratio 2 : 7 (same as sides). Areas are 2² : 7² = 4 : 49. Check sides 4 and 10: 4/10 = 2/5, not 2/7, so that pair does not fit.",
+        "7a: perimeters are 3 : 5, not 9 : 25, so FALSE. 7b: areas are 3² : 5² = 9 : 25, TRUE. 7c: 24 : 40 = 3 : 5, TRUE. 7d: 6 : 8 = 3 : 4, not 3 : 5, FALSE. Answers: F, T, T, F."
+      ]
+    },
+    "II-1": {
+      "lesson": "2.1",
+      "tag": "Lesson 2.1",
+      "skill": "Solving proportions with cross products",
+      "hints": [
+        "A proportion says two fractions are equal. The question is 5/8 = 20/x. Cross multiply: multiply across the diagonals (5 · x and 8 · 20), set them equal, then get x alone.",
+        "Example: 3/4 = 12/x. Cross multiply: 3 · x = 4 · 12, so 3x = 48. Divide both sides by 3: x = 16. Check: 12/16 = 3/4. It works!",
+        "5/8 = 20/x. Cross multiply: 5 · x = 8 · 20, so 5x = 160. Divide both sides by 5: x = 32. Check: 20/32 simplifies to 5/8. The answer is 32."
+      ],
+      "answer": "32"
+    },
+    "II-2": {
+      "lesson": "2.1",
+      "tag": "Lesson 2.1",
+      "skill": "Solve a proportion with cross products",
+      "hints": [
+        "Look at 12/18 = y/45. Two equal fractions have equal cross products. Multiply diagonally: 12 · 45 on one side and 18 · y on the other. Then divide to get y alone.",
+        "Example: 8/12 = n/30. Cross multiply: 12 · n = 8 · 30 = 240. Divide both sides by 12: n = 20. Check: 20/30 = 2/3 and 8/12 = 2/3. It works!",
+        "Cross multiply: 18 · y = 12 · 45. Since 12 · 45 = 540, we get 18y = 540. Divide both sides by 18: y = 30. Check: 30/45 = 2/3 and 12/18 = 2/3. The answer is y = 30."
+      ],
+      "answer": "30"
+    },
+    "II-3": {
+      "lesson": "2.2",
+      "tag": "Lesson 2.2",
+      "skill": "Solve proportion word problems",
+      "hints": [
+        "Bags and cost go up together at the same rate. Set up two equal fractions: bags/cost = bags/cost. Put the unknown cost x in the spot for 5 bags.",
+        "Example: 4 notebooks cost $6.00. How much do 7 cost? 4/6 = 7/x. Cross multiply: 4x = 42. Divide by 4: x = 10.50. So 7 notebooks cost $10.50.",
+        "Write 3/7.47 = 5/x. Cross multiply: 3·x = 5·7.47 = 37.35. Divide by 3: x = 12.45. Check: 7.47 ÷ 3 = 2.49 per bag, and 2.49 · 5 = 12.45. The answer is $12.45."
+      ],
+      "answer": "12.45"
+    },
+    "II-4": {
+      "lesson": "2.1",
+      "tag": "Lesson 2.1",
+      "skill": "Compare unit rates",
+      "hints": [
+        "To compare who types faster, find how many words each person types in 1 minute. Divide the words by the minutes for Carlos, then do the same for Dana. Then compare the two numbers.",
+        "Example: Ann reads 90 pages in 3 minutes... no wait, use a slower pace: Ann reads 60 pages in 4 hours, Ben reads 84 pages in 6 hours. Ann: 60 ÷ 4 = 15. Ben: 84 ÷ 6 = 14. 15 > 14, so Ann is faster.",
+        "Carlos: 120 ÷ 3 = 40 words per minute. Dana: 210 ÷ 5 = 42 words per minute. Since 42 > 40, Dana typed at a faster rate. The answer is Dana."
+      ]
+    },
+    "II-5": {
+      "lesson": "2.1",
+      "tag": "Lesson 2.1",
+      "skill": "Write ratio from graph points",
+      "hints": [
+        "Look at the points on the graph. Read the two numbers for a point, like (first number, second number). Write them as a ratio, then check that a second point gives an equal ratio. Last, simplify the ratio.",
+        "Example: A graph has points (4, 12) and (6, 18). Write 4 : 12 and 6 : 18. Divide both numbers by their biggest common factor: 4 : 12 = 1 : 3, and 6 : 18 = 1 : 3. The ratios match, so the ratio is 1 : 3.",
+        "The graph points give 10 : 25 and 6 : 15. Divide 10 : 25 by 5 to get 2 : 5. Divide 6 : 15 by 3 to get 2 : 5. Both points give the same ratio, so the relationship is proportional. The answer is 2 : 5."
+      ]
+    },
+    "II-6": {
+      "lesson": "2.4",
+      "tag": "Lesson 2.4",
+      "skill": "Ratio of corresponding sides",
+      "hints": [
+        "Match each side of the big figure with the side in the same spot on the small figure. Write each pair as a ratio, big to small. Then simplify the ratio by dividing both numbers by the same number. Do the pairs give the same simplified ratio?",
+        "Example: A big triangle has sides 12 and 18. The matching sides on a small triangle are 8 and 12. 12:8 divides by 4 to make 3:2. 18:12 divides by 6 to make 3:2. Both match, so the ratio of big to small is 3:2.",
+        "Write big to small for matching sides. 21:14 divides by 7 to make 3:2. Check another pair: 30:20 divides by 10 to make 3:2. Both pairs match. The ratio of the large figure to the small figure is 3:2. (Small to large is 2:3.)"
+      ]
+    },
+    "II-7": {
+      "lesson": "2.3",
+      "tag": "Lesson 2.3",
+      "skill": "Matching corresponding parts of figures",
+      "hints": [
+        "Match the triangles by looking at the angle arcs. Angles with the same arcs match, and the sides between matching angles match too. Then check if the sides are equal (congruent) or just in the same ratio (similar).",
+        "Example: Triangle ABC has sides 3, 4, 5. Triangle DEF has sides 6, 8, 10. 6/3 = 8/4 = 10/5 = 2, and all the angles match. Sides are in proportion but not equal, so the triangles are similar, not congruent.",
+        "Match arcs: P↔J, E↔A, N↔R. So PE↔JA, EN↔AR, PN↔JR. Angles: ∠P≅∠J, ∠E≅∠A, ∠N≅∠R. Sides: 6/9 = 8/12 = 10/15 = 2/3. Same shape, different size, so they are similar, not congruent."
+      ]
+    },
+    "II-8": {
+      "lesson": "2.4",
+      "tag": "Lesson 2.4",
+      "skill": "Find missing side of similar figures",
+      "hints": [
+        "The two figures are similar, so matching sides have the same ratio. Find the pair of matching sides you know both numbers for, then find the side that matches x. Set up a proportion with them.",
+        "Example: Two similar shapes have matching sides 15 and 6. Another side is 4 and its match is y. Write 15/6 = y/4. Cross multiply: 6·y = 15·4 = 60. Divide by 6: y = 10.",
+        "Set up matching sides: 20/8 = x/6. Cross multiply: 8·x = 20·6, so 8x = 120. Divide both sides by 8: x = 120/8 = 15. The answer is x = 15."
+      ],
+      "answer": "15"
+    },
+    "II-9": {
+      "lesson": "2.4",
+      "tag": "Lesson 2.4",
+      "skill": "Finding missing sides of similar figures",
+      "hints": [
+        "The two figures are similar, so matching sides have the same ratio. Find the scale factor from a pair of sides you know (6 and 9). Then set up a proportion for each missing side.",
+        "Example: Two similar triangles have matching sides 4 and 10. Another side is 6 on the small one, x on the big one. 4/10 = 6/x, so 4x = 60 and x = 15.",
+        "Scale factor is 6/9 = 2/3. For a: 6/9 = 10/a, so 6a = 90 and a = 15. For b: 6/9 = b/21, so 9b = 126 and b = 14. So a = 15 and b = 14."
+      ]
+    },
+    "II-10": {
+      "lesson": "2.4",
+      "tag": "Lesson 2.4",
+      "skill": "Similar triangles with shadows",
+      "hints": [
+        "Nora and the flagpole make similar triangles because the sun hits both at the same angle. Set up a proportion: height over shadow length is the same for Nora and the flagpole. Let h be the flagpole's height.",
+        "Example: A tree has a 12 ft shadow. A 4 ft post nearby has a 2 ft shadow. Write h/4 = 12/2. Cross multiply: 2·h = 48. Divide by 2: h = 24. The tree is 24 ft tall.",
+        "Write h/5 = 18/3. Cross multiply: 3·h = 5·18 = 90. Divide by 3: h = 30. Check: 18 is 6 times 3, so h is 6·5 = 30. The flagpole is 30 feet tall."
+      ],
+      "answer": "30"
+    },
+    "II-11": {
+      "lesson": "2.5",
+      "tag": "Lesson 2.5",
+      "skill": "Ratios of similar figures",
+      "hints": [
+        "Compare a pair of matching sides to get the scale factor (large to small). Perimeters use that same ratio. Areas use that ratio squared. Then set up a proportion for the perimeter.",
+        "Example: Scale factor 4 : 3. Perimeter ratio is 4 : 3. Area ratio is 4² : 3² = 16 : 9. If the big perimeter is 40, then 4/3 = 40/x, 4x = 120, x = 30.",
+        "Scale factor 5 : 3 (20 : 12). Perimeter ratio 5 : 3. Area ratio 5² : 3² = 25 : 9. Then 5/3 = 100/x, so 5x = 300 and x = 60. The smaller perimeter is 60 cm."
+      ]
+    },
+    "II-12": {
+      "lesson": "2.5",
+      "tag": "Lesson 2.5",
+      "skill": "Area ratio of similar figures",
+      "hints": [
+        "Marco found the ratio of the sides (the scale factor) 1 : 4. But area is measured in square units. Ask yourself: should the area ratio be the same as the side ratio, or something different?",
+        "Example: Two similar rectangles have a scale factor of 2 : 3. The area ratio is 2² : 3² = 4 : 9. If the small one has area 8, then 4/9 = 8/x, so x = 18.",
+        "Marco's error: he used the scale factor 1 : 4 as the area ratio. Area ratio = 1² : 4² = 1 : 16. Solve 1/16 = 5/x, so x = 5 · 16 = 80. The answer is 80 ft²."
+      ],
+      "answer": "80"
+    },
+    "II-13": {
+      "lesson": "2.6",
+      "tag": "Lesson 2.6",
+      "skill": "Using a map scale",
+      "hints": [
+        "A map scale compares map distance to real distance. Set up a proportion with centimeters on top and kilometers on the bottom: 3/40 = 7.5/x. Then think about how to find x.",
+        "Example: A map scale is 2 cm : 30 km. A trip is 5 cm on the map. Write 2/30 = 5/x. Cross multiply: 2·x = 30·5 = 150. Divide by 2: x = 75. The real trip is 75 km.",
+        "Write 3/40 = 7.5/x. Cross multiply: 3·x = 40·7.5 = 300. Divide both sides by 3: x = 300 ÷ 3 = 100. Check: 7.5 is 2.5 times 3, and 2.5·40 = 100. The lake is 100 kilometers away."
+      ],
+      "answer": "100"
+    },
+    "III": {
+      "lesson": "2.2",
+      "tag": "Lesson 2.2",
+      "skill": "Proportions with shadow heights",
+      "hints": [
+        "Tall things and their shadows grow together at the same rate. First find how tall the pole is using Jada's height and shadow, then take away 5 feet and find the new shadow.",
+        "Example: A boy is 4 ft tall with a 2 ft shadow. A tree has a 10 ft shadow. Tree height: t/4 = 10/2, so 2t = 40 and t = 20 ft. Always match height with height, shadow with shadow.",
+        "Pole: h/5 = 12/3, so 3h = 60 and h = 20 ft. Shorter pole: 20 - 5 = 15 ft. New shadow: 15/5 = s/3, so 5s = 45 and s = 9. The shadow would be 9 feet long."
+      ],
+      "answer": "9"
+    },
+    "IV-1": {
+      "lesson": "2.1",
+      "tag": "Lesson 2.1 · Exit quiz review",
+      "skill": "Do the ratios form a proportion?",
+      "hints": [
+        "Cross-multiply. If the two products are equal, the ratios form a proportion.",
+        "Example: 2/3 and 8/12: 2 · 12 = 24 and 3 · 8 = 24, equal, so yes.",
+        "(a) No: 4 · 12 = 48 and 5 · 10 = 50. (b) Yes: 9 · 10 = 90 and 15 · 6 = 90."
+      ],
+      "fields": {
+        "rows": [
+          "(a)",
+          "(b)"
+        ],
+        "cols": [
+          "Proportion? (yes or no)"
+        ],
+        "answers": [
+          [
+            "no"
+          ],
+          [
+            "yes"
+          ]
+        ]
+      }
+    },
+    "IV-2": {
+      "lesson": "2.2",
+      "tag": "Lesson 2.2 · Exit quiz review",
+      "skill": "Comparing rates",
+      "hints": [
+        "Laps per minute = laps ÷ minutes for each runner. The bigger rate is faster.",
+        "Example: 6 laps in 4 minutes is 6/4 = 1.5 laps per minute; 5 laps in 4 minutes is 1.25, so the first runner is faster.",
+        "Mia: 10 ÷ 8 = 5/4. Shawna: 4 ÷ 3 = 4/3. Shawna has the bigger rate."
+      ],
+      "fields": {
+        "rows": [
+          "Mia",
+          "Shawna"
+        ],
+        "cols": [
+          "Laps per minute"
+        ],
+        "answers": [
+          [
+            "5/4"
+          ],
+          [
+            "4/3"
+          ]
+        ]
+      }
+    },
+    "IV-3": {
+      "lesson": "2.6",
+      "tag": "Lesson 2.6 · Exit quiz review",
+      "skill": "Map scales",
+      "hints": [
+        "Write map/real = map/real with x for the real distance, then cross-multiply.",
+        "Example: 1 inch : 10 miles, 3 inches on the map: 1/10 = 3/x, so x = 30 miles.",
+        "2/25 = 5 1/2/x. 2x = 25 · 5 1/2 = 137.5. x = 68.75 miles."
+      ],
+      "answer": "68.75"
+    },
+    "IV-4": {
+      "lesson": "2.6",
+      "tag": "Lesson 2.6 · Exit quiz review",
+      "skill": "Scale models",
+      "hints": [
+        "Each model inch stands for 24 real inches. Then 12 inches = 1 foot.",
+        "Example: scale 1 : 10, model 3 inches long: 30 real inches = 2.5 feet.",
+        "4 · 24 = 96 inches. 96 ÷ 12 = 8 feet."
+      ],
+      "fields": {
+        "rows": [
+          "Real car"
+        ],
+        "cols": [
+          "inches",
+          "feet"
+        ],
+        "answers": [
+          [
+            "96",
+            "8"
+          ]
+        ]
+      }
+    }
+  }
+}

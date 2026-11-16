@@ -96,3 +96,21 @@ export function checkAllHelp() {
     return helpErrors(html, JSON.parse(readFileSync(join(MATH, d, 'help.json'), 'utf8')), lessons).map((e) => `math/${d}/help.json ${e}`);
   });
 }
+
+// Question text for drafting help (scripts/gen-wrong.mjs, gen-help.mjs): the page's HTML as plain text.
+export const plain = (h) => h.replace(/<span class="f"><span>([^<]*)<\/span><span>([^<]*)<\/span><\/span>/g, '$1/$2').replace(/<sup>([^<]*)<\/sup>/g, '^$1')
+  .replace(/<svg[\s\S]*?<\/svg>/g, ' [graph] ').replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+
+/** Each question's text (choices included, answer key left out), by id. */
+export function questionTexts(html) {
+  const out = {};
+  html.split('<section class="part">').slice(1).forEach((part, i) => {
+    const marks = [...part.matchAll(/<span class="n">(\d+)\.<\/span>|class="task"/g)];
+    marks.forEach((m, j) => {
+      const id = m[1] ? `${ROMAN[i]}-${m[1]}` : ROMAN[i];
+      out[id] = plain(part.slice(m.index, marks[j + 1]?.index).replace(/<div class="ans">[\s\S]*?<\/div>/g, ''));
+    });
+  });
+  return out;
+}
+

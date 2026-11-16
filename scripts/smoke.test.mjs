@@ -49,6 +49,14 @@ test('a generated practice form has 12 problems', { skip }, async () => {
   for (const b of ['1', '2', '3', 'rne']) assert.equal(count(await dom(`/math/gen/?block=${b}&seed=7`), 'class="gen-q"'), 12, `block ${b}`);
 });
 
+test('Blocks 1-3 forms get the study UI too', { skip }, async () => {
+  for (const page of ['b1-form-b', 'b2-form-c', 'b3-form-d']) {
+    const html = await dom(`/math/${page}/`);
+    assert.ok(count(html, '<form class="answer') >= 20, `${page}: answer boxes`);
+    assert.ok(html.includes('Exit Quiz Review') && html.includes('class="quiz-bar"'), `${page}: exit quiz review part and links`);
+  }
+});
+
 test('writing page lists the exercises', { skip }, async () => {
   const html = await dom('/writing/?mode=fix');
   assert.equal(count(html, 'class="card"'), 24);

@@ -7,25 +7,8 @@ import { join } from 'node:path';
 import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { ROOT } from './lib.mjs';
-import { questionIds, answerKeys } from './help-check.mjs';
+import { questionIds, answerKeys, plain, questionTexts } from './help-check.mjs';
 import { cliCommand } from './tutor-lib.mjs';
-
-const ROMAN = ['I', 'II', 'III', 'IV', 'V'];
-const plain = (h) => h.replace(/<span class="f"><span>([^<]*)<\/span><span>([^<]*)<\/span><\/span>/g, '$1/$2').replace(/<sup>([^<]*)<\/sup>/g, '^$1')
-  .replace(/<svg[\s\S]*?<\/svg>/g, ' [graph] ').replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
-
-/** Each question's text (choices included, answer key left out), by id. */
-function questionTexts(html) {
-  const out = {};
-  html.split('<section class="part">').slice(1).forEach((part, i) => {
-    const marks = [...part.matchAll(/<span class="n">(\d+)\.<\/span>|class="task"/g)];
-    marks.forEach((m, j) => {
-      const id = m[1] ? `${ROMAN[i]}-${m[1]}` : ROMAN[i];
-      out[id] = plain(part.slice(m.index, marks[j + 1]?.index).replace(/<div class="ans">[\s\S]*?<\/div>/g, ''));
-    });
-  });
-  return out;
-}
 
 const EMPTY = mkdtempSync(join(tmpdir(), 'gen-wrong-'));
 const run = (prompt) => new Promise((resolve) => {
