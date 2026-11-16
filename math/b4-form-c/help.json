@@ -301,7 +301,24 @@
         "Mean = add all the values, then divide by how many there are. Each team played 9 games.",
         "Example: 5, 6, 8, 10, 11. The sum is 40 and there are 5 values, so the mean is 40 ÷ 5 = 8.",
         "Hawks: 47 + 33 + 53 + 40 + 57 + 45 + 37 + 50 + 43 = 405, and 405 ÷ 9 = 45 points. Owls: the total is 432, and 432 ÷ 9 = 48 points."
-      ]
+      ],
+      "fields": {
+        "rows": [
+          "Hawks",
+          "Owls"
+        ],
+        "cols": [
+          "Mean"
+        ],
+        "answers": [
+          [
+            "45"
+          ],
+          [
+            "48"
+          ]
+        ]
+      }
     },
     "II-15": {
       "lesson": "4.8",
@@ -311,7 +328,24 @@
         "Put each team's scores in order. With 9 values, the median is the 5th one.",
         "Example: 60, 75, 81, 85, 85, 86, 87, 93, 95 is in order. The 5th value is 85, so the median is 85.",
         "Hawks: 33, 37, 40, 43, 45, 47, 50, 53, 57 → 45. Owls: 44, 46, 46, 47, 48, 49, 49, 51, 52 → 48."
-      ]
+      ],
+      "fields": {
+        "rows": [
+          "Hawks",
+          "Owls"
+        ],
+        "cols": [
+          "Median"
+        ],
+        "answers": [
+          [
+            "45"
+          ],
+          [
+            "48"
+          ]
+        ]
+      }
     },
     "II-16": {
       "lesson": "4.8",
@@ -331,7 +365,36 @@
         "The five numbers are the minimum, Q1, median, Q3 and maximum. Use your ordered lists from #15. With 9 values, leave the median out: Q1 is the median of the lowest 4, Q3 of the highest 4.",
         "Example: 2, 4, 5, 7, 8, 9, 12. Minimum 2, median 7, Q1 = median of 2, 4, 5 = 4, Q3 = median of 8, 9, 12 = 9, maximum 12.",
         "Hawks: the lowest 4 are 33, 37, 40, 43, so Q1 = 38.5; the highest 4 are 47, 50, 53, 57, so Q3 = 51.5. That gives 33 ~ 38.5 ~ 45 ~ 51.5 ~ 57. Owls: 44 ~ 46 ~ 48 ~ 50 ~ 52."
-      ]
+      ],
+      "fields": {
+        "rows": [
+          "Hawks",
+          "Owls"
+        ],
+        "cols": [
+          "Min",
+          "Q1",
+          "Median",
+          "Q3",
+          "Max"
+        ],
+        "answers": [
+          [
+            "33",
+            "38.5",
+            "45",
+            "51.5",
+            "57"
+          ],
+          [
+            "44",
+            "46",
+            "48",
+            "50",
+            "52"
+          ]
+        ]
+      }
     },
     "II-18": {
       "lesson": "4.8",
@@ -341,7 +404,24 @@
         "Interquartile range (IQR) = Q3 − Q1, the spread of the middle half of the data. Use your answers from #17.",
         "Example: if Q1 = 4 and Q3 = 9, the IQR is 9 − 4 = 5.",
         "Hawks: 51.5 − 38.5 = 13. Owls: 50 − 46 = 4."
-      ]
+      ],
+      "fields": {
+        "rows": [
+          "Hawks",
+          "Owls"
+        ],
+        "cols": [
+          "IQR"
+        ],
+        "answers": [
+          [
+            "13"
+          ],
+          [
+            "4"
+          ]
+        ]
+      }
     },
     "II-19": {
       "lesson": "4.8",
@@ -351,7 +431,24 @@
         "Use each team's mean from #14. Find how far each score is from the mean (distances are never negative), add the distances, then divide by 9.",
         "Example: 5, 6, 8, 10, 11 has mean 8. The distances are 3, 2, 0, 2, 3, which add to 10, so MAD = 10 ÷ 5 = 2.",
         "Hawks (mean 45): distances 12, 8, 5, 2, 0, 2, 5, 8, 12 add to 54, so MAD = 54 ÷ 9 = 6 points. Owls (mean 48): distances 4, 2, 2, 1, 0, 1, 1, 3, 4 add to 18, so MAD = 18 ÷ 9 = 2 points."
-      ]
+      ],
+      "fields": {
+        "rows": [
+          "Hawks",
+          "Owls"
+        ],
+        "cols": [
+          "MAD"
+        ],
+        "answers": [
+          [
+            "6"
+          ],
+          [
+            "2"
+          ]
+        ]
+      }
     },
     "II-20": {
       "lesson": "4.8",

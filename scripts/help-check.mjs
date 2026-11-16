@@ -57,6 +57,14 @@ export function helpErrors(html, help, lessons) {
         if (typeof note !== 'string' || !note.trim() || note.length > 220) errs.push(`${id}: "wrong" note for ${l} must be 1 to 220 characters`);
       }
     }
+    if (e.fields !== undefined) { // a grid of boxes: rows × cols, each with its value ("none" etc. for words)
+      const f = e.fields, ok = f && Array.isArray(f.rows) && Array.isArray(f.cols) && Array.isArray(f.answers) && f.answers.length === f.rows.length && f.answers.every((r) => Array.isArray(r) && r.length === f.cols.length);
+      if (!ok) errs.push(`${id}: "fields" needs rows, cols and an answers row per row with a value per col`);
+      else for (const v of f.answers.flat()) {
+        if (typeof v !== 'string' || !v.trim()) errs.push(`${id}: "fields" has an empty answer`);
+        else if (equivalent(v, v) === true ? keys[id] && !keyMentions(v, keys[id]) : keys[id] && !keys[id].toLowerCase().includes(v.toLowerCase().split('|')[0])) errs.push(`${id}: "fields" answer ${v} isn't in the answer key`);
+      }
+    }
     if (e.answer !== undefined) {
       if (typeof e.answer !== 'string' || !e.answer.trim() || e.answer.length > 40) errs.push(`${id}: "answer" must be a short string`);
       else if (equivalent(e.answer, e.answer) !== true) errs.push(`${id}: "answer" ${e.answer} isn't math the checker can read`);

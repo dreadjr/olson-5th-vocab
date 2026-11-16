@@ -98,12 +98,22 @@ body.show .work{min-height:0}
 /* Answer box (math/help.js) */
 .answer{display:grid;grid-template-columns:1fr auto;gap:6px;margin-top:8px;max-width:520px}
 .answer input,.answer textarea{font:inherit;padding:6px 8px;border:1.5px solid var(--rule);border-radius:3px;background:var(--paper);color:var(--ink);min-width:0;min-height:36px}
+.answer.fields{grid-template-columns:auto auto;justify-content:start;align-items:end;max-width:none}
+.fields-grid{border-collapse:separate;border-spacing:4px 4px;margin:-4px;width:auto}
+.fields-grid th,.fields-grid td{border:0;background:none;padding:0;height:auto}
+.fields-grid th{font:600 12px var(--display);color:var(--muted);text-align:left;padding:0 4px;white-space:nowrap}
+.fields-grid thead th{text-align:center}
+.fields-grid input{width:5.5em;max-width:100%;text-align:center}
+.answer.fields .fields-grid input.right,.answer.fields.wrong .fields-grid input.right{border-color:var(--ok)}
+.answer.fields .fields-grid input.wrong{border-color:var(--warn);border-width:2px}
+.answer.fields .answer-result{grid-column:1/-1}
+@media (max-width:560px){.answer.fields{grid-template-columns:1fr}.fields-grid input{width:4.2em}.answer.fields>button{justify-self:start}}
 .answer math-field{font-size:19px;padding:4px 8px;border:1.5px solid var(--rule);border-radius:3px;background:var(--paper);color:var(--ink);min-width:0;min-height:36px;--caret-color:var(--accent)}
 .answer math-field::part(menu-toggle){display:none}
 .answer.right math-field{border-color:var(--ok)}
 .answer.wrong math-field{border-color:var(--warn)}
-.answer.right input,.answer.right textarea{border-color:var(--ok)}
-.answer.wrong input,.answer.wrong textarea{border-color:var(--warn)}
+.answer.right input:not(.fields-grid input),.answer.right textarea{border-color:var(--ok)}
+.answer.wrong input:not(.fields-grid input),.answer.wrong textarea{border-color:var(--warn)}
 .answer button{font:700 13px/1 var(--display);color:var(--paper);background:var(--accent);border:0;border-radius:4px;padding:9px 12px;cursor:pointer}
 .answer button:disabled{opacity:.5;cursor:wait}
 .answer-result{grid-column:1/-1;font-size:14px;white-space:pre-wrap}

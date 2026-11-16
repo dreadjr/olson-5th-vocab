@@ -61,7 +61,7 @@
       const parts = choices(host).length ? [] : [...host.querySelectorAll('ol.sub > li')];
       let box;
       if (parts.length > 1) parts.forEach((li, k) => { const b = answerBox(id, host, false, { letter: 'abcdefgh'[k], li }); li.append(b); box ||= b; });
-      else { box = answerBox(id, host, q.classList.contains('task')); host.append(box); }
+      else { box = entry.fields ? fieldsBox(id, entry.fields) : answerBox(id, host, q.classList.contains('task')); host.append(box); }
       works[id] = el('div', 'q-work');
       works[id].hidden = true;
       host.append(works[id]);
@@ -789,6 +789,84 @@
     const n = '(-?\\d+(?:\\.\\d+)?(?:/\\d+)?)';
     const m = t.match(new RegExp(`^${n}\\s*(?:[a-z²]+(?:\\s+per\\s+[a-z]+)?)?\\s*(?:[.(]|$)`, 'i')) || t.match(new RegExp(`=\\s*${n}\\s*[a-z²]*\\.?$`, 'i'));
     return m ? { answer: m[1], units: true } : null;
+  }
+
+  // Questions asking for several values ("the five-number summary of each data set"): a labeled box per value
+  // (help.json "fields"), each checked on its own, so it's clear which number is off.
+  function fieldsBox(id, f) {
+    const box = el('form', 'answer fields');
+    const grid = el('table', 'fields-grid');
+    const r0 = progress[id];
+    const cells = f.rows.map((row, i) => f.cols.map((c, j) => {
+      const input = el('input');
+      input.inputMode = /\d/.test(f.answers[i][j]) ? 'decimal' : 'text';
+      input.autocomplete = 'off';
+      input.setAttribute('aria-label', `${row}${c ? ` ${c}` : ''}`);
+      input.value = r0?.cells?.[i]?.[j] || '';
+      return input;
+    }));
+    // Five stats for two data sets fit a narrow column better as five rows: stats down the side, data sets across.
+    const flip = f.cols.length > f.rows.length && f.cols.length > 1;
+    const down = flip ? f.cols : f.rows, across = flip ? f.rows : f.cols;
+    const at = (a, b) => (flip ? cells[b][a] : cells[a][b]);
+    if (across.length > 1 && across.some(Boolean)) { const tr = el('tr'); tr.append(el('th'), ...across.map((c) => el('th', '', c))); const head = el('thead'); head.append(tr); grid.append(head); }
+    down.forEach((label, a) => {
+      const tr = el('tr');
+      const th = el('th', '', across.length === 1 && across[0] ? `${label} · ${across[0]}` : label);
+      th.scope = 'row';
+      tr.append(th);
+      across.forEach((_, b) => { const td = el('td'); td.append(at(a, b)); tr.append(td); });
+      grid.append(tr);
+    });
+    const all = cells.flat();
+    const text = () => f.rows.map((row, i) => `${row}: ${cells[i].map((c, j) => `${f.cols[j] ? `${f.cols[j]} ` : ''}${c.value.trim() || '?'}`).join(', ')}`).join('; ');
+    const result = el('div', 'answer-result');
+    result.setAttribute('aria-live', 'polite');
+    const check = el('button', '', 'Check');
+    check.type = 'submit';
+    const show = (ok, feedback) => { box.classList.add(ok ? 'right' : 'wrong'); result.replaceChildren(el('b', '', ok ? '✓ Right! ' : '✗ Not yet. '), feedback || ''); };
+    const mark = () => {
+      let right = 0;
+      cells.forEach((row, i) => row.forEach((c, j) => {
+        const want = f.answers[i][j], typed = c.value.trim();
+        const ok = /\d/.test(want) ? window.Calc?.equivalent?.(typed, want) === true : want.toLowerCase().split('|').includes(typed.toLowerCase().replace(/\.$/, ''));
+        c.classList.toggle('right', ok); c.classList.toggle('wrong', !ok);
+        right += ok;
+      }));
+      return right;
+    };
+    if (r0?.status === 'right' || r0?.status === 'wrong') { show(r0.status === 'right', r0.feedback); mark(); }
+    for (const input of all) input.addEventListener('input', () => {
+      const r = rec(id);
+      r.cells = cells.map((row) => row.map((c) => c.value));
+      r.answer = text();
+      r.status = all.some((c) => c.value.trim()) ? 'answered' : '';
+      delete r.feedback;
+      save(); render();
+      box.classList.remove('right', 'wrong');
+      input.classList.remove('right', 'wrong');
+      result.textContent = '';
+    });
+    box.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const empty = all.filter((c) => !c.value.trim()).length;
+      if (empty) { result.textContent = `Fill in every box first (${empty} empty).`; all.find((c) => !c.value.trim()).focus(); return; }
+      const right = mark();
+      const ok = right === all.length;
+      const feedback = ok ? '' : `${right} of ${all.length} boxes are right. Fix the ones marked in orange, or open Help for a hint.`;
+      const p = rec(id);
+      p.status = ok ? 'right' : 'wrong';
+      p.feedback = feedback;
+      const work = workLines(id);
+      p.tries.push({ answer: text(), correct: ok, t: Date.now(), ...(work.length ? { work } : {}) });
+      save(); render();
+      show(ok, feedback);
+    });
+    // Enter in a box moves to the next one; in the last box it checks.
+    const order = down.flatMap((_, a) => across.map((__, b) => at(a, b)));
+    order.forEach((c, k) => c.addEventListener('keydown', (e) => { if (e.key === 'Enter' && k < order.length - 1) { e.preventDefault(); order[k + 1].focus(); } }));
+    box.append(grid, check, result);
+    return box;
   }
 
   function answerBox(id, host, big, part = null) {

@@ -301,7 +301,24 @@
         "Mean = (sum of all the values) ÷ (how many values). Each class has 10 values.",
         "Example: 4, 6, 7, 3, 5. Sum = 25, and there are 5 values, so the mean is 25 ÷ 5 = 5.",
         "Class A: 8 + 2 + 12 + 5 + 9 + 4 + 12 + 6 + 5 + 7 = 70, and 70/10 = 7 books. Class B: 9 + 6 + 10 + 8 + 7 + 9 + 11 + 8 + 12 + 10 = 90, and 90/10 = 9 books."
-      ]
+      ],
+      "fields": {
+        "rows": [
+          "Class A",
+          "Class B"
+        ],
+        "cols": [
+          "Mean"
+        ],
+        "answers": [
+          [
+            "7"
+          ],
+          [
+            "9"
+          ]
+        ]
+      }
     },
     "II-15": {
       "lesson": "4.8",
@@ -311,7 +328,24 @@
         "Put each list in order first. With 10 values there are two middle numbers (the 5th and 6th), so the median is halfway between them.",
         "Example: 3, 4, 6, 8, 9, 10. The middle two are 6 and 8, so the median is (6 + 8) ÷ 2 = 7.",
         "Class A in order: 2, 4, 5, 5, 6, 7, 8, 9, 12, 12. Middle two are 6 and 7, so the median is 6.5. Class B in order: 6, 7, 8, 8, 9, 9, 10, 10, 11, 12. Middle two are 9 and 9, so the median is 9."
-      ]
+      ],
+      "fields": {
+        "rows": [
+          "Class A",
+          "Class B"
+        ],
+        "cols": [
+          "Median"
+        ],
+        "answers": [
+          [
+            "6.5"
+          ],
+          [
+            "9"
+          ]
+        ]
+      }
     },
     "II-16": {
       "lesson": "4.8",
@@ -331,7 +365,36 @@
         "The five numbers are: minimum, Q1, median, Q3, maximum. Q1 is the median of the lower half and Q3 is the median of the upper half.",
         "Example: 1, 3, 4, 6, 7, 8, 9, 11. Median = (6 + 7) ÷ 2 = 6.5. Lower half 1, 3, 4, 6 gives Q1 = 3.5. Upper half 7, 8, 9, 11 gives Q3 = 8.5. Summary: 1 ~ 3.5 ~ 6.5 ~ 8.5 ~ 11.",
         "Class A: lower half 2, 4, 5, 5, 6 gives Q1 = 5; upper half 7, 8, 9, 12, 12 gives Q3 = 9. Summary: 2 ~ 5 ~ 6.5 ~ 9 ~ 12. Class B: lower half 6, 7, 8, 8, 9 gives Q1 = 8; upper half 9, 10, 10, 11, 12 gives Q3 = 10. Summary: 6 ~ 8 ~ 9 ~ 10 ~ 12."
-      ]
+      ],
+      "fields": {
+        "rows": [
+          "Class A",
+          "Class B"
+        ],
+        "cols": [
+          "Min",
+          "Q1",
+          "Median",
+          "Q3",
+          "Max"
+        ],
+        "answers": [
+          [
+            "2",
+            "5",
+            "6.5",
+            "9",
+            "12"
+          ],
+          [
+            "6",
+            "8",
+            "9",
+            "10",
+            "12"
+          ]
+        ]
+      }
     },
     "II-18": {
       "lesson": "4.8",
@@ -341,7 +404,24 @@
         "Interquartile range (IQR) = Q3 − Q1. Use the five-number summaries from #17.",
         "Example: a summary of 1 ~ 3.5 ~ 6.5 ~ 8.5 ~ 11 has IQR = 8.5 − 3.5 = 5.",
         "Class A: 9 − 5 = 4. Class B: 10 − 8 = 2. (Max − min is the range, not the IQR.)"
-      ]
+      ],
+      "fields": {
+        "rows": [
+          "Class A",
+          "Class B"
+        ],
+        "cols": [
+          "IQR"
+        ],
+        "answers": [
+          [
+            "4"
+          ],
+          [
+            "2"
+          ]
+        ]
+      }
     },
     "II-19": {
       "lesson": "4.8",
@@ -351,7 +431,24 @@
         "Find how far each value is from the mean (always positive). Add those distances, then divide by 10.",
         "Example: 2, 4, 6, 8, mean 5. Distances: 3, 1, 1, 3. Sum 8, and 8 ÷ 4 = 2, so the MAD is 2.",
         "Class A (mean 7): distances 1, 5, 5, 2, 2, 3, 5, 1, 2, 0. Sum 26, MAD = 26/10 = 2.6 books. Class B (mean 9): distances 0, 3, 1, 1, 2, 0, 2, 1, 3, 1. Sum 14, MAD = 14/10 = 1.4 books."
-      ]
+      ],
+      "fields": {
+        "rows": [
+          "Class A",
+          "Class B"
+        ],
+        "cols": [
+          "MAD"
+        ],
+        "answers": [
+          [
+            "2.6"
+          ],
+          [
+            "1.4"
+          ]
+        ]
+      }
     },
     "II-20": {
       "lesson": "4.8",
