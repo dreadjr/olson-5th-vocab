@@ -49,7 +49,7 @@
       const meta = el('div', 'q-meta');
       meta.append(lessonChip(entry.lesson), readButton(host), keyInfoButton(host), solveButton(host, id, entry));
       host.prepend(meta);
-      answerSteps(host, entry);
+      answerSteps(host, id, entry);
       const box = answerBox(id, host, q.classList.contains('task'));
       host.append(box);
       works[id] = el('div', 'q-work');
@@ -465,7 +465,7 @@
     const steps = (entry.hints?.[2] || '').replace(/<[^>]+>/g, '').split(/(?<=[.!?])\s+(?=[A-Z0-9(“"])/).map((x) => x.trim()).filter(Boolean);
     return steps.length >= 2 ? steps : null;
   }
-  function stepper(steps, cls, first = 'Step by step') {
+  function stepper(steps, cls, first = 'Step by step', onConfused = null) {
     const wrap = el('div', cls);
     const btn = el('button', '', first);
     btn.type = 'button';
@@ -473,8 +473,19 @@
     let shown = 0;
     const next = () => {
       if (shown === steps.length) { list.replaceChildren(); shown = 0; } // "Start over"
-      const li = el('li', '', steps[shown++]);
-      stackFractions(li);
+      const text = steps[shown++];
+      const li = el('li');
+      const body = el('span', '', text);
+      stackFractions(body);
+      li.append(body);
+      if (onConfused) {
+        const huh = el('button', 'step-huh', 'I don’t get this step');
+        huh.type = 'button';
+        const out = el('div', 'step-help');
+        out.setAttribute('aria-live', 'polite');
+        huh.addEventListener('click', () => onConfused(text, out, huh));
+        li.append(' ', huh, out);
+      }
       list.append(li);
       btn.textContent = shown < steps.length ? `Next step (${shown + 1} of ${steps.length})` : 'Start over';
     };
@@ -482,10 +493,32 @@
     wrap.append(list, btn);
     return { wrap, next };
   }
-  function answerSteps(host, entry) {
+  function answerSteps(host, id, entry) {
     const anss = host.querySelectorAll(':scope .ans');
     const steps = walkSteps(entry);
-    if (anss.length && steps) anss[anss.length - 1].after(stepper(steps, 'ans-steps').wrap);
+    if (anss.length && steps) anss[anss.length - 1].after(stepper(steps, 'ans-steps', 'Step by step', confused(host, id, entry)).wrap);
+  }
+  // "I don't get this step": the tutor explains that one step; without it, the similar worked example from the hints.
+  function confused(host, id, entry) {
+    return async (stepText, out, btn) => {
+      if (!local) {
+        out.replaceChildren(el('b', '', 'A similar example: '));
+        const ex = el('span');
+        ex.innerHTML = entry.hints[1].replace(/^Example:\s*/, ''); // our own checked content from help.json
+        stackFractions(ex);
+        out.append(ex);
+        return;
+      }
+      btn.disabled = true;
+      out.textContent = '…';
+      try {
+        const r = await post('/api/ask', { page, id, step: 3, question: questionText(host),
+          message: `I don't understand this step of the solution: "${stepText}" Explain just this step in simpler words: what it does and why, with a tiny example using different numbers.` });
+        if (!r.ok) throw new Error();
+        out.textContent = (await r.text()).replace(/```[a-z]*\n?/g, '');
+        stackFractions(out);
+      } catch { out.textContent = 'The tutor isn’t available right now.'; } finally { btn.disabled = false; }
+    };
   }
   function solveButton(host, id, entry) {
     const b = el('button', 'q-tool', 'Step by step');
@@ -496,7 +529,7 @@
     let s = null;
     b.addEventListener('click', () => {
       if (!s) {
-        s = stepper(steps, 'solve-steps');
+        s = stepper(steps, 'solve-steps', 'Step by step', confused(host, id, entry));
         const head = el('div', 'solve-head', 'Solving it step by step');
         s.wrap.prepend(head);
         (host.querySelector(':scope > .answer') || host.querySelector('.answer') || host.lastElementChild).after(s.wrap);
