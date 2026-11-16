@@ -32,9 +32,9 @@ const dom = (path) => new Promise((resolve, reject) => {
 const count = (html, needle) => html.split(needle).length - 1;
 
 test('math forms get the study UI', { skip }, async () => {
-  for (const [page, questions] of [['b4-form-c', 32], ['b5-form-b', 24]]) {
+  for (const [page, questions] of [['b4-form-c', 33], ['b5-form-b', 27]]) {
     const html = await dom(`/math/${page}/`);
-    assert.equal(count(html, '<form class="answer'), questions, `${page}: an answer box per question`);
+    assert.equal(count(html, '<form class="answer'), questions, `${page}: an answer box per question (one per part a, b, …)`);
     assert.ok(count(html, 'class="q-tool"') >= questions * 2, `${page}: read aloud / key info / step by step`);
     assert.ok(html.includes('class="views"') && html.includes('class="calc-btn"'), `${page}: view switch and calculator`);
   }

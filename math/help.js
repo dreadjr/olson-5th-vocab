@@ -57,8 +57,11 @@
       meta.append(lessonChip(entry.lesson), readButton(host), keyInfoButton(host), watchButton(() => ({ title: `Watch it: ${entry.skill}`, question: boardQuestion(host), steps: walkSteps(entry) || [] }), !!walkSteps(entry), id), solveButton(host, id, entry), practiceButton(host, entry));
       host.prepend(meta);
       answerSteps(host, id, entry);
-      const box = answerBox(id, host, q.classList.contains('task'));
-      host.append(box);
+      // Questions with parts a, b, … get a box under each part; the question's mark combines them.
+      const parts = choices(host).length ? [] : [...host.querySelectorAll('ol.sub > li')];
+      let box;
+      if (parts.length > 1) parts.forEach((li, k) => { const b = answerBox(id, host, false, { letter: 'abcdefgh'[k], li }); li.append(b); box ||= b; });
+      else { box = answerBox(id, host, q.classList.contains('task')); host.append(box); }
       works[id] = el('div', 'q-work');
       works[id].hidden = true;
       host.append(works[id]);
@@ -247,7 +250,7 @@
     list.replaceChildren(...(tries.length ? tries.map((t) => {
       const off = qEls[t.id]?.hidden, n = qLesson[t.id];
       const li = el('li', `${t.correct ? 'right' : 'wrong'}${off ? ' off' : ''}`);
-      const a = el('a', '', labels[t.id] || t.id);
+      const a = el('a', '', (labels[t.id] || t.id) + (t.part || ''));
       a.href = `#q-${t.id}`;
       if (off) a.addEventListener('click', () => showLesson(n)); // show it again, then the link jumps to it
       a.addEventListener('click', () => { if (view === 'focus') go(t.id); });
@@ -774,17 +777,40 @@
     return copy.textContent.replace(/\s+/g, ' ').trim();
   }
 
-  function answerBox(id, host, big) {
+  // A part's key read straight off the answer key when it's one number: "40 plants" -> 40, "3,000 feet. The flat…" -> 3000,
+  // "… = 14/40 = 7/20" -> 7/20. Anything else (ratios, sentences) is left to the tutor.
+  function plainNum(s) { return s.replace(/(\d),(?=\d{3}\b)/g, '$1'); }
+  function partKey(li) {
+    const c = li.querySelector(':scope > .ans')?.cloneNode(true);
+    if (!c) return null;
+    c.querySelector('.src')?.remove();
+    c.querySelectorAll('.f').forEach((f) => { const [a, b] = [...f.children].map((x) => x.textContent.trim()); f.replaceWith(/^\d+$/.test(a) && /^\d+$/.test(b) ? `${a}/${b}` : '?'); });
+    const t = plainNum(c.textContent.replace(/\s+/g, ' ').trim());
+    const n = '(-?\\d+(?:\\.\\d+)?(?:/\\d+)?)';
+    const m = t.match(new RegExp(`^${n}\\s*(?:[a-z²]+(?:\\s+per\\s+[a-z]+)?)?\\s*(?:[.(]|$)`, 'i')) || t.match(new RegExp(`=\\s*${n}\\s*[a-z²]*\\.?$`, 'i'));
+    return m ? { answer: m[1], units: true } : null;
+  }
+
+  function answerBox(id, host, big, part = null) {
     const box = el('form', 'answer');
     const input = el(big ? 'textarea' : 'input');
     if (big) input.rows = 3;
     input.maxLength = 500;
-    const key = help.entries?.[id]?.answer ? { answer: help.entries[id].answer } : autoKey(host);
+    const key = part ? partKey(part.li) : help.entries?.[id]?.answer ? { answer: help.entries[id].answer } : autoKey(host);
+    // A part keeps its own answer in progress["II-8.a"]; checks and history go on the question.
+    const rid = part ? `${id}.${part.letter}` : id;
+    const name = part ? `${id} part ${part.letter}` : id;
+    const combine = () => {
+      if (!part) return;
+      const st = [...host.querySelectorAll('ol.sub > li')].map((_, k) => progress[`${id}.${'abcdefgh'[k]}`]?.status || '');
+      rec(id).status = st.every((x) => x === 'right') ? 'right' : st.includes('wrong') ? 'wrong' : st.some(Boolean) ? 'answered' : '';
+    };
     if (key?.letters) key.notes = help.entries?.[id]?.wrong || {};
     input.placeholder = key?.answer ? 'Your answer' : key ? 'Tap a choice or type it' : local ? 'Your answer' : 'Your answer (Check needs the tutor)';
     if (key?.answer) mathAnswer(input, box);
-    input.setAttribute('aria-label', `Your answer to ${id}`);
-    const r0 = progress[id];
+    input.setAttribute('aria-label', `Your answer to ${name}`);
+    if (part) input.placeholder = `Part ${part.letter}: ${input.placeholder.toLowerCase()}`;
+    const r0 = progress[rid];
     input.value = r0?.answer || '';
     const result = el('div', 'answer-result');
     result.setAttribute('aria-live', 'polite');
@@ -795,10 +821,11 @@
     };
     if (r0?.status === 'right' || r0?.status === 'wrong') showResult(r0.status === 'right', r0.feedback);
     input.addEventListener('input', () => {
-      const r = rec(id);
+      const r = rec(rid);
       r.answer = input.value;
       r.status = input.value.trim() ? 'answered' : '';
       delete r.feedback;
+      combine();
       save(); render();
       box.classList.remove('right', 'wrong');
       result.textContent = '';
@@ -818,21 +845,25 @@
       try {
         let correct, feedback;
         if (key?.answer) {
-          const same = window.Calc?.equivalent?.(answer, key.answer);
+          // a part's key may have units ("40 plants"): read "40 plants" or "3,000 feet" as the number
+          const typed = key.units ? plainNum(answer).replace(/^(-?[\d.\/\s]+?)\s*[a-z²][a-z²\s]*\.?$/i, '$1') : answer;
+          const same = window.Calc?.equivalent?.(typed, key.answer);
           if (same == null) { result.textContent = 'I can’t read that as a number yet. Try something like 3/10, 0.3, (2, −5) or y = 3x.'; return; }
           correct = same;
           feedback = same ? '' : 'Not the same value. Check each step, or open Help for a hint.';
         } else if (key) ({ correct, feedback } = autoCheck(key, answer));
         else {
-          const r = await post('/api/check', { page, id, question: questionText(host), answer, work: workLines(id) });
+          const question = questionText(host) + (part ? ` (Check only part ${part.letter}: ${questionText(part.li)})` : '');
+          const r = await post('/api/check', { page, id, question, answer, work: workLines(id) });
           if (!r.ok) throw new Error();
           ({ correct, feedback } = await r.json());
         }
-        const p = rec(id);
+        const p = rec(rid);
         p.status = correct ? 'right' : 'wrong';
         p.feedback = feedback;
         const work = workLines(id);
-        p.tries.push({ answer, correct, t: Date.now(), ...(work.length ? { work } : {}) });
+        rec(id).tries.push({ answer, correct, t: Date.now(), ...(part ? { part: part.letter } : {}), ...(work.length ? { work } : {}) });
+        combine();
         save(); render();
         showResult(correct, feedback);
       } catch {
