@@ -8,7 +8,12 @@
         "Experimental probability uses what really happened: (times it happened) ÷ (total tries). Write that fraction, simplify it, then turn it into a percent.",
         "Example: Mia made 12 of her 20 free throws. P(make) = 12/20 = 3/5 = 0.6 = 60%. Count on top, total on the bottom, then change to a percent.",
         "Leo hit 18 of 24 arrows, so P(hit) = 18/24. Divide top and bottom by 6: 3/4 = 0.75 = 75%. The answer is D. (18% and 24% just copy the numbers from the problem; they are not percents of anything.)"
-      ]
+      ],
+      "wrong": {
+        "A": "You used the number of hits, 18, and just put a percent sign on it instead of comparing hits to total arrows out of 100.",
+        "B": "You used the total number of arrows, 24, as the percent instead of figuring out what part of the arrows were hits.",
+        "C": "You may have divided the hits by a different number than the total arrows, or rounded the fraction to a friendlier-looking percent instead of dividing exactly."
+      }
     },
     "I-2": {
       "lesson": "4.2",
@@ -28,7 +33,12 @@
         "A whole pie chart is 360°. What fraction of the 45 students chose Sports? The Sports sector gets that same fraction of 360°.",
         "Example: 10 of 40 students chose pizza. 10/40 = x/360, so 40x = 3,600 and x = 90°. The pizza sector is a quarter of the circle.",
         "Sports: 18/45 = x/360, so 45x = 6,480 and x = 144°. The answer is A. Check: Video games 120° + Reading 96° + 144° = 360°. (18° just uses the number of students, not degrees.)"
-      ]
+      ],
+      "wrong": {
+        "B": "You may have divided 18 by 45 and then turned it into a percent-like number, or used 40 as the degrees instead of finding the fraction of 360.",
+        "C": "You may have just used the number of students who chose sports as the degrees, without turning the fraction into part of 360.",
+        "D": "You may have multiplied 18 by 9 or used the wrong total, so the sector came out too big."
+      }
     },
     "I-4": {
       "lesson": "4.4",
@@ -38,7 +48,12 @@
         "June keeps each card, so there is one fewer card each draw. How many cards could come 1st, 2nd, 3rd and 4th? Multiply to count all the orders.",
         "Example: 3 cards, A, B and C, drawn and kept. 3 · 2 · 1 = 6 possible orders (ABC, ACB, BAC, BCA, CAB, CBA). Only one is ABC, so P(ABC) = 1/6.",
         "4 cards could come first, then 3, then 2, then 1: 4 · 3 · 2 · 1 = 24 orders. Only one is W, I, N, D, so P = 1/24. The answer is C. (1/256 = 1/4 · 1/4 · 1/4 · 1/4 would only be right if she put each card back.)"
-      ]
+      ],
+      "wrong": {
+        "D": "You multiplied 1/4 four times, as if each card goes back in the pile, but kept cards are gone so the choices shrink each draw.",
+        "A": "You only thought about the first card being right, but all four spots have to match, not just one.",
+        "B": "You squared 4 or multiplied 4 · 4, but after each draw there is one fewer card left, so the number of choices drops."
+      }
     },
     "I-5": {
       "lesson": "4.5",
@@ -58,7 +73,12 @@
         "After a student wins first place, can that same student also win second? How many students are left for second, and then for third?",
         "Example: 6 runners in a race, medals for 1st and 2nd. Any of the 6 can be 1st, then 5 are left for 2nd: 6 · 5 = 30 ways. Each place has one fewer choice.",
         "7 students can win first, then 6 are left for second and 5 for third: 7 · 6 · 5 = 210 ways. The answer is A. (343 = 7 · 7 · 7 would let one student win more than one ribbon.)"
-      ]
+      ],
+      "wrong": {
+        "B": "You may have added 7 + 7 + 7 instead of thinking about how many choices there are for each ribbon, so the answer came out way too small.",
+        "C": "You let the same student win every ribbon, so you used 7 for each place, but one student can't win more than one ribbon.",
+        "D": "You multiplied all the way down from 7 to 1, but only three ribbons are given out, so you should stop after three numbers."
+      }
     },
     "I-7": {
       "lesson": "4.5",
@@ -68,7 +88,12 @@
         "A good simulation has the same probability as the real thing. Find P(prize) for each choice. Which one equals 1/3?",
         "Example: a player makes 1/4 of her shots. A spinner with 4 equal parts where 1 part means \"make\" is a good model, because P(make) = 1/4.",
         "A: 1/2. B: a 1 or 2 is 2 of 6 outcomes, so 2/6 = 1/3 ✓. C: 1/6. D: 3 of 4 slips, so 3/4. The answer is B. (D uses the numbers 3 and 1, but 3 prize slips out of 4 is 3/4, not 1/3.)"
-      ]
+      ],
+      "wrong": {
+        "A": "You may have thought a coin is fine because it's simple, but a coin has only two outcomes that are equally likely, so it doesn't match 1 out of 3.",
+        "C": "You picked just one number for a prize, but that makes the chance 1 out of 6, which is smaller than 1 out of 3.",
+        "D": "You counted prize slips against no-prize slips, but the chance should compare prizes to all the slips, and here that's far more than 1 out of 3."
+      }
     },
     "I-8": {
       "lesson": "4.6",
@@ -78,7 +103,12 @@
         "A fair sample gives every person in town the same chance to be picked. Who could Owen pick, and how might they feel about soccer fields?",
         "Example: asking people at a bookstore whether the town needs a new library is biased: book lovers are more likely to say yes. Picking random names from the whole town is fair.",
         "Only people at a soccer game could be chosen, and soccer fans are more likely to want soccer fields. The sample does not represent everyone in town, so the answer is C. (50 people is not too many, and the time of day isn't the problem.)"
-      ]
+      ],
+      "wrong": {
+        "A": "You may think a bigger sample is a problem, but asking more people usually helps, so the number of people isn't what makes it unfair.",
+        "B": "You may be thinking about people not answering, but that can happen in any survey and isn't what makes the group unfair.",
+        "D": "You may think the time of day matters most, but the problem is about who gets asked, not when the asking happens."
+      }
     },
     "I-9": {
       "lesson": "4.7",
@@ -88,7 +118,12 @@
         "Change each count to a percent of the 80 students. A strong inference matches the data without stretching it. Be careful with words like \"almost all\" and \"exactly\".",
         "Example: in a random sample of 50, 30 like dogs best (60%). \"Most students like dogs best\" is strong. \"Almost all like dogs\" is too big a claim, and \"exactly 60% of the school\" is too exact for a sample.",
         "Bus: 44/80 = 55%, which is more than half, so B is strong. A: 55% is not \"almost all\". C: car or walk/bike is 24 + 12 = 36 of 80 = 45%, less than half. D: a sample can't give an exact percent for the whole school. The answer is B."
-      ]
+      ],
+      "wrong": {
+        "A": "You may have seen that bus is the biggest group and treated 'more than half' like it means 'almost everybody.'",
+        "C": "You may have added up the car, walk, and bike groups and thought that total was bigger than it really is, or not compared it to half.",
+        "D": "You may have treated the sample's percent as the exact percent for the whole school, but a small random group only gives an estimate."
+      }
     },
     "I-10": {
       "lesson": "4.8",
@@ -98,7 +133,12 @@
         "Before you look for the middle number, what must you do to the list first? Then count to the middle of the 7 values.",
         "Example: 10, 3, 7, 1, 5. In order: 1, 3, 5, 7, 10. The middle value is 5, so the median is 5, not 7 (the middle of the unsorted list).",
         "In order: 4, 6, 8, 9, 11, 12, 15. The 4th of 7 values is 9, so the median is 9 and Tess forgot to order the list. The answer is D. (B's 9.3 is the mean, and a median does not need repeats.)"
-      ]
+      ],
+      "wrong": {
+        "A": "You picked the number in the middle of the list as it was written, but the numbers need to be lined up from smallest to biggest first.",
+        "B": "You added everything up and divided by how many numbers there are, which finds the average, not the middle number.",
+        "C": "You thought a number has to repeat to have a middle value, but repeating numbers is about a different idea, not the median."
+      }
     },
     "I-11": {
       "lesson": "4.8",
@@ -108,7 +148,12 @@
         "Put each list in order first. Then find the mode (the most common value or values), the range (largest − smallest) and the median (the middle value). Test each choice.",
         "Example: 2, 4, 4, 5, 7, 7, 8. Modes 4 and 7 (a set can have two modes), range 8 − 2 = 6, median 5.",
         "Lily: 3, 4, 6, 7, 9, 9, 9 → mode 9, range 6, median 7. Noah: 2, 5, 5, 6, 8, 8, 9 → modes 5 and 8, range 7, median 6. A is true. B is false (Noah's range is 7), C is false (7 − 6 = 1), D is false (Noah has two modes). The answer is A."
-      ]
+      ],
+      "wrong": {
+        "B": "You may have found the range for Lily only, or took the biggest minus smallest wrong for one list, so the ranges look the same when they differ.",
+        "C": "You may have picked the middle number without putting the list in order first, so the medians came out wrong.",
+        "D": "You may have thought a mode needs a number to show up more than twice, so you missed the repeated numbers in the list."
+      }
     },
     "II-1": {
       "lesson": "4.1",

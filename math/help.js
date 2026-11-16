@@ -582,7 +582,8 @@
     if (key.letters) {
       const got = new Set(answer.toUpperCase().match(/\b[A-H]\b/g) || []);
       const ok = got.size === key.letters.size && [...got].every((l) => key.letters.has(l));
-      return { correct: ok, feedback: ok ? '' : key.letters.size > 1 ? 'Look at each choice again: one of yours is off, or one is missing. Help has a hint.' : 'Try another choice, or open Help for a hint.' };
+      const note = got.size === 1 && key.notes?.[[...got][0]]; // why that wrong choice is tempting (help.json "wrong")
+      return { correct: ok, feedback: ok ? '' : note ? `${note} Try again.` : key.letters.size > 1 ? 'Look at each choice again: one of yours is off, or one is missing. Help has a hint.' : 'Try another choice, or open Help for a hint.' };
     }
     const got = Object.fromEntries([...answer.matchAll(/(\d+[a-z])\s*(YES|NO)/gi)].map((m) => [m[1].toLowerCase(), m[2].toUpperCase()]));
     const wrong = Object.keys(key.rows).filter((k) => got[k] !== key.rows[k]);
@@ -634,6 +635,7 @@
     if (big) input.rows = 3;
     input.maxLength = 500;
     const key = help.entries?.[id]?.answer ? { answer: help.entries[id].answer } : autoKey(host);
+    if (key?.letters) key.notes = help.entries?.[id]?.wrong || {};
     input.placeholder = key?.answer ? 'Your answer' : key ? 'Tap a choice or type it' : local ? 'Your answer' : 'Your answer (Check needs the tutor)';
     if (key?.answer) mathAnswer(input, box);
     input.setAttribute('aria-label', `Your answer to ${id}`);

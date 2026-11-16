@@ -46,3 +46,11 @@ test('clean answers must match the key', async () => {
   assert.ok(helpErrors(page, { entries: { 'I-1': { ...base, answer: '81' } } }, lessons)[0].includes('answer key'));
   assert.ok(helpErrors(page, { entries: { 'I-1': { ...base, answer: 'lots' } } }, lessons)[0].includes('can read'));
 });
+
+test('wrong-choice notes: letters only, never for the right answer', () => {
+  const page = '<section class="part"><div class="q"><span class="n">1.</span><div class="ans">C (= 72)</div></div></section>';
+  const base = { lesson: '4.5', tag: 't', skill: 's', hints: ['a', 'b', 'c'] };
+  assert.deepEqual(helpErrors(page, { entries: { 'I-1': { ...base, wrong: { D: '9 · 9 lets the same dog win twice.' } } } }, lessons), []);
+  assert.ok(helpErrors(page, { entries: { 'I-1': { ...base, wrong: { C: 'x' } } } }, lessons)[0].includes('right answer'));
+  assert.ok(helpErrors(page, { entries: { 'I-1': { ...base, wrong: { Z: 'x' } } } }, lessons)[0].includes('choice letter'));
+});

@@ -8,7 +8,12 @@
         "An ordered pair is (x, y): first how far left or right of the origin, then how far up or down. Left and down are negative.",
         "Example: a point sits 4 units right of the origin and 3 units down. Right is positive, down is negative, so the point is (4, −3).",
         "Point K is 3 units left of the origin, so x = −3. It is 2 units up, so y = 2. The point is (−3, 2), answer C. Trap: D, (−2, 3), swaps the order; x always comes first."
-      ]
+      ],
+      "wrong": {
+        "A": "You went right for the x-number and down for the y-number, but the point is on the other side of the origin for both.",
+        "B": "You swapped the order, using the y-number first, and you also went the wrong way on both of the numbers.",
+        "D": "You put the y-number first and the x-number second, so you went up and left in the wrong order."
+      }
     },
     "I-2": {
       "lesson": "5.2",
@@ -28,7 +33,12 @@
         "For direct variation, divide y by x for each pair (skip (0, 0)). If every ratio is the same, that number is the rate.",
         "Example: x = 1, 2, 3 and y = 4, 8, 12. 4 ÷ 1 = 4, 8 ÷ 2 = 4, 12 ÷ 3 = 4. Every ratio is 4, and (0, 0) fits, so the rate is 4.",
         "7 ÷ 1 = 7, 14 ÷ 2 = 7, 21 ÷ 3 = 7, 28 ÷ 4 = 7. Every ratio is 7 and the table includes (0, 0), so it is direct variation with rate 7. The answer is C. Trap: 1/7 is x ÷ y, upside down."
-      ]
+      ],
+      "wrong": {
+        "A": "You flipped the ratio and divided x by y, so you found how much x changes for each y instead of how much y changes for each x.",
+        "B": "You picked one of the y-values from the table instead of finding how much y goes up for each 1 that x goes up.",
+        "D": "You may have thought the table doesn't fit because the numbers keep growing, but direct variation just needs y to stay a constant multiple of x."
+      }
     },
     "I-4": {
       "lesson": "5.4",
@@ -38,7 +48,12 @@
         "A direct variation equation is y = mx. Find m by dividing y by x for any pair other than (0, 0).",
         "Example: x = 0, 3, 6 and y = 0, 12, 24. m = 12 ÷ 3 = 4, and 24 ÷ 6 = 4 checks. The equation is y = 4x.",
         "Use (2, 10): m = 10 ÷ 2 = 5. Check another pair: 40 ÷ 8 = 5. So y = 5x, answer B. Trap: A uses the 10 from the table without dividing by x, and C is just the step between x-values."
-      ]
+      ],
+      "wrong": {
+        "A": "You probably grabbed the first y-number you saw (10) as the multiplier, but you need to divide y by its matching x to find it.",
+        "C": "You probably used the first x-number from the table as the multiplier, but the multiplier comes from dividing a y-value by its matching x-value.",
+        "D": "You likely flipped the division and did x ÷ y, but the constant of variation is found by doing y ÷ x."
+      }
     },
     "I-5": {
       "lesson": "5.5",
@@ -68,7 +83,12 @@
         "In y = mx, the slope is m, the number multiplying x. Then write that decimal as a fraction in lowest terms.",
         "Example: y = 0.25x has slope 0.25 = 25/100. Divide top and bottom by 25 to get 1/4.",
         "The number multiplying x is 0.6. 0.6 = 6/10, and dividing top and bottom by 2 gives 3/5. The answer is B. Trap: D, 5/3, is the fraction flipped over."
-      ]
+      ],
+      "wrong": {
+        "A": "You dropped the decimal point and read 0.6 as just 6, forgetting that 0.6 is only six tenths.",
+        "C": "You dropped the decimal point to get 6, then flipped it upside down into a fraction with 6 on the bottom.",
+        "D": "You turned 0.6 into a fraction correctly, but then flipped it upside down by putting the bottom number on top."
+      }
     },
     "I-8": {
       "lesson": "5.4",
@@ -78,7 +98,12 @@
         "Find a point on the line where it crosses grid corners exactly. Since the line goes through the origin, m = y ÷ x for that point, and the equation is y = mx.",
         "Example: a line through (0, 0) and (4, 3). m = 3 ÷ 4 = 3/4, so the equation is y = 3/4 · x.",
         "The line goes through (0, 0) and (3, 2). m = 2 ÷ 3 = 2/3, and the line rises, so m is positive. The equation is y = 2/3 · x, answer D. Trap: A, 3/2, divides x by y instead of y by x; B has the wrong sign because the line goes up, not down."
-      ]
+      ],
+      "wrong": {
+        "A": "You flipped the fraction, dividing run by rise (3 ÷ 2) instead of rise by run (2 ÷ 3).",
+        "B": "You got the slope fraction right but added a negative sign, even though the line goes up from left to right.",
+        "C": "You may have used just the y-value 2 as the slope instead of dividing the rise by the run."
+      }
     },
     "II-1": {
       "lesson": "5.1",

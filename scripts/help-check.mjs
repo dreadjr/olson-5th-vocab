@@ -49,6 +49,14 @@ export function helpErrors(html, help, lessons) {
     if (!Array.isArray(e.hints) || e.hints.length !== 3 || e.hints.some((h) => typeof h !== 'string' || !h.trim())) errs.push(`${id}: needs exactly 3 hints`);
     if (!lessons[e.lesson]) errs.push(`${id}: lesson "${e.lesson}" is not in math/lessons.json`);
     if (!e.tag || !e.skill) errs.push(`${id}: needs a tag and a skill`);
+    if (e.wrong !== undefined) {
+      const right = (keys[id] || '').replace(/<span class="src">[^<]*<\/span>/g, '').replace(/<[^>]+>/g, ' ').trim().match(/^([A-H])(?![a-z])/)?.[1];
+      for (const [l, note] of Object.entries(e.wrong || {})) {
+        if (!/^[A-H]$/.test(l)) errs.push(`${id}: "wrong" has a key "${l}" that isn't a choice letter`);
+        else if (l === right) errs.push(`${id}: "wrong" has a note for ${l}, the right answer`);
+        if (typeof note !== 'string' || !note.trim() || note.length > 220) errs.push(`${id}: "wrong" note for ${l} must be 1 to 220 characters`);
+      }
+    }
     if (e.answer !== undefined) {
       if (typeof e.answer !== 'string' || !e.answer.trim() || e.answer.length > 40) errs.push(`${id}: "answer" must be a short string`);
       else if (equivalent(e.answer, e.answer) !== true) errs.push(`${id}: "answer" ${e.answer} isn't math the checker can read`);

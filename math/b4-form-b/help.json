@@ -8,7 +8,12 @@
         "Experimental probability uses what really happened: (times it happened) ÷ (total tries). How many seeds sprouted, and how many seeds did Marcus plant?",
         "Example: Lena shot 50 free throws and made 35. P(make) = 35/50 = 7/10. Count on top, total on the bottom, then simplify.",
         "28 of the 40 seeds sprouted, so P(sprout) = 28/40. Divide top and bottom by 4: 28/40 = 7/10. The answer is B. (3/10 is the chance a seed does NOT sprout.)"
-      ]
+      ],
+      "wrong": {
+        "A": "You found the chance a seed did NOT sprout (12 out of 40) instead of the chance it did sprout.",
+        "C": "You may have compared sprouted seeds to seeds that did not sprout, or mixed up which numbers go on top and bottom.",
+        "D": "You might have rounded or guessed close to the number sprouted instead of simplifying the sprouted-to-total fraction correctly."
+      }
     },
     "I-2": {
       "lesson": "4.2",
@@ -28,7 +33,12 @@
         "The pie chart is a sample of 40 students. What fraction of them chose birds? Expect about the same fraction in a bigger group.",
         "Example: 12 of 60 people in a pie chart chose pizza, so P(pizza) = 12/60 = 1/5. For 250 people, predict 1/5 · 250 = 50.",
         "Birds: 8 of 40 = 8/40 = 1/5. For 300 students: 1/5 · 300 = 60 students. The answer is C. (2,400 comes from 8 · 300, which forgets to divide by the 40 in the sample.)"
-      ]
+      ],
+      "wrong": {
+        "A": "You probably just counted the birds in the first group of 40 and stopped, without scaling up to the bigger group of students.",
+        "B": "You probably picked the total number of students Nadia first asked instead of working out how many birds would be chosen.",
+        "D": "You probably multiplied the number of birds by 300 instead of finding what part of the students picked birds and using that part."
+      }
     },
     "I-4": {
       "lesson": "4.4",
@@ -38,7 +48,12 @@
         "List every order for three children, using B and G (BBB, BBG, ...). Then mark the ones with exactly two G's, no more and no less.",
         "Example: flip a coin 3 times. Outcomes: HHH, HHT, HTH, HTT, THH, THT, TTH, TTT (8 in all). Exactly one heads: HTT, THT, TTH, so 3.",
         "There are 2 · 2 · 2 = 8 orders. Exactly two girls: BGG, GBG, GGB. That's 3, so the answer is B. (GGG has three girls, so it does not count.)"
-      ]
+      ],
+      "wrong": {
+        "A": "You probably only counted some of the orders and stopped early, missing that the two girls can sit in different spots among the three kids.",
+        "C": "You may have counted a list of outcomes that looked right but included one that doesn't have exactly two girls, or added an extra one by mistake.",
+        "D": "You probably counted every possible order of boys and girls instead of only the ones with exactly two girls."
+      }
     },
     "I-5": {
       "lesson": "4.4",
@@ -58,7 +73,12 @@
         "After one student becomes president, can that same student also be vice president? How many students are left to choose from?",
         "Example: 6 runners race for gold and silver. Any of the 6 can win gold, then 5 are left for silver: 6 · 5 = 30 ways. Each place has one fewer choice, because nobody wins twice.",
         "8 students can be president. That student is out, so 7 can be vice president. 8 · 7 = 56 ways, answer C. (64 = 8 · 8 would let the same student hold both offices.)"
-      ]
+      ],
+      "wrong": {
+        "A": "You may have added 8 and 7 instead of thinking about how many ways each office can be filled one after the other.",
+        "B": "You may have multiplied 8 by 2 because there are two offices, instead of counting the choices for each office.",
+        "D": "You may have multiplied 8 by 8, forgetting that a person who wins one office can't also be picked for the other."
+      }
     },
     "I-7": {
       "lesson": "4.5",
@@ -68,7 +88,12 @@
         "How many choices does each digit have? Digits can repeat. How many codes are possible, and how many of them are 1111?",
         "Example: a 3-letter tag where each letter is X or Y, and letters can repeat. 2 · 2 · 2 = 8 tags. Only one is XXX, so P(XXX) = 1/8.",
         "Each of the 4 digits has 3 choices (1, 2 or 3): 3 · 3 · 3 · 3 = 81 codes. Only one is 1111, so P = 1/81. The answer is A. (1/12 comes from 3 · 4, which adds the choices instead of multiplying them.)"
-      ]
+      ],
+      "wrong": {
+        "B": "You may have thought each digit has 4 choices because the code has four digits, so you multiplied 4 · 4 · 4 instead of counting the digit options.",
+        "C": "You may have added 3 + 3 + 3 + 3 to get the total number of codes instead of multiplying the choices for each spot.",
+        "D": "You may have only looked at one digit, thinking about the chance of picking one number out of 3, and forgot the other digits."
+      }
     },
     "I-8": {
       "lesson": "4.6",
@@ -78,7 +103,12 @@
         "A fair sample gives every student at the school the same chance to be picked. Which choices only reach a certain kind of student?",
         "Example: to learn which new park game kids want, asking only the soccer team is biased: they like soccer. Drawing names from a list of all kids in town is fair.",
         "The cooking club already loves food, the suggestion box only gets volunteers, and eighth graders leave out the other grades. Drawing 60 names from a list of all students is fair, so the answer is B."
-      ]
+      ],
+      "wrong": {
+        "A": "You picked kids who all love cooking, but they probably like different foods than most students, so they don't speak for everyone.",
+        "C": "You picked kids who hurry to turn in a form, but those kids might care more than others, so it isn't a fair mix of everybody.",
+        "D": "You picked only one grade, but kids in other grades might like different lunches, so the sample leaves out many students."
+      }
     },
     "I-9": {
       "lesson": "4.7",
@@ -88,7 +118,12 @@
         "Check each statement against the numbers. The weakest inference is the one the data does NOT support. For \"more than half\", find half of 60 first.",
         "Example: 50 students chose a color: blue 22, red 18, green 10. \"Blue is most popular\" is strong. \"Most students chose blue\" is weak, because 22 is less than half of 50 (25).",
         "A: summer's 27 is the most ✓. B: fall 9 = winter 9 ✓. C: spring 15 > winter 9 ✓. D: half of 60 is 30, and 27 is less than 30 (only 45%) ✗. D is the weakest, so the answer is D."
-      ]
+      ],
+      "wrong": {
+        "A": "You may have misread the bar heights or the scale, so you thought summer's bar wasn't really taller than the others.",
+        "B": "You may have read the two bars slightly differently, like by guessing instead of checking the scale, and thought their heights didn't match.",
+        "C": "You may have mixed up which bar was taller, or misread the numbers for spring and winter, so the comparison seemed unsupported."
+      }
     },
     "I-10": {
       "lesson": "4.8",
@@ -98,7 +133,12 @@
         "Mean absolute deviation (MAD) is how far the values are from the mean, on average. Both means are 33. Which set's values stay closer to 33?",
         "Example: Set X runs from 48 to 52 and Set Y runs from 20 to 80, both with mean 50. Every value in X is within 2 of 50, but Y has values 30 away, so X has the smaller MAD.",
         "Set P goes from 30 to 36, so every value is within 3 of 33. Set Q goes from 10 to 58, with values more than 20 away. Set P is less spread out, so it has the smaller MAD. The answer is A. (The equal means don't make the MADs equal.)"
-      ]
+      ],
+      "wrong": {
+        "B": "You may have thought the set with the bigger range or the larger numbers must be less spread out, but spread is about distance from the mean.",
+        "C": "You may have thought the same mean means the same spread, but the mean only tells the center, not how far values are from it.",
+        "D": "You may have thought you need every single value, but the five-number summary already shows how far the values stretch from the center."
+      }
     },
     "I-11": {
       "lesson": "4.8",
@@ -108,7 +148,12 @@
         "The median is the middle value, but only after you put the numbers in order. With 7 values, the median is the 4th one.",
         "Example: 8, 3, 6, 9, 5 in order is 3, 5, 6, 8, 9. The middle (3rd) value is 6, so the median is 6.",
         "Ava in order: 9, 9, 10, 11, 12, 14, 15, median 11. Ben in order: 7, 8, 10, 12, 13, 13, 16, median 12. Ben's is 1 point greater, so the answer is B. (Taking the 4th number without sorting gives 10 and 10, which looks like D.)"
-      ]
+      ],
+      "wrong": {
+        "A": "You likely found the gap between the medians but flipped who has the bigger one, so check whose middle number is larger.",
+        "C": "You probably slipped when ordering or finding the middle in one list, which made the gap look bigger than it really is.",
+        "D": "You likely grabbed the middle number of each list as written without putting the scores in order from least to greatest first."
+      }
     },
     "II-1": {
       "lesson": "4.1",
