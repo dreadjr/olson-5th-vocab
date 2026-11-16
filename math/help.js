@@ -47,7 +47,7 @@
       (n || q).prepend(marks[id]);
       const host = q.classList.contains('task') ? q : q.lastElementChild;
       const meta = el('div', 'q-meta');
-      meta.append(lessonChip(entry.lesson), readButton(host), keyInfoButton(host));
+      meta.append(lessonChip(entry.lesson), readButton(host), keyInfoButton(host), solveButton(host, id, entry));
       host.prepend(meta);
       answerSteps(host, entry);
       const box = answerBox(id, host, q.classList.contains('task'));
@@ -370,7 +370,7 @@
 
   // Answer choices: sibling elements whose text starts "A. ", "B. " … (a .ch list or a grid of spans), with their letters.
   function choices(host) {
-    const skip = '.ans, .help, .answer, .q-meta, .helpbtn';
+    const skip = '.ans, .help, .answer, .q-meta, .helpbtn, .solve-steps, .ans-steps';
     const letter = (e) => !e.closest(skip) && e.textContent.trim().match(/^([A-H])\.(\s|$)/)?.[1];
     const out = [];
     for (const e of host.querySelectorAll('li, span, div, p')) {
@@ -383,7 +383,7 @@
   // ---- Read aloud: the question and its choices, with math said the way a teacher says it.
   function speechText(host) {
     const copy = host.cloneNode(true);
-    copy.querySelectorAll('.ans, .help, .helpbtn, .answer, .q-meta, .q-work, svg, .ans-steps').forEach((x) => x.remove());
+    copy.querySelectorAll('.ans, .help, .helpbtn, .answer, .q-meta, .q-work, svg, .ans-steps, .solve-steps').forEach((x) => x.remove());
     copy.querySelectorAll('.f').forEach((f) => { const [a, b] = [...f.children].map((c) => c.textContent); f.replaceWith(` ${a} over ${b} `); });
     copy.querySelectorAll('li, p, tr, div').forEach((n) => n.append('. ')); // pause between choices and lines
     return copy.textContent
@@ -435,7 +435,7 @@
     return b;
   }
   function markKeyInfo(host) {
-    const skip = '.ans, .help, .helpbtn, .answer, .q-meta, .q-work, .ans-steps, svg, .f, mark, button';
+    const skip = '.ans, .help, .helpbtn, .answer, .q-meta, .q-work, .ans-steps, .solve-steps, svg, .f, mark, button';
     host.querySelectorAll('.f').forEach((f) => { if (!f.closest('.ans, .help, .answer')) f.classList.add('key-num'); });
     const walker = document.createTreeWalker(host, NodeFilter.SHOW_TEXT);
     const texts = [];
@@ -459,28 +459,53 @@
     }
   }
 
-  // ---- Answer key, step by step: the "This problem" walkthrough, one step at a time (shows with Show answers).
-  function answerSteps(host, entry) {
-    const anss = host.querySelectorAll(':scope .ans');
-    const last = anss[anss.length - 1];
-    const walk = entry.hints?.[2];
-    if (!last || !walk) return;
-    const steps = walk.replace(/<[^>]+>/g, '').split(/(?<=[.!?])\s+(?=[A-Z0-9(“"])/).map((x) => x.trim()).filter(Boolean);
-    if (steps.length < 2) return;
-    const wrap = el('div', 'ans-steps');
-    const btn = el('button', '', 'Step by step');
+  // ---- Step by step: the "This problem" walkthrough, one step at a time. Two places use it: the tool row on
+  // each question (open any time) and the answer key (with Show answers).
+  function walkSteps(entry) {
+    const steps = (entry.hints?.[2] || '').replace(/<[^>]+>/g, '').split(/(?<=[.!?])\s+(?=[A-Z0-9(“"])/).map((x) => x.trim()).filter(Boolean);
+    return steps.length >= 2 ? steps : null;
+  }
+  function stepper(steps, cls, first = 'Step by step') {
+    const wrap = el('div', cls);
+    const btn = el('button', '', first);
     btn.type = 'button';
     const list = el('ol');
     let shown = 0;
-    btn.addEventListener('click', () => {
+    const next = () => {
       if (shown === steps.length) { list.replaceChildren(); shown = 0; } // "Start over"
       const li = el('li', '', steps[shown++]);
       stackFractions(li);
       list.append(li);
       btn.textContent = shown < steps.length ? `Next step (${shown + 1} of ${steps.length})` : 'Start over';
-    });
+    };
+    btn.addEventListener('click', next);
     wrap.append(list, btn);
-    last.after(wrap);
+    return { wrap, next };
+  }
+  function answerSteps(host, entry) {
+    const anss = host.querySelectorAll(':scope .ans');
+    const steps = walkSteps(entry);
+    if (anss.length && steps) anss[anss.length - 1].after(stepper(steps, 'ans-steps').wrap);
+  }
+  function solveButton(host, id, entry) {
+    const b = el('button', 'q-tool', 'Step by step');
+    b.type = 'button';
+    b.setAttribute('aria-expanded', 'false');
+    const steps = walkSteps(entry);
+    if (!steps) { b.hidden = true; return b; }
+    let s = null;
+    b.addEventListener('click', () => {
+      if (!s) {
+        s = stepper(steps, 'solve-steps');
+        const head = el('div', 'solve-head', 'Solving it step by step');
+        s.wrap.prepend(head);
+        (host.querySelector(':scope > .answer') || host.querySelector('.answer') || host.lastElementChild).after(s.wrap);
+        s.next();
+        if (local) post('/api/log', { page, id, step: 3 }).catch(() => {});
+      } else s.wrap.hidden = !s.wrap.hidden;
+      b.setAttribute('aria-expanded', String(!s.wrap.hidden));
+    });
+    return b;
   }
 
   // Questions with one clean answer (help.json "answer") get a MathLive field on first tap: fractions stack as you type.
@@ -566,7 +591,7 @@
   // The question's own text, without the key, help or answer box, for the tutor.
   function questionText(host) {
     const copy = host.cloneNode(true);
-    copy.querySelectorAll('.ans, .help, .helpbtn, .answer, .q-meta, .q-work').forEach((x) => x.remove());
+    copy.querySelectorAll('.ans, .help, .helpbtn, .answer, .q-meta, .q-work, .solve-steps, .ans-steps').forEach((x) => x.remove());
     return copy.textContent.replace(/\s+/g, ' ').trim();
   }
 
