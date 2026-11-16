@@ -128,10 +128,13 @@
   function updateFocus() {
     const qs = shownQs();
     if (!qs.includes(cur)) cur = qs[0] || null;
-    document.querySelectorAll('.focus-path, .focus-cur').forEach((e) => e.classList.remove('focus-path', 'focus-cur'));
+    document.querySelectorAll('.focus-path, .focus-cur, .focus-ctx').forEach((e) => e.classList.remove('focus-path', 'focus-cur', 'focus-ctx'));
     if (cur) {
       qEls[cur].classList.add('focus-cur', 'focus-path');
       for (let p = qEls[cur].parentElement; p && p.tagName !== 'MAIN'; p = p.parentElement) p.classList.add('focus-path');
+      // keep the part heading and the setup this question depends on in view
+      qEls[cur].closest('section.part')?.querySelector(':scope > h2')?.classList.add('focus-ctx');
+      setupFor(qEls[cur]).forEach((n) => n.classList.add('focus-ctx'));
     }
     const i = qs.indexOf(cur);
     pos.textContent = cur ? `${labels[cur]} · ${i + 1} of ${qs.length}` : 'No questions showing';
@@ -389,7 +392,7 @@
 
   // ---- Read aloud: the question and its choices, with math said the way a teacher says it.
   function speechText(host) {
-    const copy = host.cloneNode(true);
+    const copy = withSetup(host);
     copy.querySelectorAll('.ans, .help, .helpbtn, .answer, .q-meta, .q-work, svg, .ans-steps, .solve-steps').forEach((x) => x.remove());
     copy.querySelectorAll('.f').forEach((f) => { const [a, b] = [...f.children].map((c) => c.textContent); f.replaceWith(` ${a} over ${b} `); });
     copy.querySelectorAll('li, p, tr, div').forEach((n) => n.append('. ')); // pause between choices and lines
@@ -529,7 +532,7 @@
   }
   // The question for the whiteboard: its words without graphs (their axis labels read as noise), parts spaced out.
   function boardQuestion(host) {
-    const copy = host.cloneNode(true);
+    const copy = withSetup(host);
     copy.querySelectorAll('.ans, .help, .helpbtn, .answer, .q-meta, .q-work, .solve-steps, .ans-steps, .practice, svg, figure').forEach((x) => x.remove());
     copy.querySelectorAll('.f').forEach((f) => { const [a, b] = [...f.children].map((c) => c.textContent); f.replaceWith(`${a}/${b}`); });
     copy.querySelectorAll('li, p, tr, div').forEach((n) => n.append(' '));
@@ -750,9 +753,23 @@
     return out.slice(0, 4);
   }
 
+  // The part's setup that a question depends on: e.g. "A spinner has 12 equal sections… Find each probability" above
+  // Part II #1-4. It's the paragraphs between the part's header (or the previous group of questions) and this question.
+  function setupFor(node) {
+    const q = node.closest?.('[id^="q-"]') || node;
+    const part = q.closest('section.part');
+    if (!part) return [];
+    let top = q;
+    while (top.parentElement && top.parentElement !== part) top = top.parentElement;
+    const out = [];
+    for (let n = top.previousElementSibling; n && !n.matches('.hd, .cols, .q, .task, h2'); n = n.previousElementSibling) out.unshift(n);
+    return out;
+  }
+  function withSetup(host) { const copy = host.cloneNode(true); copy.prepend(...setupFor(host).map((n) => { const c = n.cloneNode(true); c.append(' '); return c; })); return copy; }
+
   // The question's own text, without the key, help or answer box, for the tutor.
   function questionText(host) {
-    const copy = host.cloneNode(true);
+    const copy = withSetup(host);
     copy.querySelectorAll('.ans, .help, .helpbtn, .answer, .q-meta, .q-work, .solve-steps, .ans-steps').forEach((x) => x.remove());
     return copy.textContent.replace(/\s+/g, ' ').trim();
   }

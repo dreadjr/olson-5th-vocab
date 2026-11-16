@@ -201,7 +201,7 @@ a.lesson-chip:hover{color:var(--accent);border-color:var(--accent)}
   body[data-view="cards"] .tf .opt.pick,body[data-view="focus"] .tf .opt.pick{min-height:40px;display:inline-flex;align-items:center;border:1.5px solid var(--rule);padding:0 12px}
   /* Focus: only the current question (and anything it sits inside, like a shared graph) */
   body[data-view="focus"] .part:not(.focus-path),
-  body[data-view="focus"] .part>:not(.focus-path),
+  body[data-view="focus"] .part>:not(.focus-path):not(.focus-ctx),
   body[data-view="focus"] .cols>:not(.focus-path),
   body[data-view="focus"] [id^="q-"]:not(.focus-cur){display:none}
   body[data-view="focus"] .part+.part{margin-top:0;border-top:0;padding-top:0}
