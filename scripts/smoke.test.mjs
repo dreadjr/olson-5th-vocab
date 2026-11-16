@@ -40,6 +40,12 @@ test('math forms get the study UI', { skip }, async () => {
   }
 });
 
+test('a generated practice form has 12 problems', { skip }, async () => {
+  const html = await dom('/math/gen/?block=4&seed=12345');
+  assert.equal(count(html, 'class="gen-q"'), 12);
+  assert.ok(html.includes('Form 12345'));
+});
+
 test('writing page lists the exercises', { skip }, async () => {
   const html = await dom('/writing/?mode=fix');
   assert.equal(count(html, 'class="card"'), 24);

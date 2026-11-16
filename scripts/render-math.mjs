@@ -15,7 +15,7 @@ if (!existsSync(CHROME)) { console.error(`Chrome not found at ${CHROME}. Set CHR
 mkdirSync(PDF, { recursive: true });
 
 const only = process.argv.slice(2);
-const slugs = readdirSync(MATH).filter(d => existsSync(join(MATH, d, 'index.html')) && (!only.length || only.includes(d)));
+const slugs = readdirSync(MATH).filter(d => d !== 'gen' && existsSync(join(MATH, d, 'index.html')) && (!only.length || only.includes(d)));
 if (!slugs.length) { console.error('No math review pages found in math/<slug>/index.html'); process.exit(1); }
 
 for (const slug of slugs) {

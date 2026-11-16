@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>New Practice Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap">
+<link rel="stylesheet" href="../form.css">
+<style>
+  .gen-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin:0 0 14px;padding:10px 12px;background:var(--tint);border-radius:8px;font:600 13px var(--display)}
+  .gen-bar label{display:inline-flex;align-items:center;gap:4px;min-height:32px;cursor:pointer}
+  .gen-bar button{min-height:36px;padding:0 14px;border:0;border-radius:6px;background:var(--accent);color:var(--paper);font:700 13px var(--display);cursor:pointer}
+  .gen-bar button.ghost{background:none;color:var(--accent);border:1.5px solid var(--accent)}
+  .gen-score{margin-left:auto;color:var(--muted)}
+  .gen-q{display:grid;grid-template-columns:2.1em 1fr;margin:0 0 22px;break-inside:avoid}
+  .gen-q .n{font-weight:700}
+  .gen-q .q-meta{margin-bottom:4px}
+  .gen-tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .gen-steps{margin:6px 0 0;padding-left:1.4em}
+  .gen-key{display:none}
+  .gen-key ol{padding-left:1.6em}
+  @media print{
+    .toolbar,.gen-bar,.answer,.gen-tools,.gen-steps,.step-help,.q-meta{display:none!important}
+    .gen-q{margin-bottom:.9in}
+    .gen-key{display:block;break-before:page}
+  }
+  @media (pointer:coarse){.gen-bar button,.gen-bar label{min-height:44px}}
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <a href="../">&larr; All reviews</a>
+  <span id="formName"></span>
+  <button id="print" type="button">Print</button>
+</div>
+<main class="sheet">
+  <section class="part">
+    <div class="hd"><span class="form" id="formTag"></span><span class="course">Core Focus on Proportions &amp; Probability</span><span class="title" id="title"></span>
+      <div class="name"><span>Name<b style="width:3.2in">&nbsp;</b></span><span>Date<b style="width:1in">&nbsp;</b></span></div></div>
+    <div class="gen-bar" id="bar"></div>
+    <div id="qs"></div>
+    <div class="gen-key" id="key"></div>
+  </section>
+</main>
+<script src="../calc.js"></script>
+<script src="../practice.js"></script>
+<script src="../board.js"></script>
+<script src="../gen.js"></script>
+</body>
+</html>

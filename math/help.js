@@ -215,6 +215,13 @@
   panel.after(missed);
   missed.after(strip);
   document.body.append(fbar);
+  // "New practice form" for this block (math/gen/), when the block has practice templates.
+  const blockNo = (() => { try { return JSON.parse(document.querySelector('meta[name="review"]')?.content || '{}').block; } catch { return null; } })();
+  if (blockNo && Object.values(window.Practice?.kinds || {}).some((k) => k.lesson.split('.')[0] === String(blockNo))) {
+    const a = el('a', 'gen-link', 'New practice form');
+    a.href = `../gen/?block=${blockNo}`;
+    document.querySelector('.toolbar > span')?.append(' · ', a);
+  }
   const toggle = document.getElementById('toggle');
   toggle ? toggle.before(switcher) : document.querySelector('.toolbar')?.append(switcher);
   render();

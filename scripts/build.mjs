@@ -81,7 +81,7 @@ writeFileSync(join(DIST, 'sets.json'), JSON.stringify(
 // Math block reviews: math/<slug>/index.html pages plus pre-rendered PDFs (npm run math:pdf), copied as-is.
 const MATH = join(ROOT, 'math');
 const reviews = existsSync(MATH) ? readdirSync(MATH)
-  .filter(d => existsSync(join(MATH, d, 'index.html')))
+  .filter(d => d !== 'gen' && existsSync(join(MATH, d, 'index.html'))) // gen/: the generated practice form, not a review
   .map(slug => {
     const m = readFileSync(join(MATH, slug, 'index.html'), 'utf8').match(/<meta name="review" content='([^']+)'>/);
     if (!m) throw new Error(`math/${slug}/index.html is missing <meta name="review" content='{...}'>`);
@@ -90,6 +90,10 @@ const reviews = existsSync(MATH) ? readdirSync(MATH)
   .sort((a, b) => a.block - b.block || a.form.localeCompare(b.form)) : [];
 if (reviews.length) {
   cpSync(MATH, join(DIST, 'math'), { recursive: true });
+  // Blocks with practice templates (math/practice.js) get a "New practice form" link (math/gen/).
+  await import('../math/calc.js');
+  await import('../math/practice.js');
+  const genBlocks = new Set(Object.values(globalThis.Practice.kinds).map((k) => k.lesson.split('.')[0]));
   const groups = [...new Set(reviews.map(r => r.block))].map(block => {
     const rs = reviews.filter(r => r.block === block);
     const lis = rs.map(r => {
@@ -98,7 +102,8 @@ if (reviews.length) {
         + (pdf ? `<a href="pdf/${esc(r.slug)}.pdf" download aria-label="Form ${esc(r.form)} test PDF">Test</a><a href="pdf/${esc(r.slug)}-key.pdf" download aria-label="Form ${esc(r.form)} answer key PDF">Key</a>` : '')
         + `</span></li>`;
     }).join('');
-    return `<h2>Block ${block}<small>${esc(rs[0].topic)}</small></h2><ul>${lis}</ul>`;
+    const gen = genBlocks.has(String(block)) ? `<a class="gen-link" href="gen/?block=${block}">New practice form →</a>` : '';
+    return `<h2>Block ${block}<small>${esc(rs[0].topic)}</small>${gen}</h2><ul>${lis}</ul>`;
   }).join('\n  ');
   writeFileSync(join(DIST, 'math', 'index.html'), fill(MATH_INDEX, { '{{REVIEW_GROUPS}}': groups }));
 }
