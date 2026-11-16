@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 await import('../math/calc.js');
 await import('../math/practice.js');
+await import('../math/quizzes.js');
 const { Practice } = globalThis;
 
 test('every template makes sound problems whose answers check', () => {
@@ -60,4 +61,19 @@ test('answer forms people write', () => {
   assert.equal(chk({ answer: '25%', word: 'increase', options: ['increase', 'decrease'] }, 'increase; 25%'), true);
   assert.equal(chk({ answer: '25%', word: 'increase', options: ['increase', 'decrease'] }, 'decrease 25%'), false);
   assert.equal(chk({ choice: 'dan', options: ['thomas', 'dan'] }, 'Dan spent less'), true);
+});
+
+test('exit quiz reviews use real templates and make checkable problems', () => {
+  for (const q of globalThis.QuizReviews) {
+    assert.ok(q.items.length >= 2, q.id);
+    for (const [kind, variant] of q.items) {
+      assert.ok(Practice.kinds[kind], `${q.id}: no template ${kind}`);
+      for (let seed = 1; seed <= 20; seed++) {
+        const p = Practice.make(kind, seed, variant);
+        assert.equal(Practice.check(p, p.word ? `${p.word} ${p.answer}` : p.answer ?? p.choice), true, `${q.id} ${kind}/${variant}`);
+      }
+    }
+  }
+  // the variant really picks the type: RNE 3.5 opens with a decimal product
+  assert.match(Practice.make('mult-rational', 9, 0).q, /\d\.\d/);
 });

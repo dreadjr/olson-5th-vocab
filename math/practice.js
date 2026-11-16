@@ -7,9 +7,11 @@
   const num = (x) => String(Math.round(x * 1000) / 1000); // tidy decimals for display
   const gcd = (a, b) => (b ? gcd(b, a % b) : Math.abs(a));
   const rng = (seed) => () => { seed |= 0; seed = (seed + 0x6D2B79F5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
-  const tools = (r) => ({
+  // variant: for a template that picks among problem types (an array of functions), which one to make, by index
+  // (exit quiz reviews ask for e.g. the decimal version). Ordinary picks of values stay random.
+  const tools = (r, variant) => ({
     int: (a, b) => a + Math.floor(r() * (b - a + 1)),
-    pick: (arr) => arr[Math.floor(r() * arr.length)],
+    pick: (arr) => (variant != null && arr.length && arr.every((x) => typeof x === 'function') ? arr[variant % arr.length] : arr[Math.floor(r() * arr.length)]),
     shuffle: (arr) => arr.map((v) => [r(), v]).sort((x, y) => x[0] - y[0]).map((x) => x[1]),
   });
   // "-81/8" -> "-10 1/8" (whole numbers and proper fractions unchanged)
@@ -371,7 +373,7 @@
     } },
     'mult-rational': { label: 'Multiplying rational numbers', lesson: 'RNE 3.5', make(t) {
       const decimals = () => { // decimals: the place value is the hard part (the class's exit quizzes: 1.2 for −0.6 · −0.2)
-          const a = t.int(1, 9) * t.pick([-1, 1]), b = t.int(1, 9) * t.pick([-1, 1]), pa = t.pick([1, 1, 2]), pb = t.pick([1, 1, 0]);
+          const pa = t.pick([1, 1, 2]), pb = t.pick([1, 1, 0]), a = t.int(1, 9) * t.pick([-1, 1]), b = t.int(pb ? 1 : 2, 9) * t.pick([-1, 1]); // no · 1
           const A = num(a / 10 ** pa), B = num(b / 10 ** pb), r = num((a * b) / 10 ** (pa + pb)), show = (x) => (Number(x) < 0 ? `(${x})` : x);
           return { q: `${A} · ${show(B)} = ?`, answer: r, form: 'decimal', hint: `Multiply as whole numbers (${Math.abs(a)} · ${Math.abs(b)} = ${Math.abs(a * b)}), then count decimal places: ${pa} + ${pb} = ${pa + pb}. ${a < 0 && b < 0 ? 'Negative · negative is positive.' : a < 0 || b < 0 ? 'One negative makes the answer negative.' : ''}`.trim(),
             steps: [`Ignore the decimal points: ${Math.abs(a)} · ${Math.abs(b)} = ${Math.abs(a * b)}.`, `${A} has ${pa} decimal place${pa > 1 ? 's' : ''} and ${B} has ${pb}: the answer has ${pa + pb}.`, `Sign: ${(a < 0) === (b < 0) ? 'same signs, positive' : 'different signs, negative'}. Answer: ${r}.`] };
@@ -379,7 +381,7 @@
       return t.pick([decimals, decimals,
         () => { const f = () => { let n, d; do { n = t.int(1, 8); d = t.int(2, 12); } while (gcd(n, d) !== 1 || n >= d); return [n * t.pick([-1, 1]), d]; }; const [a, b] = f(), [c, d] = f(), r = frac(`(${a}/${b})*(${c}/${d})`);
           return { q: `(${a}/${b}) · (${c}/${d}) = ?`, answer: r, hint: 'Multiply tops, multiply bottoms, simplify. Watch the sign.', steps: [`${a} · ${c} = ${a * c} and ${b} · ${d} = ${b * d}.`, `${a * c}/${b * d} = ${r}.`] }; },
-        () => { const w = t.int(1, 4), d = t.pick([3, 5, 7, 8]), n = t.int(1, d - 1), c = t.int(1, 5) * t.pick([-1, 1]), e = t.pick([2, 3, 4, 5]); const r = frac(`-(${w}+${n}/${d})*(${c}/${e})`);
+        () => { const w = t.int(1, 4), d = t.pick([3, 5, 7, 8]); let n, c, e; do { n = t.int(1, d - 1); e = t.pick([2, 3, 4, 5, 6]); c = t.int(1, e - 1); } while (gcd(n, d) !== 1 || gcd(c, e) !== 1); c *= t.pick([-1, 1]); const r = frac(`-(${w}+${n}/${d})*(${c}/${e})`);
           return { q: `−${w} ${n}/${d} · (${c}/${e}) = ? (You may answer as a mixed number.)`, answer: r, hint: 'Change the mixed number to an improper fraction first, then multiply and simplify.', steps: [`−${w} ${n}/${d} = −${w * d + n}/${d}.`, `−${w * d + n}/${d} · ${c}/${e} = ${-(w * d + n) * c}/${d * e}.`, `= ${mixed(r)}.`] }; },
       ])();
     } },
@@ -469,7 +471,7 @@
   globalThis.Practice = {
     kinds: Object.fromEntries(Object.entries(K).map(([k, v]) => [k, { label: v.label, lesson: v.lesson }])),
     kindFor,
-    make: (kind, seed = Math.floor(Math.random() * 2 ** 31)) => ({ kind, seed, ...K[kind].make(tools(rng(seed))) }),
+    make: (kind, seed = Math.floor(Math.random() * 2 ** 31), variant) => ({ kind, seed, ...K[kind].make(tools(rng(seed), variant)) }),
     /** Is a typed answer right? true / false, or null when it can't be read. */
     check,
   };

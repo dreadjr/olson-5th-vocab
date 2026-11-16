@@ -5,11 +5,18 @@
 (() => {
   const TOPICS = { 1: 'Ratios and Rates', 2: 'Proportions and Similarity', 3: 'Percents', 4: 'Probability and Random Sampling', 5: 'Direct Variation', rne: 'Rational Numbers and Equations' };
   const groupOf = (lesson) => (lesson.startsWith('RNE') ? 'rne' : lesson.split('.')[0]); // RNE: the class's earlier unit, its own book
-  const N = 12;
+  let N = 12;
+  // Reviews modeled on the class's exit quizzes (math/quizzes.js): ?quiz=<id> is one quiz twice (new numbers each
+  // round), ?test=<block> is every exit quiz of a block in order, like a block test.
+  const QR = globalThis.QuizReviews || [];
   const P = globalThis.Practice;
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
   const params = new URLSearchParams(location.search);
-  const block = params.get('block') === 'rne' ? 'rne' : String(parseInt(params.get('block'), 10) || 4);
+  const quiz = QR.find((q) => q.id === params.get('quiz'));
+  const test = !quiz && params.get('test') ? params.get('test') : null;
+  const plan = quiz ? [...quiz.items, ...quiz.items] : test ? QR.filter((q) => q.group === test).flatMap((q) => q.items) : null;
+  if (plan) N = plan.length;
+  const block = quiz ? quiz.group : test ? test : params.get('block') === 'rne' ? 'rne' : String(parseInt(params.get('block'), 10) || 4);
   const byLesson = {};
   for (const [kind, v] of Object.entries(P.kinds)) if (groupOf(v.lesson) === block) (byLesson[v.lesson] ||= []).push(kind);
   const allLessons = Object.keys(byLesson).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
@@ -33,6 +40,7 @@
 
   /** The form's problems: every chosen skill at least once, then round-robin, in an order fixed by the seed. */
   function problems() {
+    if (plan) return plan.map(([kind, variant], k) => P.make(kind, seed * 100 + k, variant));
     const kinds = lessons.flatMap((l) => byLesson[l]);
     let s = seed;
     const rnd = () => { s = (s * 1103515245 + 12345) % 2147483648; return s / 2147483648; };
@@ -40,7 +48,7 @@
     return Array.from({ length: N }, (_, k) => P.make(order[k % order.length], seed * 100 + k));
   }
 
-  const KEY = () => `gen:${block}:${seed}:${lessons.join(',')}`;
+  const KEY = () => `gen:${quiz ? `quiz:${quiz.id}` : test ? `test:${test}` : block}:${seed}:${lessons.join(',')}`;
   let saved = {};
   const load = () => { try { saved = JSON.parse(localStorage.getItem(KEY())) || {}; } catch { saved = {}; } };
   const store = () => { try { localStorage.setItem(KEY(), JSON.stringify(saved)); } catch { /* storage blocked */ } };
@@ -99,18 +107,23 @@
   function render() {
     load();
     const ps = problems();
-    const name = `${block === 'rne' ? 'Rational Numbers' : `Block ${block}`} Practice · Form ${seed}`;
+    const where = block === 'rne' ? 'Rational Numbers' : `Block ${block}`;
+    const name = quiz ? `Review: ${quiz.title} · Form ${seed}` : test ? `${where} test review · Form ${seed}` : `${where} Practice · Form ${seed}`;
     document.title = name;
     document.getElementById('formName').textContent = `Form ${seed}`;
     document.getElementById('formTag').textContent = `Form ${seed}`;
-    document.getElementById('title').textContent = `${block === 'rne' ? 'Rational Numbers & Equations' : `Block ${block}`} Practice ~ ${TOPICS[block] || ''}${lessons.length < allLessons.length ? ` (Lessons ${lessons.join(', ')})` : ''}`;
-    document.getElementById('qs').replaceChildren(...ps.map(problemEl));
+    document.getElementById('title').textContent = quiz ? `Review: ${quiz.title}` : test ? `${block === 'rne' ? 'Rational Numbers & Equations' : `Block ${block}`} test review ~ every exit quiz` : `${block === 'rne' ? 'Rational Numbers & Equations' : `Block ${block}`} Practice ~ ${TOPICS[block] || ''}${lessons.length < allLessons.length ? ` (Lessons ${lessons.join(', ')})` : ''}`;
+    const els = ps.map(problemEl);
+    if (quiz) els.splice(quiz.items.length, 0, Object.assign(el('h2', 'gen-round', 'Round 2: the same kinds of questions, new numbers'), {}));
+    if (test) { let k = 0; for (const q of QR.filter((x) => x.group === test)) { els.splice(k, 0, el('h2', 'gen-round', q.title)); k += q.items.length + 1; } }
+    if (quiz) els.unshift(el('h2', 'gen-round', 'Round 1: like the exit quiz'));
+    document.getElementById('qs').replaceChildren(...els);
     const key = document.getElementById('key');
     const ol = el('ol');
     for (const p of ps) { const li = el('li'); li.append(stack(p.word ? `${p.word} ${p.answer}` : p.answer ?? p.choice)); ol.append(li); }
     key.replaceChildren(el('h2', '', `Answer key · Form ${seed}`), ol);
     showScore();
-    history.replaceState(null, '', `?block=${block}&seed=${seed}${lessons.length < allLessons.length ? `&lessons=${lessons.join(',')}` : ''}`);
+    history.replaceState(null, '', quiz ? `?quiz=${quiz.id}&seed=${seed}` : test ? `?test=${test}&seed=${seed}` : `?block=${block}&seed=${seed}${lessons.length < allLessons.length ? `&lessons=${lessons.join(',')}` : ''}`);
   }
 
   const bar = document.getElementById('bar');
@@ -131,6 +144,7 @@
   const again = el('button', '', 'New form');
   again.type = 'button';
   again.addEventListener('click', () => { seed = 10000 + Math.floor(Math.random() * 90000); render(); window.scrollTo(0, 0); });
+  if (plan) pick.hidden = true; // a review has a fixed set of questions
   bar.append(pick, again, score);
   document.getElementById('print').addEventListener('click', () => window.print());
   if (!allLessons.length) { document.getElementById('qs').textContent = `No practice templates for Block ${block} yet.`; return; }

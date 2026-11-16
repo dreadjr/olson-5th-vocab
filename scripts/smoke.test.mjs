@@ -44,6 +44,8 @@ test('a generated practice form has 12 problems', { skip }, async () => {
   const html = await dom('/math/gen/?block=4&seed=12345');
   assert.equal(count(html, 'class="gen-q"'), 12);
   assert.ok(html.includes('Form 12345'));
+  assert.equal(count(await dom('/math/gen/?quiz=rne-3.5&seed=5'), 'class="gen-q"'), 8, 'quiz review: 4 questions, 2 rounds');
+  assert.equal(count(await dom('/math/gen/?test=1&seed=5'), 'class="gen-q"'), 19, 'block 1 test review: every 1.x exit quiz');
   for (const b of ['1', '2', '3', 'rne']) assert.equal(count(await dom(`/math/gen/?block=${b}&seed=7`), 'class="gen-q"'), 12, `block ${b}`);
 });
 

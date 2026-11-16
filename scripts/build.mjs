@@ -93,6 +93,12 @@ if (reviews.length) {
   // Blocks with practice templates (math/practice.js) get a "New practice form" link (math/gen/).
   await import('../math/calc.js');
   await import('../math/practice.js');
+  await import('../math/quizzes.js');
+  // "Exit quiz reviews: 1.1 · 1.2 · … · Block test review" under a block, from math/quizzes.js
+  const quizLinks = (group) => {
+    const qs = globalThis.QuizReviews.filter((q) => q.group === group);
+    return qs.length ? `<p class="quiz-links">Exit quiz reviews: ${qs.map((q) => `<a href="gen/?quiz=${q.id}">${esc(q.id.replace(/^rne-/, ''))}</a>`).join(' · ')} · <a href="gen/?test=${group}"><b>Block test review</b></a></p>` : '';
+  };
   const genBlocks = new Set(Object.values(globalThis.Practice.kinds).map((k) => (k.lesson.startsWith('RNE') ? 'rne' : k.lesson.split('.')[0])));
   const groups = [...new Set(reviews.map(r => r.block))].map(block => {
     const rs = reviews.filter(r => r.block === block);
@@ -103,10 +109,10 @@ if (reviews.length) {
         + `</span></li>`;
     }).join('');
     const gen = genBlocks.has(String(block)) ? `<a class="gen-link" href="gen/?block=${block}">New practice form →</a>` : '';
-    return `<h2>Block ${block}<small>${esc(rs[0].topic)}</small>${gen}</h2><ul>${lis}</ul>`;
+    return `<h2>Block ${block}<small>${esc(rs[0].topic)}</small>${gen}</h2>${quizLinks(String(block))}<ul>${lis}</ul>`;
   }).join('\n  ');
   // Rational Numbers & Equations (the class's unit before this book): practice forms only, no reviews.
-  const rne = genBlocks.has('rne') ? `\n  <h2>Rational Numbers and Equations<small>Integers, multiplying and dividing rational numbers, solving equations</small><a class="gen-link" href="gen/?block=rne">New practice form →</a></h2>` : '';
+  const rne = genBlocks.has('rne') ? `\n  <h2>Rational Numbers and Equations<small>Integers, multiplying and dividing rational numbers, solving equations</small><a class="gen-link" href="gen/?block=rne">New practice form →</a></h2>${quizLinks('rne')}` : '';
   writeFileSync(join(DIST, 'math', 'index.html'), fill(MATH_INDEX, { '{{REVIEW_GROUPS}}': groups + rne }));
 }
 
