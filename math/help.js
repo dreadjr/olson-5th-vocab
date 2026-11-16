@@ -174,7 +174,11 @@
   if (!local) panel.append(el('p', 'progress-note', 'Check and Ask work when the tutor is on: open your tutor link once on this device.'));
   panel.append(el('div', 'progress-head', 'Checked answers'), list);
   document.querySelector('section.part')?.before(panel);
-  panel.after(strip);
+  const missed = el('div', 'missed');
+  let missedOpen = null; // the open "Practice what I missed" panel
+  missed.hidden = true;
+  panel.after(missed);
+  missed.after(strip);
   document.body.append(fbar);
   const toggle = document.getElementById('toggle');
   toggle ? toggle.before(switcher) : document.querySelector('.toolbar')?.append(switcher);
@@ -236,7 +240,52 @@
     return [...new Set(questions.map((id) => qLesson[id]))].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
   }
 
+  // What to practice: this form's questions answered wrong (now or on any try), weighted by how often, mapped to
+  // practice templates; plus any skill whose mastery fell under 50 on any form. Questions with no template are listed to review.
+  function troubles() {
+    const kinds = new Map(), review = [];
+    for (const id of questions) {
+      if (qEls[id].hidden) continue;
+      const r = progress[id], misses = (r?.tries || []).filter((t) => !t.correct).length + (r?.status === 'wrong' ? 1 : 0);
+      if (!misses) continue;
+      const k = window.Practice?.kindFor(help.entries[id].skill);
+      if (k) kinds.set(k, (kinds.get(k) || 0) + misses); else review.push(id);
+    }
+    for (const [k, m] of Object.entries(mastery)) if (window.Practice?.kinds[k] && m.tries && m.score < 50 && !kinds.has(k)) kinds.set(k, 1);
+    return { kinds: [...kinds], review };
+  }
+  function renderMissed() {
+    const { kinds, review } = troubles();
+    missed.hidden = !kinds.length && !review.length;
+    if (missed.hidden) return;
+    const line = el('div', 'missed-line');
+    if (kinds.length) {
+      const b = el('button', 'practice-next', missedOpen && !missedOpen.hidden ? 'Hide practice' : 'Practice what I missed');
+      b.type = 'button';
+      b.addEventListener('click', () => {
+        if (missedOpen && !missedOpen.hidden) { missedOpen.hidden = true; renderMissed(); return; }
+        missedOpen?.remove();
+        missedOpen = practicePanel(kinds);
+        missed.append(missedOpen);
+        renderMissed();
+      });
+      line.append(b, el('span', '', ` New problems for ${kinds.length} skill${kinds.length > 1 ? 's' : ''}: ${kinds.map(([k]) => window.Practice.kinds[k].label).join(', ')}.`));
+    }
+    if (review.length) {
+      const r = el('span', 'missed-review', `${kinds.length ? ' ' : ''}Look again at: `);
+      review.forEach((id, k) => {
+        const a = el('a', '', labels[id]);
+        a.href = `#q-${id}`;
+        a.addEventListener('click', (e) => { if (view === 'focus') { e.preventDefault(); go(id); } });
+        r.append(k ? ', ' : '', a);
+      });
+      line.append(r);
+    }
+    missed.firstChild?.classList?.contains('missed-line') ? missed.firstChild.replaceWith(line) : missed.prepend(line);
+  }
+
   function render() {
+    renderMissed();
     const shown = questions.filter((id) => !qEls[id].hidden);
     const by = (st) => shown.filter((id) => progress[id]?.status === st).length;
     const done = shown.filter((id) => progress[id]?.status).length;
@@ -625,7 +674,12 @@
     });
     return b;
   }
-  function practicePanel(kind) {
+  // kinds: one kind, or [[kind, weight], …] for a mixed set (Practice what I missed): each new problem picks a kind,
+  // more often the more it was missed.
+  function practicePanel(kinds) {
+    const mix = Array.isArray(kinds) ? kinds : [[kinds, 1]];
+    const pick = () => { let r = Math.random() * mix.reduce((t, [, w]) => t + w, 0); for (const [k, w] of mix) if ((r -= w) < 0) return k; return mix[0][0]; };
+    let kind = mix[0][0], done = 0, gotRight = 0;
     const box = el('div', 'practice');
     const head = el('div', 'practice-head');
     const meter = el('div', 'practice-meter');
@@ -636,12 +690,14 @@
       const s = mastery[kind]?.score || 0;
       fill.style.width = `${s}%`;
       meter.setAttribute('aria-label', `Mastery ${s} out of 100, ${levelOf(s)}`);
-      head.replaceChildren(el('b', '', `Practice: ${window.Practice.kinds[kind].label}`), el('span', 'practice-score', `${s}/100 · ${levelOf(s)}`));
+      head.replaceChildren(el('b', '', `${mix.length > 1 ? `Problem ${done + 1} · ` : 'Practice: '}${window.Practice.kinds[kind].label}`),
+        el('span', 'practice-score', `${s}/100 · ${levelOf(s)}${mix.length > 1 && done ? ` · ${gotRight} of ${done} right` : ''}`));
     };
     practiceButtons.push(showScore);
     const body = el('div');
     box.append(head, meter, body);
     const next = () => {
+      if (mix.length > 1) { let k = pick(); if (k === kind) k = pick(); kind = k; } // mixed: try not to repeat a skill twice in a row
       const p = window.Practice.make(kind);
       let counted = false, helped = false;
       const q = el('p', 'practice-q', p.q);
@@ -682,7 +738,7 @@
         e.preventDefault();
         const ok = window.Practice.check(p, input.value);
         if (ok == null) { result.textContent = p.choice ? 'Answer yes or no.' : 'I can’t read that as a number yet. Try something like 3/10, 0.3, (2, −5) or y = 3x.'; return; }
-        if (!counted) { counted = true; if (!(ok && helped)) score(kind, ok); }
+        if (!counted) { counted = true; done++; gotRight += ok ? 1 : 0; if (!(ok && helped)) score(kind, ok); }
         form.classList.toggle('right', ok);
         form.classList.toggle('wrong', !ok);
         result.replaceChildren(el('b', '', ok ? '✓ Right! ' : '✗ Not yet. '), ok ? (helped ? 'Nice. Try one on your own next to raise your score.' : '') : 'Try again, or use Hint or Step by step.');

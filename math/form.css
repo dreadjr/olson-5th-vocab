@@ -181,6 +181,10 @@ mark.key-num,mark.key-cue{background:none;color:inherit}
 .keyinfo-on mark.key-num,.keyinfo-on .f.key-num{background:color-mix(in srgb,var(--accent) 16%,transparent);border-radius:3px;font-weight:700}
 .keyinfo-on mark.key-cue{text-decoration:underline 2px var(--accent);text-underline-offset:3px;font-weight:600}
 .keyinfo-on .key-ask{background:color-mix(in srgb,#f5c542 30%,transparent);border-radius:3px}
+.missed{margin:8px 0;padding:8px 12px;border-left:4px solid var(--warn);background:var(--tint);border-radius:4px;font-size:14px}
+.missed-line{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px}
+.missed .practice{background:var(--paper)}
+@media print{.missed{display:none}}
 .practice{margin-top:8px;padding:10px 12px;border:1.5px solid var(--accent);border-radius:8px;max-width:600px;font-size:15px}
 .practice-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;font:600 13px var(--display)}
 .practice-score{color:var(--muted)}
