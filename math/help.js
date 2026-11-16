@@ -61,7 +61,7 @@
       const parts = choices(host).length ? [] : [...host.querySelectorAll('ol.sub > li')];
       let box;
       if (parts.length > 1) parts.forEach((li, k) => { const b = answerBox(id, host, false, { letter: 'abcdefgh'[k], li }); li.append(b); box ||= b; });
-      else { box = entry.fields ? fieldsBox(id, entry.fields) : answerBox(id, host, q.classList.contains('task')); host.append(box); }
+      else { box = entry.fields ? fieldsBox(id, entry.fields, host) : answerBox(id, host, q.classList.contains('task')); host.append(box); }
       works[id] = el('div', 'q-work');
       works[id].hidden = true;
       host.append(works[id]);
@@ -796,7 +796,41 @@
 
   // Questions asking for several values ("the five-number summary of each data set"): a labeled box per value
   // (help.json "fields"), each checked on its own, so it's clear which number is off.
-  function fieldsBox(id, f) {
+  // "Color the spinner": while the "Red sections" / "Blue sections" / … boxes are typed in, the blank spinner on the
+  // question fills in with those colors, in order around the circle (on screen only; the printed test stays blank).
+  function spinnerPainter(host, f, cells) {
+    const SPIN_COLORS = { red: '#e5484d', blue: '#3b82f6', yellow: '#f5c518', green: '#30a46c', orange: '#f76b15', purple: '#8e4ec6' };
+    const svg = [...host.querySelectorAll('svg')].find((x) => /spinner with (\d+)/i.test(x.getAttribute('aria-label') || ''));
+    const circle = svg?.querySelector('circle');
+    const colored = f.rows.map((row, i) => [row.match(/^(\w+) sections$/i)?.[1]?.toLowerCase(), i]).filter(([c]) => SPIN_COLORS[c]);
+    if (!circle || !colored.length) return () => {};
+    const n = +svg.getAttribute('aria-label').match(/spinner with (\d+)/i)[1];
+    const [cx, cy, r] = ['cx', 'cy', 'r'].map((a) => +circle.getAttribute(a));
+    const pt = (k) => { const a = (k / n) * 2 * Math.PI - Math.PI / 2; return `${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)}`; };
+    const NS = 'http://www.w3.org/2000/svg';
+    const layer = document.createElementNS(NS, 'g');
+    layer.setAttribute('class', 'spin-fill');
+    circle.after(layer); // above the circle's fill, under the section lines
+    const label = svg.getAttribute('aria-label');
+    return () => {
+      layer.replaceChildren();
+      let k = 0;
+      const said = [];
+      for (const [color, i] of colored) {
+        const count = Math.max(0, Math.min(n - k, parseInt(cells[i][0].value, 10) || 0));
+        for (let m = 0; m < count; m++, k++) {
+          const p = document.createElementNS(NS, 'path');
+          p.setAttribute('d', `M${cx},${cy} L${pt(k)} A${r},${r} 0 0 1 ${pt(k + 1)} Z`);
+          p.setAttribute('fill', SPIN_COLORS[color]);
+          layer.append(p);
+        }
+        if (count) said.push(`${count} ${color}`);
+      }
+      svg.setAttribute('aria-label', said.length ? `Spinner with ${n} sections: ${said.join(', ')}${k < n ? `, ${n - k} blank` : ''}` : label);
+    };
+  }
+
+  function fieldsBox(id, f, host) {
     const box = el('form', 'answer fields');
     const grid = el('table', 'fields-grid');
     const r0 = progress[id];
@@ -822,6 +856,9 @@
       grid.append(tr);
     });
     const all = cells.flat();
+    const paint = spinnerPainter(host, f, cells);
+    paint();
+    for (const c of all) c.addEventListener('input', paint);
     const text = () => f.rows.map((row, i) => `${row}: ${cells[i].map((c, j) => `${f.cols[j] ? `${f.cols[j]} ` : ''}${c.value.trim() || '?'}`).join(', ')}`).join('; ');
     const result = el('div', 'answer-result');
     result.setAttribute('aria-live', 'polite');
