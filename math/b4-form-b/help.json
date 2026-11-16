@@ -43,7 +43,25 @@
         "A": "You probably just counted the birds in the first group of 40 and stopped, without scaling up to the bigger group of students.",
         "B": "You probably picked the total number of students Nadia first asked instead of working out how many birds would be chosen.",
         "D": "You probably multiplied the number of birds by 300 instead of finding what part of the students picked birds and using that part."
-      }
+      },
+      "pie": [
+        [
+          "Dogs",
+          16
+        ],
+        [
+          "Cats",
+          12
+        ],
+        [
+          "Fish",
+          4
+        ],
+        [
+          "Birds",
+          8
+        ]
+      ]
     },
     "I-4": {
       "lesson": "4.4",

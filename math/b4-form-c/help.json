@@ -43,7 +43,25 @@
         "A": "You gave the number of banana fans out of the 60 people, but the question asks you to predict for the bigger group of 500.",
         "B": "You scaled up by the wrong amount, like multiplying by 5, instead of finding how many groups of 60 fit into 500.",
         "D": "You multiplied the number of banana fans by 500, but you should use the fraction of people who chose bananas, not the count."
-      }
+      },
+      "pie": [
+        [
+          "Apples",
+          15
+        ],
+        [
+          "Bananas",
+          24
+        ],
+        [
+          "Grapes",
+          12
+        ],
+        [
+          "Oranges",
+          9
+        ]
+      ]
     },
     "I-4": {
       "lesson": "4.4",

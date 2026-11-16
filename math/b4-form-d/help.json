@@ -43,7 +43,21 @@
         "B": "You may have divided 18 by 45 and then turned it into a percent-like number, or used 40 as the degrees instead of finding the fraction of 360.",
         "C": "You may have just used the number of students who chose sports as the degrees, without turning the fraction into part of 360.",
         "D": "You may have multiplied 18 by 9 or used the wrong total, so the sector came out too big."
-      }
+      },
+      "pie": [
+        [
+          "Sports",
+          18
+        ],
+        [
+          "Video games",
+          15
+        ],
+        [
+          "Reading",
+          12
+        ]
+      ]
     },
     "I-4": {
       "lesson": "4.4",
@@ -506,6 +520,24 @@
         "Three steps. Sector: hip-hop's fraction of 160 times 360°. Probability: find P(hip-hop) and P(speaker) from the tables and multiply them for \"hip-hop AND speaker\". Prediction: use that probability on all 1,000 students.",
         "Example: 30 of 120 students like jazz, so the sector is 30/120 · 360° = 90°. If P(jazz) = 1/4 and P(headphones) = 2/5, then P(both) = 1/4 · 2/5 = 2/20 = 1/10. In a school of 800, predict 1/10 · 800 = 80 students.",
         "Sector: 48/160 = x/360, so x = 108°. P(hip-hop) = 48/160 = 3/10. P(speaker) = 40/160 = 1/4. P(hip-hop and speaker) = 3/10 · 1/4 = 3/40. Prediction: 3/40 · 1,000 = 75 students."
+      ],
+      "pie": [
+        [
+          "Pop",
+          56
+        ],
+        [
+          "Hip-hop",
+          48
+        ],
+        [
+          "Country",
+          40
+        ],
+        [
+          "Rock",
+          16
+        ]
       ]
     }
   }

@@ -55,7 +55,7 @@
       (n || q).prepend(marks[id]);
       const host = q.classList.contains('task') ? q : q.lastElementChild;
       const meta = el('div', 'q-meta');
-      meta.append(lessonChip(entry.lesson), readButton(host), keyInfoButton(host), watchButton(() => ({ title: `Watch it: ${entry.skill}`, question: boardQuestion(host), steps: walkSteps(entry) || [] }), !!walkSteps(entry), id), solveButton(host, id, entry), practiceButton(host, entry));
+      meta.append(lessonChip(entry.lesson), readButton(host), keyInfoButton(host), watchButton(() => ({ title: `Watch it: ${entry.skill}`, question: boardQuestion(host), steps: walkSteps(entry) || [] }), !!walkSteps(entry), id), solveButton(host, id, entry), practiceButton(host, entry), pieButton(host, entry));
       titles[id] = questionText(host).replace(/^\d+\.\s*/, '');
       host.prepend(meta);
       answerSteps(host, id, entry);
@@ -549,6 +549,21 @@
     return (text.length > 300 ? `${text.slice(0, 297)}…` : text) + graph;
   }
 
+  // "Pie chart": the question's data as a pie whose edges can be dragged (math/pie.js), with count, fraction, % and degrees.
+  function pieButton(host, entry) {
+    const b = el('button', 'q-tool', 'Pie chart');
+    b.type = 'button';
+    b.setAttribute('aria-expanded', 'false');
+    if (!entry.pie) { b.hidden = true; return b; }
+    let panel = null;
+    b.addEventListener('click', () => {
+      if (!window.Pie) return;
+      if (!panel) { panel = window.Pie.make(entry.pie); const at = host.querySelector(':scope > form.answer, :scope > .helpbtn'); at ? at.before(panel) : host.append(panel); } else panel.hidden = !panel.hidden;
+      b.setAttribute('aria-expanded', String(!panel.hidden));
+    });
+    return b;
+  }
+
   // "Watch it": the whiteboard walkthrough (math/board.js) for a question or a practice problem.
   function watchButton(get, show = true, id = null) {
     const b = el('button', 'q-tool', 'Watch it');
@@ -857,12 +872,16 @@
     const box = el('form', 'answer fields');
     const grid = el('table', 'fields-grid');
     const r0 = progress[id];
+    // An answer typed in the old single box ("Hawks = 33, 38.5, …, Owls = 44, …"): its numbers, in order, fill the boxes
+    // when there is exactly one per box.
+    const nums = !r0?.cells && r0?.answer ? r0.answer.match(/-?\d+(?:\.\d+)?(?:\/\d+)?/g) || [] : [];
+    const oldCells = nums.length === f.rows.length * f.cols.length ? nums : null;
     const cells = f.rows.map((row, i) => f.cols.map((c, j) => {
       const input = el('input');
       input.inputMode = /\d/.test(f.answers[i][j]) ? 'decimal' : 'text';
       input.autocomplete = 'off';
       input.setAttribute('aria-label', `${row}${c ? ` ${c}` : ''}`);
-      input.value = r0?.cells?.[i]?.[j] || '';
+      input.value = r0?.cells?.[i]?.[j] ?? oldCells?.[i * f.cols.length + j] ?? '';
       return input;
     }));
     // Five stats for two data sets fit a narrow column better as five rows: stats down the side, data sets across.
