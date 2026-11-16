@@ -96,6 +96,16 @@ Edit `src/template.html`. The build fills in these placeholders:
 
 Best quiz scores are saved in the browser, separately for each set.
 
+## Writing practice
+
+Grammar practice at `/writing/` (source in `writing/`, copied as-is by the build, which also writes `writing/words.json` from the sets):
+
+- **Fix the sentence**: short exercises in `writing/items.json` (`std` is the Common Core standard, e.g. `L.6.1a`; `accept` lists the accepted fixes). Progress is kept in the browser.
+- **Use your words**: a sentence for each word in a vocab set (`?mode=words&set=m1w2`; each set page links here).
+- **Free write**: checked as you type.
+
+Grammar and spelling are checked on the device by [Harper](https://writewithharper.com) (`harper.js` 3.0.0, Apache-2.0, WebAssembly from jsDelivr, about 7.5 MB the first time, then cached), so nothing the student writes leaves the browser. With the tutor running, **Why?** and **Ask the tutor to look too** send the writing to the local tutor (`POST /api/grammar`), which asks Claude to explain the rule in kid language without rewriting the sentence.
+
 ## Math block reviews
 
 Practice versions of the Core Focus on Proportions & Probability block review tests, published at `/math/`. The textbook, classroom and teacher-site links are in [docs/math-sources.md](docs/math-sources.md).

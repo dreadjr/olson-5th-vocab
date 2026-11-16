@@ -237,6 +237,8 @@
     .back,.home-link{padding:7px 9px;}
     .picker select{max-width:46vw;padding:7px 6px;}
   }
+  .write-link{text-align:center;margin:22px 0 0;font-weight:600}
+  .write-link a{color:var(--orange-deep,#C24E0C)}
 </style>
 </head>
 <body>
@@ -260,10 +262,12 @@
   </div>
 
   <main id="stage" aria-live="polite"></main>
+  <p class="write-link"><a id="writeLink" href="../writing/?mode=words">Write sentences with these words &rarr;</a></p>
 </div>
 
 <script>
 const SET = /*{{SET_JSON}}*/null;
+document.getElementById('writeLink').href = '../writing/?mode=words&set=' + encodeURIComponent(SET.slug);
 
 /* Rough syllable split used when a set doesn't list syllables for a word.
    Keeps digraphs and endings like -tion together, splits V-CV and VC-CV,

@@ -103,6 +103,14 @@ if (reviews.length) {
   writeFileSync(join(DIST, 'math', 'index.html'), fill(MATH_INDEX, { '{{REVIEW_GROUPS}}': groups }));
 }
 
+// Writing practice: writing/ copied as-is, plus every set's words for "use this week's words".
+const WRITING = join(ROOT, 'writing');
+if (existsSync(WRITING)) {
+  cpSync(WRITING, join(DIST, 'writing'), { recursive: true });
+  writeFileSync(join(DIST, 'writing', 'words.json'), JSON.stringify(
+    sets.map(s => ({ slug: s.slug, title: s.title, words: s.words.map(w => ({ word: w.word, definition: w.definition })) }))) + '\n');
+}
+
 // Keep GitHub Pages from running Jekyll over the output.
 writeFileSync(join(DIST, '.nojekyll'), '');
 

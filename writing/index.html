@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Writing Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#FBF5EC;--ink:#2B2118;--dim:#6A5D4F;--orange:#F0661A;--deep:#C24E0C;--card:#fff;--line:#E7DCCB;--ok:#1E6B34;--warn:#8A4B00;color-scheme:light}
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font:16px/1.5 "Lexend","Segoe UI",system-ui,sans-serif;min-height:100vh;padding:24px 16px 60px}
+  .wrap{max-width:720px;margin:0 auto}
+  .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:16px;background:#fff;border-radius:999px;padding:4px;max-width:480px;box-shadow:0 1px 3px rgba(43,33,24,.10)}
+  .tabs a{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;font-weight:700;font-size:1.05rem;text-decoration:none;color:var(--dim);border-radius:999px}
+  .tabs a[aria-current="page"]{background:var(--deep);color:#fff}
+  .tabs svg{width:20px;height:20px}
+  h1{font-weight:800;font-size:clamp(2rem,9vw,2.7rem);line-height:1.05;margin:6px 2px 4px;letter-spacing:-.02em}
+  h1 span{color:var(--orange)}
+  .lede{margin:0 2px 16px;color:var(--dim)}
+  .modes{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+  .modes button{min-height:44px;padding:0 16px;border:2px solid var(--deep);border-radius:999px;background:#fff;color:var(--deep);font:700 15px "Lexend",sans-serif;cursor:pointer}
+  .modes button[aria-pressed="true"]{background:var(--deep);color:#fff}
+  .status{font-size:.9rem;color:var(--dim);margin:0 2px 14px}
+  .card{background:var(--card);border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(43,33,24,.10)}
+  .meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:6px}
+  .chip{font-size:.75rem;font-weight:700;border-radius:999px;padding:3px 10px;background:#FFF1E4;color:var(--deep)}
+  .chip.std{background:#F1ECE4;color:var(--dim)}
+  .mark{font-weight:800}
+  .mark:empty{display:none}
+  .mark.right{color:var(--ok)} .mark.wrong{color:var(--warn)}
+  .prompt{font-weight:700;margin:2px 0 6px}
+  .wrong{margin:0 0 8px;padding:8px 12px;border-left:4px solid var(--line);background:#FCF8F2;border-radius:6px}
+  textarea{width:100%;font:17px/1.5 "Lexend",sans-serif;padding:10px 12px;border:2px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);resize:vertical}
+  textarea:focus{outline:none;border-color:var(--orange)}
+  .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+  .row button,.issue button{min-height:44px;padding:0 14px;border:0;border-radius:12px;background:var(--deep);color:#fff;font:700 14px "Lexend",sans-serif;cursor:pointer}
+  .row button.ghost,.issue button.ghost{background:#fff;color:var(--deep);border:2px solid var(--deep)}
+  .row button:disabled,.issue button:disabled{opacity:.5;cursor:wait}
+  .result{margin-top:8px}
+  .result b.ok{color:var(--ok)} .result b.no{color:var(--warn)}
+  .issues{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:8px}
+  .issue{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#FFFCF8}
+  .issue .kind{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--warn)}
+  .issue q{font-weight:700;background:#FFE7C7;border-radius:4px;padding:0 3px}
+  .issue .fixes{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .issue .why{margin-top:6px;white-space:pre-wrap;font-size:.95rem}
+  .clean{color:var(--ok);font-weight:700}
+  select{min-height:44px;font:600 15px "Lexend",sans-serif;padding:0 10px;border-radius:12px;border:2px solid var(--line);background:#fff;color:var(--ink);max-width:100%}
+  .def{color:var(--dim);font-size:.95rem}
+  :focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="tabs" aria-label="Subject">
+    <a href="../"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5z"/><path d="M8 7h7"/></svg>Words</a>
+    <a href="../math/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>Math</a>
+    <a href="./" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>Writing</a>
+  </nav>
+  <h1>Writing <span>Works</span></h1>
+  <p class="lede">Grammar practice. Your writing is checked right here on this device.</p>
+  <div class="modes" role="group" aria-label="Practice">
+    <button type="button" data-mode="fix">Fix the sentence</button>
+    <button type="button" data-mode="words">Use your words</button>
+    <button type="button" data-mode="free">Free write</button>
+  </div>
+  <p class="status" id="status" aria-live="polite"></p>
+  <main id="main"></main>
+</div>
+<script type="module" src="writing.js"></script>
+</body>
+</html>

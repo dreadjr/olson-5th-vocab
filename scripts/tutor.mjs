@@ -9,7 +9,7 @@ import { hostname, tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { ROOT } from './lib.mjs';
 import { serveDist } from './static.mjs';
-import { validateAsk, validateCheck, cleanWork, loadHelp, loadKey, buildPrompt, buildCheckPrompt, parseCheck, cliCommand } from './tutor-lib.mjs';
+import { validateAsk, validateCheck, validateGrammar, buildGrammarPrompt, cleanWork, loadHelp, loadKey, buildPrompt, buildCheckPrompt, parseCheck, cliCommand } from './tutor-lib.mjs';
 
 const PORT = process.env.PORT === undefined ? 8080 : Number(process.env.PORT);
 const LOG_DIR = process.env.TUTOR_LOG_DIR || join(ROOT, 'logs');
@@ -67,6 +67,15 @@ async function ask(req, res) {
   log({ event: 'ask', page: a.page, id: a.id, step: a.step, message: a.message, reply });
 }
 
+async function grammar(req, res) {
+  const g = validateGrammar(await readJson(req));
+  if (g.error) return send(res, 400, g.error);
+  const reply = await runCli(buildGrammarPrompt(g));
+  if (!reply) return send(res, 503, UNAVAILABLE);
+  send(res, 200, reply);
+  log({ event: 'grammar', text: g.text, kind: g.kind, message: g.message, reply });
+}
+
 async function check(req, res) {
   const body = await readJson(req);
   const a = validateCheck(body);
@@ -102,6 +111,7 @@ async function handle(req, res) {
   if (pathname === '/api/health') return send(res, 200, JSON.stringify({ ok: true, cli: cliCommand(process.env).cmd }));
   if (pathname === '/api/ask' && req.method === 'POST') return ask(req, res);
   if (pathname === '/api/check' && req.method === 'POST') return check(req, res);
+  if (pathname === '/api/grammar' && req.method === 'POST') return grammar(req, res);
   if (pathname === '/api/log' && req.method === 'POST') {
     const b = await readJson(req);
     if (b && /^[a-z0-9-]+$/.test(b.page) && /^(I|II|III)(-\d+)?$/.test(b.id) && [1, 2, 3].includes(b.step)) {

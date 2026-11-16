@@ -5,7 +5,7 @@ import { mkdtempSync, writeFileSync, chmodSync } from 'node:fs';
 import { connect } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { validateAsk, validateCheck, cleanWork, buildPrompt, buildCheckPrompt, parseCheck, cliCommand } from './tutor-lib.mjs';
+import { validateAsk, validateCheck, validateGrammar, buildGrammarPrompt, cleanWork, buildPrompt, buildCheckPrompt, parseCheck, cliCommand } from './tutor-lib.mjs';
 
 const ok = { page: 'b4-form-c', id: 'I-6', step: 1, question: 'q', message: 'why 72?' };
 
@@ -157,5 +157,26 @@ test('check logs the calculator work', async () => {
     const { readFileSync } = await import('node:fs');
     const logged = readFileSync(join(t.logDir, 'tutor.jsonl'), 'utf8').trim().split('\n').map(JSON.parse).at(-1);
     assert.deepEqual(logged.work, ['9 · 9 = 81']);
+  } finally { t.stop(); }
+});
+
+test('grammar explanations: checked input, prompt keeps the fix for the student', () => {
+  const ok = { text: 'Me and Jordan went.', problem: 'Me', message: 'Use I as a subject.', kind: 'Grammar' };
+  assert.deepEqual(validateGrammar(ok), ok);
+  assert.ok(validateGrammar({ ...ok, text: '' }).error);
+  assert.ok(validateGrammar({ ...ok, text: 'x'.repeat(1001) }).error);
+  assert.ok(validateGrammar({ ...ok, message: '' }).error);
+  assert.equal(validateGrammar({ text: 'a', message: 'b' }).kind, 'Grammar');
+  const p = buildGrammarPrompt(ok);
+  assert.ok(p.includes('Me and Jordan went.') && p.includes('Use I as a subject.') && p.includes('Do not rewrite'));
+});
+
+test('grammar endpoint answers through the CLI', async () => {
+  const t = await startTutor('cat >/dev/null; echo "Use I when you are doing the action. Which word fits?"');
+  try {
+    const r = await fetch(`${t.base}/api/grammar`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ text: 'Me and Jordan went.', problem: 'Me', message: 'Use I.', kind: 'Grammar' }) });
+    assert.equal(r.status, 200);
+    assert.match(await r.text(), /Which word fits/);
+    assert.equal((await fetch(`${t.base}/api/grammar`, { method: 'POST', body: '{}' })).status, 400);
   } finally { t.stop(); }
 });
