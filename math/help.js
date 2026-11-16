@@ -143,6 +143,7 @@
       qEls[cur].closest('section.part')?.querySelector(':scope > h2')?.classList.add('focus-ctx');
       setupFor(qEls[cur]).forEach((n) => n.classList.add('focus-ctx'));
     }
+    refCards(view === 'focus' ? cur : null);
     const i = qs.indexOf(cur);
     pos.textContent = cur ? `${labels[cur]} · ${i + 1} of ${qs.length}` : 'No questions showing';
     prevB.disabled = i <= 0;
@@ -153,6 +154,40 @@
       seg.addEventListener('click', () => go(id));
       return seg;
     }));
+  }
+
+  // Focus shows one question, so "Using the data from #1" needs #1 at hand: a small card with #1's question and the
+  // student's own answers to it, and a link back. Only in Focus (the worksheet shows #1 anyway).
+  function refCards(id) {
+    document.querySelectorAll('.ref-card').forEach((c) => c.remove());
+    if (!id) return;
+    const host = qEls[id].classList.contains('task') ? qEls[id] : qEls[id].lastElementChild;
+    const own = [...host.childNodes].filter((n) => n.nodeType === 3 || !n.matches?.('.q-meta, .answer, .help, .helpbtn, .ans, .practice, .pie, .q-work')).map((n) => n.textContent).join(' ');
+    const part = id.split('-')[0];
+    const refs = [...new Set([...own.matchAll(/#\s?(\d+)/g)].map((m) => `${part}-${m[1]}`))].filter((r) => r !== id && qEls[r]);
+    for (const r of refs.reverse()) {
+      const card = el('aside', 'ref-card');
+      const head = el('div', 'ref-head');
+      const go2 = el('button', 'q-tool', `Go to ${labels[r].replace(/^Part [IV]+ /, '')}`);
+      go2.type = 'button';
+      go2.addEventListener('click', () => go(r));
+      head.append(el('b', '', `From ${labels[r].replace(/^Part [IV]+ /, '')}`), go2);
+      const rh = qEls[r].classList.contains('task') ? qEls[r] : qEls[r].lastElementChild;
+      const qt = [...rh.childNodes].filter((n) => n.nodeType === 3 || !n.matches?.('.q-meta, .answer, .help, .helpbtn, .ans, .practice, .pie, .q-work, figure, .print-only, .solve-steps, .ans-steps, .ref-card, button')).map((n) => n.textContent).join(' ').replace(/\s+/g, ' ').trim();
+      const story = setupFor(qEls[r]).map((n) => n.textContent.trim()).join(' '); // e.g. "Ava surveyed 30 students…" above #1
+      const rec0 = progress[r], f = help.entries[r]?.fields;
+      let mine;
+      if (f && rec0?.cells) {
+        mine = el('table', 'ref-table');
+        const tr0 = el('tr');
+        tr0.append(el('th'), ...f.cols.map((c) => el('th', '', c)));
+        mine.append(tr0, ...f.rows.map((row, i) => { const tr = el('tr'); tr.append(el('th', '', row), ...f.cols.map((_, j) => el('td', '', rec0.cells[i]?.[j] || '–'))); return tr; }));
+      } else mine = el('p', 'ref-ans', rec0?.answer ? `Your answer: ${rec0.answer}` : 'Not answered yet.');
+      card.append(head, ...(story ? [el('p', 'ref-story', story)] : []), el('p', 'ref-q', qt), mine);
+      if (rec0?.status) card.append(el('p', 'ref-status', rec0.status === 'right' ? '✓ checked: right' : rec0.status === 'wrong' ? '✗ checked: not right yet' : '• not checked yet'));
+      stackFractions(card);
+      host.querySelector(':scope > .q-meta').after(card);
+    }
   }
 
   function setView(v) {
@@ -950,6 +985,7 @@
       const g = pie.grade(5);
       const feedback = g.msg || (g.ok ? 'Every sector is within 5° of the right size.' : `${g.rows.map((x) => x.msg).join('\n')}\nUse your degrees from #1.`);
       if (g.msg) { result.textContent = g.msg; return; } // not finished drawing: no try counted
+      pie.allowTargets(); // after a real check, the student may show where each sector should end
       const p = rec(id);
       p.status = g.ok ? 'right' : 'wrong'; p.feedback = feedback; p.cells = pie.state();
       p.tries.push({ answer: text(p.cells), correct: g.ok, t: Date.now() });

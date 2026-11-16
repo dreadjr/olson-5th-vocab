@@ -153,6 +153,8 @@
     const svg = svgEl('svg', { viewBox: '0 0 240 240', width: 240, height: 240, role: 'img' });
     let lines = (opts.start?.lines || []).map((l) => ({ ...l })), labels = { ...(opts.start?.labels || {}) }, nextId = Math.max(0, ...lines.map((l) => l.id)) + 1;
     let dragging = null, focus = null, selected = null, outside = false;
+    let guides = 0, targets = false; // guides: 0 off, 1 one tick per person, 2 every 10°; targets: dashed "right size" ends, after a Check
+    const T = data.reduce((t, [, n]) => t + n, 0);
     const pt = (a, r = R) => [C + r * Math.sin((a * Math.PI) / 180), C - r * Math.cos((a * Math.PI) / 180)];
     const angleOf = (e) => { const b = svg.getBoundingClientRect(), x = ((e.clientX - b.left) / b.width) * 240 - C, y = ((e.clientY - b.top) / b.height) * 240 - C; return { a: Math.round(norm((Math.atan2(x, -y) * 180) / Math.PI)), d: Math.hypot(x, y) }; };
     const names = data.map(([label]) => label);
@@ -161,6 +163,13 @@
 
     function draw() {
       svg.replaceChildren(svgEl('circle', { cx: C, cy: C, r: R, class: 'free-circle' }));
+      if (guides) {
+        const n = guides === 1 ? T : 36;
+        for (let k = 0; k < n; k++) {
+          const a = (k * 360) / n, [x1, y1] = pt(a, R * (guides === 1 && n <= 60 ? 0 : 0.86)), [x2, y2] = pt(a);
+          svg.append(svgEl('line', { x1, y1, x2, y2, class: `free-guide${guides === 2 && k % 9 === 0 ? ' major' : ''}` }));
+        }
+      }
       const sl = slices(lines);
       if (lines.length > 1) sl.forEach((x) => {
         const label = labels[x.id], i = names.indexOf(label);
@@ -177,6 +186,16 @@
         t.textContent = `${label ? `${x.size < 45 ? label.slice(0, 4) : label} ` : ''}${Math.round(x.size)}°`; // Bus and Bike both start with B
         svg.append(t);
       });
+      // After a Check: where each labeled sector should end, dashed, so the gap shows.
+      if (targets && lines.length > 1) for (const x of sl) {
+        const i = names.indexOf(labels[x.id]);
+        if (i < 0) continue;
+        const want = (data[i][1] / T) * 360, [tx, ty] = pt(x.from + want, R * 1.04), [lx, ly] = pt(x.from + want, R * 1.13);
+        svg.append(svgEl('line', { x1: C, y1: C, x2: tx, y2: ty, class: 'free-target' }));
+        const t = svgEl('text', { x: lx, y: ly, 'text-anchor': 'middle', 'dominant-baseline': 'middle', class: 'free-target-label' });
+        t.textContent = labels[x.id].slice(0, 4);
+        svg.append(t);
+      }
       for (const l of lines) {
         const [x, y] = pt(l.a);
         svg.append(svgEl('line', { x1: C, y1: C, x2: x, y2: y, class: 'free-line' }));
@@ -243,7 +262,15 @@
     for (const b of [undo, clear]) b.type = 'button';
     undo.addEventListener('click', () => { const id = selected ?? lines.at(-1)?.id; if (id != null) remove(id); });
     clear.addEventListener('click', () => { lines = []; labels = {}; selected = null; changed(); });
-    tools.append(undo, clear);
+    const guide = el('button', 'q-tool', 'Guides: off'), show = el('button', 'q-tool', 'Show the right sizes');
+    for (const b of [guide, show]) b.type = 'button';
+    const GUIDES = ['Guides: off', `Guides: 1 per ${T <= 60 ? 'person' : 'item'} (${T})`, 'Guides: every 10°'];
+    guide.addEventListener('click', () => { guides = (guides + 1) % 3; guide.textContent = GUIDES[guides]; guide.setAttribute('aria-pressed', String(guides > 0)); draw(); });
+    show.hidden = true;
+    show.setAttribute('aria-pressed', 'false');
+    show.addEventListener('click', () => { targets = !targets; show.textContent = targets ? 'Hide the right sizes' : 'Show the right sizes'; show.setAttribute('aria-pressed', String(targets)); draw(); });
+    tools.append(undo, clear, guide, show);
+    wrap.allowTargets = () => { show.hidden = false; };
     wrap.append(svg, tip, tools);
     wrap.state = state;
     wrap.grade = (tol) => grade(lines, labels, data, tol);
