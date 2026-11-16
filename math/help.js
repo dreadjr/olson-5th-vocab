@@ -222,6 +222,17 @@
     a.href = `../gen/?block=${blockNo}`;
     document.querySelector('.toolbar > span')?.append(' · ', a);
   }
+  // and reviews modeled on the class's exit quizzes for this block (math/quizzes.js)
+  const reviews = (window.QuizReviews || []).filter((q) => q.group === String(blockNo));
+  if (reviews.length) {
+    const bar = el('div', 'quiz-bar');
+    bar.append('Exit quiz reviews: ');
+    reviews.forEach((q, k) => { const a = el('a', '', q.id); a.href = `../gen/?quiz=${q.id}`; a.title = `Review: ${q.title}`; bar.append(k ? ' · ' : '', a); });
+    const t = el('a', '', 'Block test review');
+    t.href = `../gen/?test=${blockNo}`;
+    bar.append(' · ', t);
+    document.querySelector('.toolbar')?.after(bar);
+  }
   const toggle = document.getElementById('toggle');
   toggle ? toggle.before(switcher) : document.querySelector('.toolbar')?.append(switcher);
   render();

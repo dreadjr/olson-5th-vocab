@@ -7,4 +7,4 @@ function set(on) {
 set(location.hash === '#key');
 btn?.addEventListener('click', () => set(!document.body.classList.contains('show')));
 // The calculator (calc.js), practice problems (practice.js, uses calc.js) and whiteboard walkthroughs (board.js) on every form, in that order.
-for (const src of ['../calc.js', '../practice.js', '../board.js', '../pie.js']) document.body.append(Object.assign(document.createElement('script'), { src, async: false }));
+for (const src of ['../calc.js', '../practice.js', '../board.js', '../pie.js', '../quizzes.js']) document.body.append(Object.assign(document.createElement('script'), { src, async: false }));

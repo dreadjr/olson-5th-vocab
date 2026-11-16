@@ -73,6 +73,9 @@ body.show .ans{display:block}
 body.show .work{min-height:0}
 /* Help panel (math/help.js); screen only */
 @media screen{.cols{padding-bottom:16px}} /* a question's margin is dropped at the end of a column block */
+.quiz-bar{padding:6px 16px;font:600 13px var(--display);color:var(--muted);background:var(--tint);border-bottom:1px solid var(--rule)}
+.quiz-bar a{color:var(--accent);display:inline-block;padding:6px 2px}
+@media print{.quiz-bar{display:none}}
 .helpbtn{display:inline-block;margin-top:6px;font:700 12px/1 var(--display);color:var(--accent);background:none;border:1.5px solid var(--accent);border-radius:4px;padding:7px 10px;min-height:32px;cursor:pointer}
 .helpbtn[aria-expanded="true"]{background:var(--accent);color:var(--paper)}
 .help{margin-top:8px;padding:10px 12px;background:var(--tint);border-left:3px solid var(--accent);border-radius:3px;font-size:14px}
