@@ -130,6 +130,8 @@ body.show .work{min-height:0}
 .pie-swatch{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
 .pie-explain{margin:8px 0 0;padding:6px 10px;background:var(--tint);border-radius:6px;font-size:14px}
 .pie-free svg{touch-action:none;max-width:100%;height:auto;display:block}
+.pie-handle.selected{stroke:var(--accent);stroke-width:4}
+.pie-free svg.removing .pie-handle.selected{opacity:.35}
 .free-circle{fill:var(--paper);stroke:var(--ink);stroke-width:2}
 .free-slice{stroke:none;opacity:.85;cursor:pointer}
 .free-line{stroke:var(--ink);stroke-width:2}

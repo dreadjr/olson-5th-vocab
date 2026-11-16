@@ -152,7 +152,7 @@
     const R = 100, C = 120;
     const svg = svgEl('svg', { viewBox: '0 0 240 240', width: 240, height: 240, role: 'img' });
     let lines = (opts.start?.lines || []).map((l) => ({ ...l })), labels = { ...(opts.start?.labels || {}) }, nextId = Math.max(0, ...lines.map((l) => l.id)) + 1;
-    let dragging = null, focus = null;
+    let dragging = null, focus = null, selected = null, outside = false;
     const pt = (a, r = R) => [C + r * Math.sin((a * Math.PI) / 180), C - r * Math.cos((a * Math.PI) / 180)];
     const angleOf = (e) => { const b = svg.getBoundingClientRect(), x = ((e.clientX - b.left) / b.width) * 240 - C, y = ((e.clientY - b.top) / b.height) * 240 - C; return { a: Math.round(norm((Math.atan2(x, -y) * 180) / Math.PI)), d: Math.hypot(x, y) }; };
     const names = data.map(([label]) => label);
@@ -180,11 +180,12 @@
       for (const l of lines) {
         const [x, y] = pt(l.a);
         svg.append(svgEl('line', { x1: C, y1: C, x2: x, y2: y, class: 'free-line' }));
-        const h = svgEl('circle', { cx: x, cy: y, r: 9, class: 'pie-handle', tabindex: 0, role: 'slider', 'aria-label': `Line at ${l.a} degrees`, 'aria-valuemin': 0, 'aria-valuemax': 359, 'aria-valuenow': l.a });
-        h.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); dragging = l.id; svg.setPointerCapture(e.pointerId); });
+        const h = svgEl('circle', { cx: x, cy: y, r: 9, class: `pie-handle${l.id === selected ? ' selected' : ''}`, tabindex: 0, role: 'slider', 'aria-label': `Line at ${l.a} degrees`, 'aria-valuemin': 0, 'aria-valuemax': 359, 'aria-valuenow': l.a });
+        h.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); dragging = selected = l.id; svg.setPointerCapture(e.pointerId); draw(); });
+        h.addEventListener('focus', () => { if (selected !== l.id) { selected = l.id; focus = l.id; draw(); } });
         h.addEventListener('keydown', (e) => {
           const step = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1 }[e.key];
-          if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); lines = lines.filter((m) => m !== l); changed(); return; }
+          if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); remove(l.id); return; }
           if (!step) return;
           e.preventDefault(); l.a = norm(l.a + step * (e.shiftKey ? 10 : 1)); focus = l.id; changed();
         });
@@ -193,11 +194,18 @@
       svg.append(svgEl('circle', { cx: C, cy: C, r: 2.5, class: 'free-center' }));
       if (focus != null) [...svg.querySelectorAll('.pie-handle')][lines.findIndex((l) => l.id === focus)]?.focus();
       const need = data.length - lines.length;
-      tip.textContent = need > 0 ? `Tap near the edge of the circle to draw a line from the center (${need} more to go). Drag a white dot to move a line. Tap the middle of a sector to label it.`
-        : 'Tap a sector to label it (tap again for the next label). Each sector shows its angle.';
+      tip.textContent = need > 0 ? `Tap near the edge of the circle to draw a line from the center (${need} more to go). Drag a white dot to move a line, or drag it off the circle to delete it. Tap the middle of a sector to label it.`
+        : 'Tap a sector to label it (tap again for the next label). Each sector shows its angle. To delete a line, tap its dot and Delete this line, or drag the dot off the circle.';
       svg.setAttribute('aria-label', `Your pie: ${lines.length} lines. ${sl.length > 1 ? sl.map((x) => `${labels[x.id] || 'unlabeled'} ${Math.round(x.size)} degrees`).join(', ') : ''}`);
     }
-    const changed = () => { draw(); opts.onChange?.(state()); };
+    const changed = () => { undo.textContent = selected != null ? 'Delete this line' : 'Remove last line'; draw(); opts.onChange?.(state()); };
+    function remove(id) {
+      lines = lines.filter((m) => m.id !== id);
+      delete labels[id];
+      if (selected === id) selected = null;
+      focus = null;
+      changed();
+    }
     const state = () => ({ lines: lines.map((l) => ({ id: l.id, a: l.a })), labels: { ...labels } });
     // Tapping a sector gives it the next label no other sector has yet; past the last one it goes back to unlabeled.
     function cycle(id) {
@@ -215,14 +223,26 @@
       svg.setPointerCapture(e.pointerId);
       changed();
     });
-    svg.addEventListener('pointermove', (e) => { if (dragging == null) return; const l = lines.find((m) => m.id === dragging); if (l) { l.a = angleOf(e).a; draw(); } });
-    for (const ev of ['pointerup', 'pointercancel']) svg.addEventListener(ev, () => { if (dragging != null) { dragging = null; changed(); } });
+    // Dragging a dot well outside the circle and letting go deletes that line (the dot fades while it's out there).
+    svg.addEventListener('pointermove', (e) => {
+      if (dragging == null) return;
+      const l = lines.find((m) => m.id === dragging), { a, d } = angleOf(e);
+      outside = d > R * 1.3;
+      if (l) { if (!outside) l.a = a; draw(); svg.classList.toggle('removing', outside); }
+    });
+    for (const ev of ['pointerup', 'pointercancel']) svg.addEventListener(ev, () => {
+      if (dragging == null) return;
+      const id = dragging;
+      dragging = null;
+      svg.classList.remove('removing');
+      if (outside) { outside = false; remove(id); } else changed();
+    });
 
     const tools = el('div', 'pie-tools');
     const undo = el('button', 'q-tool', 'Remove last line'), clear = el('button', 'q-tool', 'Start over');
     for (const b of [undo, clear]) b.type = 'button';
-    undo.addEventListener('click', () => { const l = lines.pop(); if (l) delete labels[l.id]; changed(); });
-    clear.addEventListener('click', () => { lines = []; labels = {}; changed(); });
+    undo.addEventListener('click', () => { const id = selected ?? lines.at(-1)?.id; if (id != null) remove(id); });
+    clear.addEventListener('click', () => { lines = []; labels = {}; selected = null; changed(); });
     tools.append(undo, clear);
     wrap.append(svg, tip, tools);
     wrap.state = state;
