@@ -143,6 +143,16 @@ mark.key-num,mark.key-cue{background:none;color:inherit}
 .keyinfo-on mark.key-num,.keyinfo-on .f.key-num{background:color-mix(in srgb,var(--accent) 16%,transparent);border-radius:3px;font-weight:700}
 .keyinfo-on mark.key-cue{text-decoration:underline 2px var(--accent);text-underline-offset:3px;font-weight:600}
 .keyinfo-on .key-ask{background:color-mix(in srgb,#f5c542 30%,transparent);border-radius:3px}
+.practice{margin-top:8px;padding:10px 12px;border:1.5px solid var(--accent);border-radius:8px;max-width:600px;font-size:15px}
+.practice-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;font:600 13px var(--display)}
+.practice-score{color:var(--muted)}
+.practice-meter{height:8px;margin:6px 0 8px;border-radius:4px;background:var(--tint);overflow:hidden}
+.practice-meter span{display:block;height:100%;background:var(--ok);transition:width .3s}
+.practice-q{margin:4px 0 8px}
+.practice-tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.practice-next{min-height:32px;padding:0 12px;border:0;border-radius:6px;background:var(--accent);color:var(--paper);font:700 12px var(--display);cursor:pointer}
+.practice-yn{min-height:36px;padding:0 14px;border:1.5px solid var(--accent);border-radius:6px;background:var(--paper);color:var(--accent);font:700 13px var(--display);cursor:pointer}
+.practice .answer{grid-template-columns:1fr auto auto auto}
 .solve-steps{margin-top:8px;padding:10px 12px;background:var(--tint);border-radius:6px;max-width:560px;font-size:15px}
 .solve-head{font:600 12px var(--display);color:var(--muted);margin-bottom:4px}
 .solve-steps ol{margin:4px 0 8px;padding-left:1.4em;display:grid;gap:6px}
@@ -274,7 +284,7 @@ a.lesson-chip:hover{color:var(--accent);border-color:var(--accent)}
   .calc-tip{display:none}
 }
 @media (pointer:coarse){
-  .helpbtn,.help-next,.help-ask button,.answer button,.lessons label,.progress summary,.help-calc button,.calc-clear,.calc-undo button,.q-tool,.ans-steps button,.help-ways button,.solve-steps button{min-height:44px}
+  .helpbtn,.help-next,.help-ask button,.answer button,.lessons label,.progress summary,.help-calc button,.calc-clear,.calc-undo button,.q-tool,.ans-steps button,.help-ways button,.solve-steps button,.practice-next,.practice-yn{min-height:44px}
   .calc-del{opacity:1;width:44px;height:44px;margin-top:-22px}
   .answer input{min-height:44px}
   .progress summary{display:list-item;padding:10px 0}
@@ -282,7 +292,7 @@ a.lesson-chip:hover{color:var(--accent);border-color:var(--accent)}
   .help-links a{position:relative}
   .help-links{gap:12px 8px}
 }
-@media print{.solve-steps,.ans-steps,.q-tool,.q-work,.calc,.calc-btn,.helpbtn,.help,.answer,.progress,.mark,.lessons,.q-meta,.views,.focus-strip,.focus-bar{display:none!important}}
+@media print{.practice,.solve-steps,.ans-steps,.q-tool,.q-work,.calc,.calc-btn,.helpbtn,.help,.answer,.progress,.mark,.lessons,.q-meta,.views,.focus-strip,.focus-bar{display:none!important}}
 .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;border-top:1px solid var(--rule);margin-top:18px;padding-top:6px;font-size:11px;color:var(--muted)}
 
 @page{size:letter;margin:.5in}

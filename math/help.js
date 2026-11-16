@@ -5,6 +5,8 @@
 (async () => {
   const page = location.pathname.split('/').filter(Boolean).at(-1) || '';
   let help, lessons;
+  // calc.js and practice.js are added by form.js; wait for them so practice buttons know their skills.
+  if (!window.Practice) await new Promise((r) => (document.readyState === 'complete' ? r() : window.addEventListener('load', r, { once: true })));
   try {
     [help, lessons] = await Promise.all(['./help.json', '../lessons.json'].map((u) => fetch(u).then((r) => (r.ok ? r.json() : Promise.reject()))));
   } catch { return; }
@@ -26,6 +28,11 @@
   try { progress = JSON.parse(localStorage.getItem(KEY)) || {}; } catch { /* storage blocked or bad data */ }
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(progress)); } catch { /* storage blocked */ } };
   const rec = (id) => (progress[id] ||= { answer: '', status: '', tries: [] });
+  // Practice mastery per skill (shared by every form); declared up here because the question loop below uses it.
+  let mastery = {};
+  try { mastery = JSON.parse(localStorage.getItem('mastery')) || {}; } catch { /* storage blocked */ }
+  const practiceButtons = [];
+  const LEVELS = [[100, 'Mastered'], [80, 'Proficient'], [50, 'Familiar'], [1, 'Getting started'], [0, 'Not started']];
   const marks = {}, labels = {};
   const MARK = { right: '✓', wrong: '✗', answered: '•' };
   const MARK_TEXT = { right: 'right', wrong: 'not yet right', answered: 'answered, not checked' };
@@ -47,7 +54,7 @@
       (n || q).prepend(marks[id]);
       const host = q.classList.contains('task') ? q : q.lastElementChild;
       const meta = el('div', 'q-meta');
-      meta.append(lessonChip(entry.lesson), readButton(host), keyInfoButton(host), solveButton(host, id, entry));
+      meta.append(lessonChip(entry.lesson), readButton(host), keyInfoButton(host), solveButton(host, id, entry), practiceButton(host, entry));
       host.prepend(meta);
       answerSteps(host, id, entry);
       const box = answerBox(id, host, q.classList.contains('task'));
@@ -539,6 +546,103 @@
       b.setAttribute('aria-expanded', String(!s.wrap.hidden));
     });
     return b;
+  }
+
+  // ---- Practice more like this: new problems for the question's skill (math/practice.js), with a mastery score per skill
+  // kept in this browser and shared by every form (like IXL's SmartScore: gains shrink near the top, a miss costs points).
+  const levelOf = (score) => LEVELS.find(([min]) => score >= min)[1];
+  function score(kind, right) {
+    const m = (mastery[kind] ||= { score: 0, tries: 0, right: 0 });
+    m.tries++;
+    if (right) { m.right++; m.score = Math.min(100, m.score + (m.score < 50 ? 10 : m.score < 80 ? 7 : m.score < 90 ? 5 : 3)); }
+    else m.score = Math.max(0, m.score - (m.score >= 80 ? 8 : m.score >= 50 ? 5 : 3));
+    m.last = Date.now();
+    try { localStorage.setItem('mastery', JSON.stringify(mastery)); } catch { /* storage blocked */ }
+    practiceButtons.forEach((f) => f());
+  }
+  function practiceButton(host, entry) {
+    const kind = window.Practice?.kindFor(entry.skill);
+    const b = el('button', 'q-tool', 'Practice');
+    b.type = 'button';
+    b.setAttribute('aria-expanded', 'false');
+    if (!kind) { b.hidden = true; return b; }
+    const label = () => { const m = mastery[kind]; b.textContent = m ? `Practice · ${m.score}` : 'Practice'; b.title = m ? `${window.Practice.kinds[kind].label}: ${m.score}/100, ${levelOf(m.score)}` : ''; };
+    practiceButtons.push(label);
+    label();
+    let panel = null;
+    b.addEventListener('click', () => {
+      if (!panel) { panel = practicePanel(kind); (host.querySelector(':scope > .answer') || host.lastElementChild).after(panel); } else panel.hidden = !panel.hidden;
+      b.setAttribute('aria-expanded', String(!panel.hidden));
+    });
+    return b;
+  }
+  function practicePanel(kind) {
+    const box = el('div', 'practice');
+    const head = el('div', 'practice-head');
+    const meter = el('div', 'practice-meter');
+    const fill = el('span');
+    meter.append(fill);
+    meter.setAttribute('role', 'img');
+    const showScore = () => {
+      const s = mastery[kind]?.score || 0;
+      fill.style.width = `${s}%`;
+      meter.setAttribute('aria-label', `Mastery ${s} out of 100, ${levelOf(s)}`);
+      head.replaceChildren(el('b', '', `Practice: ${window.Practice.kinds[kind].label}`), el('span', 'practice-score', `${s}/100 · ${levelOf(s)}`));
+    };
+    practiceButtons.push(showScore);
+    const body = el('div');
+    box.append(head, meter, body);
+    const next = () => {
+      const p = window.Practice.make(kind);
+      let counted = false, helped = false;
+      const q = el('p', 'practice-q', p.q);
+      stackFractions(q);
+      const form = el('form', 'answer');
+      const input = el('input');
+      input.placeholder = p.choice ? 'yes or no' : 'Your answer';
+      input.setAttribute('aria-label', 'Your answer to the practice problem');
+      input.autocomplete = 'off';
+      const check = el('button', '', 'Check');
+      check.type = 'submit';
+      const result = el('div', 'answer-result');
+      result.setAttribute('aria-live', 'polite');
+      form.append(input, check, result);
+      if (p.choice) for (const yn of ['yes', 'no']) {
+        const c = el('button', 'practice-yn', yn[0].toUpperCase() + yn.slice(1));
+        c.type = 'button';
+        c.addEventListener('click', () => { input.value = yn; form.requestSubmit(); });
+        form.insertBefore(c, check);
+      } else mathAnswer(input, form);
+      const tools = el('div', 'practice-tools');
+      const hint = el('button', 'q-tool', 'Hint');
+      const steps = el('button', 'q-tool', 'Step by step');
+      const again = el('button', 'practice-next', 'New problem');
+      for (const x of [hint, steps, again]) x.type = 'button';
+      const extra = el('div');
+      hint.addEventListener('click', () => { helped = true; const h = el('p', 'step-help', p.hint); stackFractions(h); extra.replaceChildren(h); });
+      steps.addEventListener('click', () => {
+        helped = true;
+        const st = stepper(p.steps, 'solve-steps', 'Step by step', (text, out) => { out.textContent = p.hint; });
+        extra.replaceChildren(st.wrap);
+        st.next();
+      });
+      again.addEventListener('click', next);
+      tools.append(hint, steps, again);
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const ok = window.Practice.check(p, input.value);
+        if (ok == null) { result.textContent = p.choice ? 'Answer yes or no.' : 'I can’t read that as a number yet. Try something like 3/10, 0.3, (2, −5) or y = 3x.'; return; }
+        if (!counted) { counted = true; if (!(ok && helped)) score(kind, ok); }
+        form.classList.toggle('right', ok);
+        form.classList.toggle('wrong', !ok);
+        result.replaceChildren(el('b', '', ok ? '✓ Right! ' : '✗ Not yet. '), ok ? (helped ? 'Nice. Try one on your own next to raise your score.' : '') : 'Try again, or use Hint or Step by step.');
+        if (ok) again.focus();
+      });
+      body.replaceChildren(q, form, tools, extra);
+      showScore();
+    };
+    next();
+    return box;
   }
 
   // Questions with one clean answer (help.json "answer") get a MathLive field on first tap: fractions stack as you type.
