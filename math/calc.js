@@ -412,22 +412,38 @@
     lines = lines.map((l) => (typeof l === 'string' ? { v: l, q: null } : { v: String(l?.v ?? ''), q: l?.q ?? null }));
     if (!lines.length) lines = [{ v: '', q: null }];
     const fields = [];
+    const focusQ = () => (document.body.dataset.view === 'focus' ? currentQ() : null);
     // Saved per line: the LaTeX, the question it was written for, and its plain text (so the work can be shown without MathLive).
     const save = () => store(KEY2, JSON.stringify(fields.map((f) => ({ v: f.value, q: f.dataset.q || null, a: fromAscii(f.getValue('ascii-math')) }))));
     const render = () => {
       const results = Calc.evalLines(fields.map((f) => fromAscii(f.getValue('ascii-math'))).join('\n'));
       fields.forEach((f, i) => {
         const row = resultRow(results[i] || {});
-        if (f.dataset.q && f.value) {
-          const tag = el('button', 'calc-q', questionLabel(f.dataset.q));
-          tag.type = 'button';
-          tag.title = 'Go to this question';
-          tag.addEventListener('click', () => window.StudyState?.goto?.(f.dataset.q));
-          row.prepend(tag);
-        }
         f.closest('.calc-line').querySelector('.calc-row').replaceWith(row);
       });
+      headings();
       document.dispatchEvent(new CustomEvent('calc-change'));
+    };
+    // A heading over each run of lines for one problem: "Part II #7 · Before the class election…", tap to go there.
+    // Not in Focus view, where the panel already shows one problem.
+    const headings = () => {
+      list.querySelectorAll('.calc-prob').forEach((h) => h.remove());
+      if (focusQ()) return;
+      let prev = null;
+      for (const f of fields) {
+        const line = f.closest('.calc-line'), q = f.dataset.q || null;
+        if (line.hidden || (!q && !f.value)) continue;
+        if (q && q !== prev) {
+          const h = el('button', 'calc-prob');
+          h.type = 'button';
+          h.title = 'Go to this problem';
+          const t = window.StudyState?.titles?.[q] || '';
+          h.append(el('b', '', questionLabel(q)), t ? ` · ${t.length > 60 ? `${t.slice(0, 57)}…` : t}` : '');
+          h.addEventListener('click', () => window.StudyState?.goto?.(q));
+          line.before(h);
+        }
+        prev = q;
+      }
     };
     // Delete a line (the last one left just empties); the cursor goes to the line above.
     const remove = (mf) => {
@@ -501,7 +517,6 @@
       panel.style.setProperty('--kb', `${window.mathVirtualKeyboard.visible ? window.mathVirtualKeyboard.boundingRect.height : 0}px`);
     });
     // Focus view: just the lines for the question on screen. The rest stay saved and come back in the other views.
-    const focusQ = () => (document.body.dataset.view === 'focus' ? currentQ() : null);
     const shows = (f, q) => !q || (f.dataset.q ? f.dataset.q === q : !f.value);
     const filter = () => {
       const q = focusQ();
@@ -510,7 +525,7 @@
       only.hidden = !q;
       only.textContent = q ? `${questionLabel(q)} only` : '';
     };
-    document.addEventListener('study-change', filter);
+    document.addEventListener('study-change', () => { filter(); headings(); });
     filter();
     const reset = (values) => {
       fields.splice(0).forEach((f) => f.closest('.calc-line').remove());

@@ -39,7 +39,8 @@
 
   // Question ids: same rule as scripts/help-check.mjs questionIds().
   const questions = [], qEls = {}, qLesson = {}, works = {};
-  const study = window.StudyState = { current: null, labels, goto: (id) => (view === 'focus' ? go(id) : qEls[id]?.scrollIntoView({ block: 'center' })) };
+  const titles = {}; // the start of each question's text, for the calculator's headings
+  const study = window.StudyState = { current: null, labels, titles, goto: (id) => (view === 'focus' ? go(id) : qEls[id]?.scrollIntoView({ block: 'center' })) };
   document.querySelectorAll('section.part').forEach((part, i) => {
     part.querySelectorAll('.q, .task').forEach((q) => {
       const n = q.querySelector(':scope > .n');
@@ -55,6 +56,7 @@
       const host = q.classList.contains('task') ? q : q.lastElementChild;
       const meta = el('div', 'q-meta');
       meta.append(lessonChip(entry.lesson), readButton(host), keyInfoButton(host), watchButton(() => ({ title: `Watch it: ${entry.skill}`, question: boardQuestion(host), steps: walkSteps(entry) || [] }), !!walkSteps(entry), id), solveButton(host, id, entry), practiceButton(host, entry));
+      titles[id] = questionText(host).replace(/^\d+\.\s*/, '');
       host.prepend(meta);
       answerSteps(host, id, entry);
       // Questions with parts a, b, … get a box under each part; the question's mark combines them.
@@ -71,6 +73,7 @@
       attach(host, id, entry);
     });
   });
+  document.dispatchEvent(new Event('study-change')); // the calculator can now name each problem
 
   // Small "Lesson 4.5" chip on each question, linking to that lesson's student text.
   function lessonChip(n) {
