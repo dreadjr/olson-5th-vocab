@@ -47,8 +47,9 @@
       (n || q).prepend(marks[id]);
       const host = q.classList.contains('task') ? q : q.lastElementChild;
       const meta = el('div', 'q-meta');
-      meta.append(lessonChip(entry.lesson));
+      meta.append(lessonChip(entry.lesson), readButton(host), keyInfoButton(host));
       host.prepend(meta);
+      answerSteps(host, entry);
       const box = answerBox(id, host, q.classList.contains('task'));
       host.append(box);
       works[id] = el('div', 'q-work');
@@ -379,6 +380,109 @@
     return out;
   }
 
+  // ---- Read aloud: the question and its choices, with math said the way a teacher says it.
+  function speechText(host) {
+    const copy = host.cloneNode(true);
+    copy.querySelectorAll('.ans, .help, .helpbtn, .answer, .q-meta, .q-work, svg, .ans-steps').forEach((x) => x.remove());
+    copy.querySelectorAll('.f').forEach((f) => { const [a, b] = [...f.children].map((c) => c.textContent); f.replaceWith(` ${a} over ${b} `); });
+    copy.querySelectorAll('li, p, tr, div').forEach((n) => n.append('. ')); // pause between choices and lines
+    return copy.textContent
+      .replace(/\bP\(([^()]*)\)/g, 'the probability of $1')
+      .replace(/[·×]/g, ' times ').replace(/÷/g, ' divided by ').replace(/−/g, ' minus ').replace(/=/g, ' equals ')
+      .replace(/(\d)\s*–\s*(\d)/g, '$1 to $2').replace(/ ~ /g, ', ').replace(/%/g, ' percent')
+      .replace(/(\d+)\/(\d+)/g, '$1 over $2').replace(/\(\s*(-?\d+),\s*(-?\d+)\s*\)/g, 'the point $1 comma $2')
+      .replace(/\s*\.\s*(\.\s*)+/g, '. ').replace(/\s+/g, ' ').trim();
+  }
+  let speaking = null;
+  function readButton(host) {
+    const b = el('button', 'q-tool', 'Read aloud');
+    b.type = 'button';
+    b.setAttribute('aria-pressed', 'false');
+    if (!('speechSynthesis' in window)) { b.hidden = true; return b; }
+    const done = () => { b.textContent = 'Read aloud'; b.setAttribute('aria-pressed', 'false'); if (speaking === b) speaking = null; };
+    b.addEventListener('click', () => {
+      const wasMe = speaking === b;
+      speechSynthesis.cancel();
+      if (speaking) speaking.dispatchEvent(new Event('stop'));
+      if (wasMe) return;
+      const u = new SpeechSynthesisUtterance(speechText(host));
+      u.lang = 'en-US';
+      u.rate = 0.95;
+      u.onend = done;
+      u.onerror = done;
+      speaking = b;
+      b.textContent = 'Stop reading';
+      b.setAttribute('aria-pressed', 'true');
+      speechSynthesis.speak(u);
+    });
+    b.addEventListener('stop', done);
+    return b;
+  }
+
+  // ---- Key info: underline the numbers and the words that change the answer, and highlight what's being asked.
+  const CUES = /\b(not|NOT|never|no|at least|at most|more than|less than|fewer than|greater than|no more than|each|every|both|all that apply|in all|total|altogether|per|rate|probability|predict|expected?|estimate|how many|how much|how far|how long|which|weakest|strongest|best|most|least|mean|median|mode|range|random(?:ly)?|replaced|put back|without|first|second|then|after|before)\b/g;
+  function keyInfoButton(host) {
+    const b = el('button', 'q-tool', 'Key info');
+    b.type = 'button';
+    b.setAttribute('aria-pressed', 'false');
+    let marked = false;
+    b.addEventListener('click', () => {
+      if (!marked) { markKeyInfo(host); marked = true; }
+      const on = !host.classList.contains('keyinfo-on');
+      host.classList.toggle('keyinfo-on', on);
+      b.setAttribute('aria-pressed', String(on));
+    });
+    return b;
+  }
+  function markKeyInfo(host) {
+    const skip = '.ans, .help, .helpbtn, .answer, .q-meta, .q-work, .ans-steps, svg, .f, mark, button';
+    host.querySelectorAll('.f').forEach((f) => { if (!f.closest('.ans, .help, .answer')) f.classList.add('key-num'); });
+    const walker = document.createTreeWalker(host, NodeFilter.SHOW_TEXT);
+    const texts = [];
+    for (let n; (n = walker.nextNode());) if (n.data.trim() && !n.parentElement.closest(skip)) texts.push(n);
+    const re = new RegExp(`([^.?!]*\\?)|(\\d+(?:[.,]\\d+)*%?)|${CUES.source}`, 'g');
+    for (const t of texts) {
+      const parts = [];
+      let last = 0;
+      for (const m of t.data.matchAll(re)) {
+        if (m.index > last) parts.push(document.createTextNode(t.data.slice(last, m.index)));
+        if (m[1]) { // the sentence that asks: highlight it, and still mark numbers and cue words inside
+          const ask = el('span', 'key-ask');
+          ask.innerHTML = m[1].replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(new RegExp(`(\\d+(?:[.,]\\d+)*%?)|${CUES.source}`, 'g'), (w, num) => `<mark class="${num ? 'key-num' : 'key-cue'}">${w}</mark>`);
+          parts.push(ask);
+        } else parts.push(Object.assign(el('mark', m[2] ? 'key-num' : 'key-cue'), { textContent: m[0] }));
+        last = m.index + m[0].length;
+      }
+      if (!parts.length) continue;
+      if (last < t.data.length) parts.push(document.createTextNode(t.data.slice(last)));
+      t.replaceWith(...parts);
+    }
+  }
+
+  // ---- Answer key, step by step: the "This problem" walkthrough, one step at a time (shows with Show answers).
+  function answerSteps(host, entry) {
+    const anss = host.querySelectorAll(':scope .ans');
+    const last = anss[anss.length - 1];
+    const walk = entry.hints?.[2];
+    if (!last || !walk) return;
+    const steps = walk.replace(/<[^>]+>/g, '').split(/(?<=[.!?])\s+(?=[A-Z0-9(“"])/).map((x) => x.trim()).filter(Boolean);
+    if (steps.length < 2) return;
+    const wrap = el('div', 'ans-steps');
+    const btn = el('button', '', 'Step by step');
+    btn.type = 'button';
+    const list = el('ol');
+    let shown = 0;
+    btn.addEventListener('click', () => {
+      if (shown === steps.length) { list.replaceChildren(); shown = 0; } // "Start over"
+      const li = el('li', '', steps[shown++]);
+      stackFractions(li);
+      list.append(li);
+      btn.textContent = shown < steps.length ? `Next step (${shown + 1} of ${steps.length})` : 'Start over';
+    });
+    wrap.append(list, btn);
+    last.after(wrap);
+  }
+
   // Questions with one clean answer (help.json "answer") get a MathLive field on first tap: fractions stack as you type.
   // The plain input stays (hidden) and holds the text, so saving, progress and Check work unchanged.
   function mathAnswer(input, box) {
@@ -542,12 +646,24 @@
     send.type = 'submit';
     const reply = el('div', 'help-reply');
     reply.setAttribute('aria-live', 'polite');
-    box.append(input, send, reply);
-    box.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const message = input.value.trim();
+    // One tap for the usual "I still don't get it" requests.
+    const ways = el('div', 'help-ways');
+    for (const [label, message] of [
+      ['Explain it another way', 'Explain this a different way than the hints did.'],
+      ['Simpler words', 'Explain this again in simpler words, like for a younger student.'],
+      ['Real-life example', 'Explain the idea with a real-life example, using different numbers than the problem.'],
+      ['Show me with a picture', 'Explain it with a simple picture made of text (a table, a list or a number line), using different numbers than the problem.'],
+    ]) {
+      const b = el('button', '', label);
+      b.type = 'button';
+      b.addEventListener('click', () => ask(message));
+      ways.append(b);
+    }
+    box.append(ways, input, send, reply);
+    const ask = async (message) => {
       if (!message || send.disabled) return;
       send.disabled = true;
+      ways.querySelectorAll('button').forEach((b) => { b.disabled = true; });
       reply.textContent = '…';
       try {
         const r = await post('/api/ask', { page, id, step: getStep(), question: questionText(host), message });
@@ -555,10 +671,19 @@
         reply.textContent = '';
         const reader = r.body.pipeThrough(new TextDecoderStream()).getReader();
         for (let c; !(c = await reader.read()).done;) reply.textContent += c.value;
-        input.value = '';
+        reply.textContent = reply.textContent.replace(/```[a-z]*\n?/g, ''); // text pictures keep their layout (pre-wrap), minus the fences
+        stackFractions(reply);
+        return true;
       } catch (err) {
         reply.textContent = err.message || "The tutor isn't available right now.";
-      } finally { send.disabled = false; }
+      } finally {
+        send.disabled = false;
+        ways.querySelectorAll('button').forEach((b) => { b.disabled = false; });
+      }
+    };
+    box.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (await ask(input.value.trim())) input.value = '';
     });
     return box;
   }
