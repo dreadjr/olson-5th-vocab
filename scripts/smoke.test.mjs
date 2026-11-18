@@ -59,5 +59,5 @@ test('Blocks 1-3 forms get the study UI too', { skip }, async () => {
 
 test('writing page lists the exercises', { skip }, async () => {
   const html = await dom('/writing/?mode=fix');
-  assert.equal(count(html, 'class="card"'), 24);
+  assert.equal(count(html, 'class="card"'), 36);
 });
